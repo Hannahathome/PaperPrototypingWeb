@@ -83,6 +83,12 @@ describe('PaperPolyhedra import', () => {
 		expect(s.fill).toBeNull();
 	});
 
+	it('takes only tab and flap settings from the current shape, never its size', () => {
+		const current = { sides: 6, topDiameter: 50, bottomDiameter: 50, height: 50, tabDepth: 7, flapDepth: 4, flapTaper: 3 };
+		const [s] = importShapes('[{"sides": 5, "diameter": 12, "height": 20}]', current).shapes;
+		expect(s.input).toEqual({ sides: 5, topDiameter: 12, bottomDiameter: 12, height: 20, tabDepth: 7, flapDepth: 4, flapTaper: 3 });
+	});
+
 	it('reads colours like parseHexColor (white when invalid)', () => {
 		expect(parseHexColour('#b4e522')).toBe('#B4E522');
 		expect(parseHexColour('B4E522')).toBe('#B4E522');

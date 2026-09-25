@@ -24,8 +24,25 @@ const d = DEFAULT_INPUT;
 
 	<div class="app not-content">
 		<form id="controls" class="controls" onsubmit="return false">
+			<fieldset id="sheetFields">
+				<legend>Shapes on this sheet</legend>
+				<ul id="shapeList" class="shape-list"></ul>
+				<p id="shapeCount" class="hint"></p>
+				<div class="row">
+					<button id="addShape" type="button" class="small">Add a copy</button>
+					<button id="removeShape" type="button" class="small">Remove</button>
+					<button id="arrange" type="button" class="small">Arrange</button>
+				</div>
+				<label>Import shapes (JSON) <input id="importJson" type="file" accept=".json,application/json" /></label>
+				<p class="hint">
+					Click a shape to edit it below; untick it to leave it off this sheet. Drag shapes on the preview to place them;
+					arrow keys move the selected shape by 1 mm (Shift: 5 mm). JSON files from DataPhysicalisation work here.
+				</p>
+			</fieldset>
+
 			<fieldset>
 				<legend>Shape</legend>
+				<label>Label <input id="label" type="text" value="Shape 1" /></label>
 				<label>Number of sides <input id="sides" type="number" min="3" max="24" step="1" value={d.sides} /></label>
 				<label title="Side length for 4 sides; for other shapes the diameter of the circle through the corners, as in the Processing version.">
 					Top diameter (mm) <input id="topDiameter" type="number" min="1" step="0.5" value={d.topDiameter} />
@@ -65,6 +82,7 @@ const d = DEFAULT_INPUT;
 					<label>Bottom lid image <input id="bottomLidImage" type="file" accept="image/*" /></label>
 				</div>
 				<label id="rotateField" class="check" hidden><input id="rotate" type="checkbox" /> Turn side images upside down</label>
+				<p id="imageStatus" class="hint"></p>
 				<p id="imageHint" class="hint" hidden>
 					As in the Processing version, the top of a side image goes to the bottom rim, so it ends up upside down on the
 					folded shape. Tick "Turn side images upside down" to have it read upright. A fill colour prints over images.
@@ -85,7 +103,7 @@ const d = DEFAULT_INPUT;
 			<div id="notes" class="notes" role="note" hidden></div>
 
 			<figure>
-				<div id="sheet" class="sheet"></div>
+				<div id="sheet" class="sheet" tabindex="0" aria-label="Sheet preview. Drag a shape to move it; arrow keys move the selected shape."></div>
 				<figcaption>
 					<span style={`--c: ${PREVIEW_COLOURS.cut}`} class="key solid">Cut</span>
 					<span style={`--c: ${PREVIEW_COLOURS.fold}`} class="key dashed">Fold</span>
@@ -131,6 +149,62 @@ const d = DEFAULT_INPUT;
 	.controls {
 		display: grid;
 		gap: 1rem;
+	}
+	.shape-list {
+		display: grid;
+		gap: 0.2rem;
+		max-height: 14rem;
+		margin: 0;
+		padding: 0;
+		overflow-y: auto;
+		list-style: none;
+	}
+	.shape-list :global(li) {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.15rem 0.4rem;
+		border-radius: 0.25rem;
+	}
+	.shape-list :global(li.selected) {
+		background: var(--sl-color-gray-6);
+		outline: 1px solid #ffa000;
+	}
+	.shape-list :global(button) {
+		flex: 1;
+		padding: 0.1rem 0;
+		border: 0;
+		background: none;
+		color: var(--sl-color-white);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		text-align: left;
+		cursor: pointer;
+	}
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+	button.small {
+		padding: 0.25rem 0.7rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--sl-color-white);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		cursor: pointer;
+	}
+	button.small:disabled {
+		opacity: 0.4;
+		cursor: default;
+	}
+	.sheet :global(.hit) {
+		cursor: move;
+	}
+	.sheet:focus-visible {
+		outline: 2px solid var(--sl-color-text-accent);
 	}
 	/* The label/fieldset display rules below would otherwise override the hidden attribute. */
 	.app [hidden] {

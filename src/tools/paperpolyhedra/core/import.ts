@@ -54,7 +54,8 @@ export function importShapes(text: string, tabs: Pick<ShapeInput, 'tabDepth' | '
 		const colour = typeof e.color === 'string' && e.color !== '' ? parseHexColour(e.color) : null;
 		shapes.push({
 			label: typeof e.label === 'string' ? e.label : '',
-			input: normaliseInput({ sides, topDiameter: diameter, bottomDiameter: diameter, height, ...tabs }),
+			// Only the tab and flap settings come from the caller; the size comes from the file.
+			input: normaliseInput({ sides, topDiameter: diameter, bottomDiameter: diameter, height, tabDepth: tabs.tabDepth, flapDepth: tabs.flapDepth, flapTaper: tabs.flapTaper }),
 			fill: colour,
 		});
 	});
