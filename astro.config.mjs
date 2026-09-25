@@ -51,6 +51,13 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			sidebar: [
 				{ label: 'Home', link: '/' },
+				{
+					label: 'Before you start',
+					items: [
+						{ label: 'Calibration test sheet', link: '/apps/calibration/' },
+						{ label: 'Check your printer and cutter', slug: 'guides/calibration' },
+					],
+				},
 				{ label: 'Maker tools', items: toolLinks('maker') },
 				{ label: 'Visualisation tools', items: toolLinks('visualisation') },
 				{

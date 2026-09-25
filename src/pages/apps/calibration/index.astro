@@ -1,0 +1,98 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { previewSvg, PREVIEW_COLOURS } from '../../../lib/preview';
+import { calibrationTestSheet } from '../../../tools/calibration/core/sheet';
+
+const preview = previewSvg(calibrationTestSheet(), { title: 'Calibration test sheet preview' });
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Calibration test sheet',
+		description: 'Check that your printer prints at actual size and your vinyl cutter lands on the print.',
+	}}
+>
+	<p>
+		Download the three files, print the PDF at <strong>Actual size</strong>, then cut the two SVG files on your
+		vinyl cutter. The <a href="../../guides/calibration/">calibration guide</a> explains each step and what to do when
+		something is off.
+	</p>
+
+	<div class="actions not-content">
+		<button id="download" type="button">Download the three files</button>
+		<p id="status" role="status"></p>
+	</div>
+
+	<figure class="preview not-content">
+		<div set:html={preview} />
+		<figcaption>
+			<span style={`--c: ${PREVIEW_COLOURS.cut}`} class="key solid">Cut</span>
+			<span style={`--c: ${PREVIEW_COLOURS.fold}`} class="key dashed">Fold (scored)</span>
+			<span style={`--c: ${PREVIEW_COLOURS.print}`} class="key solid">Print only</span>
+			<span style={`--c: ${PREVIEW_COLOURS.cutArea}`} class="key dashed">Cutting area, 280 × 200 mm</span>
+		</figcaption>
+	</figure>
+</StarlightPage>
+
+<script>
+	import { setupDownload } from '../../../tools/calibration/ui/download';
+
+	setupDownload(document.querySelector<HTMLButtonElement>('#download')!, document.querySelector<HTMLElement>('#status')!);
+</script>
+
+<style>
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1rem;
+		margin-block: 1.5rem;
+	}
+	#download {
+		padding: 0.5rem 1.25rem;
+		border: 0;
+		border-radius: 999px;
+		background-color: var(--sl-color-text-accent);
+		color: var(--sl-color-black);
+		font: inherit;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	#download:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+	#status {
+		margin: 0;
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-sm);
+	}
+	.preview {
+		margin: 0;
+	}
+	.preview :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.25rem;
+		margin-top: 0.5rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+	.key::before {
+		content: '';
+		display: inline-block;
+		width: 1.5rem;
+		margin-right: 0.4rem;
+		vertical-align: middle;
+		border-top: 2px solid var(--c);
+	}
+	.key.dashed::before {
+		border-top-style: dashed;
+	}
+</style>
