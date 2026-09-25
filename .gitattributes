@@ -1,0 +1,4 @@
+* text=auto eol=lf
+
+# Processing reference exports are compared byte-for-byte and to 0.1 mm; never normalise them.
+tests/fixtures/** -text

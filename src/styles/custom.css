@@ -1,0 +1,7 @@
+/* Responsive 16:9 wrapper for YouTube/Vimeo embeds in tutorials. */
+.video {
+	aspect-ratio: 16 / 9;
+	width: 100%;
+	height: auto;
+	border: 0;
+}

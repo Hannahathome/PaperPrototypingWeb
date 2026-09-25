@@ -1,0 +1,29 @@
+{
+  "name": "paper-prototyping-web",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Tutorials and browser versions of the PaperPrototyping tools.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "astro check && astro build && node scripts/check-links.mjs",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.4",
+    "astro": "^7.3.5",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.2"
+  }
+}
