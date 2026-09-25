@@ -211,3 +211,68 @@ Rig boxes sit at `offset_z − 2·edge_radius` above the bottom strut line.
 
 - Source: `data/template_full.txt`, `template_simple.txt`
 - Test: `tests/tools/frustumsupport/frame.test.ts`
+
+## PaperPhicons
+
+PaperPhicons predates the shared conventions. The web version keeps its block net, dash
+pattern, colours and markers, and follows the shared print-and-cut layout (decided with
+Hannah, 2026-09-25). Fixtures: `tests/fixtures/paperphicons/`.
+
+### Its own print-and-cut layout
+
+Both cut SVGs are translated by (5, 5) mm relative to the print (`offW_V_F`, `offH_V_F`), get
+four corner "anchor" points, carry no physical units (`width="1058" height="755"`: correct only
+if the cutter software assumes 96 DPI), and are named `result_`, `res_f_`, `calib_f_` plus the
+stamp. Its crosses are 10 mm across in both files. The web version uses the shared layout
+instead: no shift, shared crosses, mm units, `<name>_<stamp>` names.
+
+- Source: `PaperPhicons.pde`, `draw()`; `ScanNCut.pde`
+- Test: `tests/tools/paperphicons/processing-match.test.ts` (compares after removing the shift)
+
+### Cut-file copies at 75 % spacing
+
+The spacing between copies (`bboxW`, `bbowH`) is computed at print scale (`MM`) and reused
+unchanged for the cut file, which is drawn at `MM_V`. With several copies, the cut copies land
+at 75 % of the printed spacing and overlap: the cut file does not match its print. The web
+version uses the printed spacing in both files.
+
+- Source: `PaperPhicons.pde`, `draw()`
+- Test: `processing-match.test.ts`, "places the cut copies at 75 % of the printed spacing"
+
+### Lid fold inset 0.375 mm in the first cut copy
+
+The lid's fold lines are inset by the paper thickness `thickMM`, but `drawPatternA_FrontFold`
+runs before `drawPatternA_FrontCut` sets `thickMM` for the cut scale, so the first copy in the
+cut file uses the print value, 0.5 × 72/96 = 0.375 mm, while its cut lines use 0.5 mm. Later
+copies get 0.5 mm. The web version uses 0.5 mm throughout.
+
+- Source: `Tools.pde`
+- Test: `processing-match.test.ts` (the cut SVG matches exactly only with this reproduced)
+
+### Markers snapped to whole points
+
+`drawMarker` truncates the marker size to whole print pixels (`(int)mkr_size`, so 16 mm prints
+as 45 pt = 15.9 mm) and draws each cell as `rect(round(i·g), round(j·g), ceil(g), ceil(g))`,
+so cell edges move by up to 0.35 mm. The web version draws exact cells at the exact size,
+which is what pose estimation assumes. Marker patterns and positions match Processing's.
+
+- Source: `Tools.pde`, `drawMarker()`
+- Test: `processing-match.test.ts` (pattern and position of every marker in the prints)
+
+### The dictionary is ArUco original
+
+`aruco1024_px.png` is OpenCV's `DICT_ARUCO_ORIGINAL` (5 × 5 bits, 1024 ids); `4x4_1000_px.png`
+is not used. Each row of a marker is one of four 5-bit words carrying 2 bits of the id.
+The UI allows ids up to 999 only; the web version allows 0–1023.
+
+- Test: `tests/tools/paperphicons/aruco.test.ts` (all 1024 markers against the PNG)
+
+### Fold dashes are 3 mm / 3 mm
+
+Unlike PaperPolyhedra (1.2 mm), PaperPhicons draws folds with `dash = gap = 3` mm, and prints
+front folds and cuts red, back (diagonal) folds blue. Kept as is.
+
+### The copy spacing lags one frame
+
+`bboxW` is computed at the top of `draw()` from the previous frame's sizes. Harmless when
+using the UI; the fixture harness waits a few frames before exporting.

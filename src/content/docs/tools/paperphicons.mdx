@@ -10,8 +10,22 @@ import ToolTutorials from "../../../components/ToolTutorials.astro";
 
 ## About
 
-Placeholder: a longer introduction to PaperPhicons will follow once its web version is being built.
-Until then, see the [Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPhicons) for the full tool and its documentation.
+The [web app](../../apps/paperphicons/) is a basic version of PaperPhicons. It makes
+print-and-cut nets for paper **blocks** (cuboids) that carry an **ArUco marker**, so a camera
+can recognise and track each block. Several blocks fit on one sheet, each with the next
+marker id. It exports the usual three files: the PDF to print and the two SVG files for the
+cutter.
+
+The markers come from the **ArUco original** dictionary (5 × 5, ids 0–1023), the one the
+[Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPhicons)
+uses. In your tracking software choose `DICT_ARUCO_ORIGINAL` (OpenCV).
+
+The block nets are identical to the Processing version's. The web app follows the shared
+print-and-cut layout (the same as PaperPolyhedra and the calibration sheet), draws markers at
+their exact size, and fixes two scale mix-ups in the Processing cut files; see the notes in
+the repository (`docs/hidden-behaviour.md`).
+
+The web app is in beta until printed blocks have been checked, including with a camera.
 
 ## Tutorials
 

@@ -106,7 +106,7 @@ Its output is OpenSCAD text, which can be tested exactly. Basic scope: frustum p
 edge radius, cuboid rigs, a three.js preview and `.scad` download. Tests compare against
 Processing reference output in `tests/fixtures/frustumsupport/`.
 
-## Phase 4: PaperPhicons
+## Phase 4: PaperPhicons (built; in beta until printed blocks are checked with a camera)
 
 Cuboid nets, ArUco markers drawn as vector squares from the dictionary (not taken from the
 PNG sheets), and the three-file export. The physical check includes testing that a camera

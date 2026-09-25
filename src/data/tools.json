@@ -23,10 +23,10 @@
 		"id": "paperphicons",
 		"name": "PaperPhicons",
 		"category": "maker",
-		"status": "planned",
+		"status": "in-progress",
 		"description": "The voxel cutter. Generates cut files for physical icon blocks (cuboids) with ArUco markers for tracking.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPhicons",
-		"appPath": null,
+		"appPath": "apps/paperphicons/",
 		"tutorials": []
 	},
 	{
