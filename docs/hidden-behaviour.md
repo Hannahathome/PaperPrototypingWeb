@@ -173,3 +173,41 @@ Non-convergence means the edges are not physically realisable.
 
 - Source: `docs/shared-concepts.md`, "Variable polygons"
 - Test: none yet; per-edge shapes are outside the basic web version
+
+## FrustumSupport
+
+### Numbers in the .scad are Java float strings
+
+The export writes every parameter with Java's `"" + float`. Values are 32-bit floats, and
+Java 17's `Float.toString` is not always the shortest decimal: it sometimes prints an extra
+digit (`6.8129908E11`) or breaks a tie the other way (`53.6953125` → `53.695312`). OpenSCAD
+reads these as doubles, so the exact digits matter. `src/lib/java-format.ts` ports Java 17's
+`FloatingDecimal.dtoa`.
+
+- Test: `tests/lib/java-format.test.ts` (5000 values printed by Processing's Java 17.0.8)
+
+### Line endings follow the operating system
+
+`PrintWriter.println` uses the system line separator, so a `.scad` exported on Windows has
+CRLF and on macOS LF. OpenSCAD accepts both. The web app writes LF.
+
+- Test: `tests/tools/frustumsupport/scad.test.ts` (also checks the CRLF form byte for byte)
+
+### The rig comment can go stale
+
+`// Rig 1 (M5Atom)` comes from the template last picked in the dropdown; editing the width,
+depth or height afterwards does not reset it, so the comment can name a template the rig no
+longer matches. The web app names the rig after the template its size matches, or `Custom`,
+like Processing's dropdown label. Only the comment differs; the geometry is the same.
+
+- Source: `FrustumSupport.pde`, `applyTemplate()`, `readControllers()`, `updateTemplateLabel()`
+- Test: `tests/tools/frustumsupport/scad.test.ts` (`templateFor`)
+
+### Frame radii are insets, the height is the full height
+
+The frame modules draw strut centrelines at `radius − edge_radius` and between
+`±(height − 2·edge_radius)/2`, so the entered radii and height are the frame's outside size.
+Rig boxes sit at `offset_z − 2·edge_radius` above the bottom strut line.
+
+- Source: `data/template_full.txt`, `template_simple.txt`
+- Test: `tests/tools/frustumsupport/frame.test.ts`

@@ -100,7 +100,7 @@ To be added to [docs/hidden-behaviour.md](docs/hidden-behaviour.md), each with a
 - Strip images map image row 0 onto the model's *bottom* rim (the opposite of the wrap mode).
 - Lid polygons start at `−90° − 180°/n`, so one edge is horizontal.
 
-## Phase 3: FrustumSupport
+## Phase 3: FrustumSupport (built; in beta until a printed frame is checked)
 
 Its output is OpenSCAD text, which can be tested exactly. Basic scope: frustum parameters,
 edge radius, cuboid rigs, a three.js preview and `.scad` download. Tests compare against

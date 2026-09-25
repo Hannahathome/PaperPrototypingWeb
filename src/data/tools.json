@@ -53,10 +53,10 @@
 		"id": "frustumsupport",
 		"name": "FrustumSupport",
 		"category": "maker",
-		"status": "planned",
+		"status": "in-progress",
 		"description": "Internal support-structure generator for frustum-shaped shells. Superseded by ScaffoldShell; kept until that has been validated against a printed frame.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/FrustumSupport",
-		"appPath": null,
+		"appPath": "apps/frustumsupport/",
 		"tutorials": []
 	},
 	{

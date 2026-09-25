@@ -10,8 +10,20 @@ import ToolTutorials from "../../../components/ToolTutorials.astro";
 
 ## About
 
-Placeholder: a longer introduction to FrustumSupport will follow once its web version is being built.
-Until then, see the [Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/FrustumSupport) for the full tool and its documentation.
+The [web app](../../apps/frustumsupport/) is a basic version of FrustumSupport. It designs a
+3D-printable strut frame that goes inside a folded paper frustum: a ring of struts at the
+bottom, a wall strut up each corner, and optional mounts ("rigs") for electronics such as an
+M5Atom or M5Core. It downloads an **OpenSCAD** file, which you render and export to STL for
+your 3D printer.
+
+The file is identical to what the [Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/FrustumSupport)
+writes (checked character for character).
+
+**Sizes are radii.** FrustumSupport measures from the centre to a corner, while PaperPolyhedra
+works with perimeters and "diameters". Convert with `radius = perimeter / (2 · n · sin(π/n))`.
+[ScaffoldShell](../scaffoldshell/) will size the frame from the shell automatically.
+
+The web app is in beta until a frame has been printed and checked inside a paper shell.
 
 ## Tutorials
 
