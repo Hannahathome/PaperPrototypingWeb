@@ -13,8 +13,11 @@ export interface Tool {
 	category: ToolCategory;
 	status: ToolStatus;
 	description: string;
-	/** The tool's folder in the PaperPrototyping (Processing) repo. */
-	processingUrl: string;
+	/** The tool's folder in the PaperPrototyping (Processing) repo, or null when the Processing
+	 * sketch is not online (see `sourceNote`). */
+	processingUrl: string | null;
+	/** Where the Processing source lives when it is not online, e.g. a local folder. */
+	sourceNote: string | null;
 	/** Path of the web app relative to the site base, e.g. "apps/frustumsupport/". Null until it exists. */
 	appPath: string | null;
 	/** Reserved. Tutorials are discovered from src/content/docs/tutorials/<id>/, see CLAUDE.md. */

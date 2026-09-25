@@ -26,7 +26,17 @@ const appLabel = tool.status === 'available' ? 'Open web app' : 'Open web app (b
 		)
 	}
 	<a class="button" href={withBase(`tools/${tool.id}/#tutorials`)}>Tutorials</a>
-	<a class="button" href={tool.processingUrl} rel="external">Processing version</a>
+	{
+		tool.processingUrl ? (
+			<a class="button" href={tool.processingUrl} rel="external">
+				Processing version
+			</a>
+		) : (
+			<span class="button" aria-disabled="true" title={tool.sourceNote ?? 'The Processing version is not online'}>
+				Processing version (not online)
+			</span>
+		)
+	}
 </div>
 
 <style>

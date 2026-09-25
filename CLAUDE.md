@@ -10,6 +10,10 @@ The Processing originals are in `C:\Users\20167196\Documents\GitHub\PaperPrototy
 (github.com/Hannahathome/PaperPrototyping). **Read it for reference; never modify it.**
 Start with its `README.md` and `docs/shared-concepts.md`.
 
+The TEI'27 tools (PLAN.md, Phase 7) come from `C:Users67196DocumentsGitHubTEI27Software`,
+a local folder that is not a git repo and not on GitHub. Read it for reference only; never
+modify it. Tools ported from it have `processingUrl: null` and a `sourceNote` in `tools.json`.
+
 ## Commands
 
 ```bash

@@ -7,7 +7,8 @@
 		"description": "The main tool. Turns 3D polygon/prism specs into printable, foldable nets with tabs, flaps, lids, Kresling patterns and fiducial markers.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPolyhedra",
 		"appPath": "apps/paperpolyhedra/",
-		"tutorials": []
+		"tutorials": [],
+		"sourceNote": null
 	},
 	{
 		"id": "scaffoldshell",
@@ -17,7 +18,8 @@
 		"description": "PaperPolyhedra and FrustumSupport merged. The foldable shell plus the 3D-printed scaffold that goes inside it, sized from the shell rather than typed in. Exports PDF, SVG and OpenSCAD.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/ScaffoldShell",
 		"appPath": null,
-		"tutorials": []
+		"tutorials": [],
+		"sourceNote": null
 	},
 	{
 		"id": "paperphicons",
@@ -27,7 +29,8 @@
 		"description": "The voxel cutter. Generates cut files for physical icon blocks (cuboids) with ArUco markers for tracking.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPhicons",
 		"appPath": "apps/paperphicons/",
-		"tutorials": []
+		"tutorials": [],
+		"sourceNote": null
 	},
 	{
 		"id": "dataphysicalisation",
@@ -37,7 +40,8 @@
 		"description": "Maps CSV columns onto physical dimensions (height, diameter, sides, colour), previews the result in 3D, and exports JSON that PaperPolyhedra imports.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/DataPhysicalisation",
 		"appPath": "apps/dataphysicalisation/",
-		"tutorials": []
+		"tutorials": [],
+		"sourceNote": null
 	},
 	{
 		"id": "paperblox",
@@ -47,7 +51,8 @@
 		"description": "A stripped-down PaperPolyhedra for quick blocks and teaching contexts.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperBlox",
 		"appPath": null,
-		"tutorials": []
+		"tutorials": [],
+		"sourceNote": null
 	},
 	{
 		"id": "frustumsupport",
@@ -57,7 +62,8 @@
 		"description": "Internal support-structure generator for frustum-shaped shells. Superseded by ScaffoldShell; kept until that has been validated against a printed frame.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/FrustumSupport",
 		"appPath": "apps/frustumsupport/",
-		"tutorials": []
+		"tutorials": [],
+		"sourceNote": null
 	},
 	{
 		"id": "widgetgenerator",
@@ -66,6 +72,73 @@
 		"status": "planned",
 		"description": "Standalone generator for button/widget templates used inside PaperPolyhedra.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/WidgetGenerator",
+		"appPath": null,
+		"tutorials": [],
+		"sourceNote": null
+	},
+	{
+		"id": "phiconwidgets",
+		"name": "Phicon Widgets",
+		"category": "maker",
+		"status": "planned",
+		"description": "PaperPhicons blocks with cut-outs (squares, pills, circles) in the marker face, for tangible knobs, slots and buttons.",
+		"processingUrl": null,
+		"sourceNote": "TEI27Software (local folder, not on GitHub): PaperPhicons_Boilerplate_v1_1_Cutout",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "roundedboxes",
+		"name": "Rounded Boxes",
+		"category": "maker",
+		"status": "planned",
+		"description": "Boxes with a rounded-rectangle footprint: a rectangle with 45° chamfered corners, set by corner ratio and aspect.",
+		"processingUrl": null,
+		"sourceNote": "TEI27Software (local folder, not on GitHub): dev_V9B_RH_v2_1a_RoundCorners",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "obliqueboxes",
+		"name": "Oblique Boxes",
+		"category": "maker",
+		"status": "planned",
+		"description": "Prisms and boxes whose top face is slid sideways, with an automatic limit that keeps the net foldable.",
+		"processingUrl": null,
+		"sourceNote": "TEI27Software (local folder, not on GitHub): dev_V9B_RH_v2_3_ObliqueFrustums",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "kreslingexplorer",
+		"name": "Kresling Explorer",
+		"category": "visualisation",
+		"status": "planned",
+		"description": "The folding behaviour of a Kresling cell: its energy curve against height and the geometry of one unit cell.",
+		"processingUrl": null,
+		"sourceNote": "TEI27Software (local folder, not on GitHub): KreslingSim, KreslingVisGamma",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "phiconboxfit",
+		"name": "Phicon Box Fit",
+		"category": "visualisation",
+		"status": "planned",
+		"description": "Up to four Phicons (frustums or Kresling cells) in one box, with their sliding range and cross-section at the ceiling.",
+		"processingUrl": null,
+		"sourceNote": "TEI27Software (local folder, not on GitHub): SlidingFrustumBoxCP5",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "phiconplayground",
+		"name": "Phicon Playground",
+		"category": "visualisation",
+		"status": "planned",
+		"description": "Try tangible Phicon widgets live: the webcam tracks printed markers and turns them into knobs, sliders, slots, dice and rotors.",
+		"processingUrl": null,
+		"sourceNote": "TEI27Software (local folder, not on GitHub): PaperPhicon_AppBuilder_v2",
 		"appPath": null,
 		"tutorials": []
 	}

@@ -125,6 +125,50 @@ ScaffoldShell reuses the cores from Phases 2 and 3, so nothing is ported twice.
 WidgetGenerator and other visualisation tools go under their own section. PaperBlox is
 covered by the PaperPolyhedra basic version; its card can point there.
 
+## Phase 7: TEI'27 tools
+
+Six tools from the TEI'27 software (`C:\Users\20167196\Documents\GitHub\TEI27Software`, a local
+folder, not a git repo and not on GitHub; decided with Hannah 2026-09-25). Their tool pages have
+no "Processing version" link (`processingUrl: null`, `sourceNote` names the folder), and fixtures
+record the folder and a hash of its `.pde` files instead of a commit. Sockets (the bottom
+interface slots of `dev_V9B_RH_v2_3a_Chess`) are left out for now; `dev_V9B_RH_v2_1_H_cuboids`
+is not a separate tool.
+
+Order, smallest and best-founded first:
+
+1. **Phicon Widgets** (maker; `PaperPhicons_Boilerplate_v1_1_Cutout`). The PaperPhicons block
+   with cut-outs in the marker face: squares, pills (stadiums) and circles, each with a size
+   and an offset from the face centre in mm. Reuses the Phase 4 core; the cut-outs are extra
+   closed cut paths. Fixtures: the sketch's own exports in its `output/` folder
+   (`box_bigknob`, `id90_slot_…`) plus harness exports. Same print-and-cut layout decisions as
+   PaperPhicons.
+2. **Per-edge net core.** A port of the per-edge strip and lid code (`variableprismtools.pde`,
+   `drawTrapezoidsPerEdge`, `drawPolygonLidVar`, the radius solver `Σ 2·asin(sᵢ/2R) = 2π`)
+   from the `dev_V9B_RH_v2` line, with cuboid lids. Tested against harness exports.
+3. **Rounded Boxes** (maker; `dev_V9B_RH_v2_1a_RoundCorners`). Octagons with edges
+   `[L, c, W, c, L, c, W, c]` from a corner ratio `c / (a + c)` and an aspect `W / L`, on the
+   per-edge core.
+4. **Oblique Boxes** (maker; `dev_V9B_RH_v2_3_ObliqueFrustums`). Top face offset (x, y) mm;
+   each side panel is developed from its real 3D corners (lateral shift and slant), with the
+   automatic offset reduction that keeps the unrolled fan under 88°. Note: this computes the
+   true slant height, so these nets fold to the entered height, unlike PaperPolyhedra's
+   frustums (see docs/hidden-behaviour.md).
+5. **Kresling Explorer** (visualisation; `KreslingSim/kresling.py`, `KreslingVisGamma`). The
+   minimum-energy curve U_min(H) with sliders for sides, radius, rest height and rest twist,
+   and the unit-cell diagram with the twist offset `R·sin(γ)`. Tested against values computed
+   with the Python script.
+6. **Phicon Box Fit** (visualisation; `SlidingFrustumBoxCP5`). Up to four Phicons (frustum or
+   Kresling cell with the fold physics) in one box, their ceiling cross-sections and sliding
+   envelopes, and the numeric read-outs. Reuses the Kresling model from step 5.
+7. **Phicon Playground** (visualisation; `PaperPhicon_AppBuilder_v2`). The webcam tracks printed
+   markers in the browser (ArUco detection in JavaScript; the dictionary must match the printed
+   Phicons) and drives the widgets: knob, slider, slots and tokens, dice, rotor, switch and
+   button, on four on-screen data objects. Needs camera permission; nothing leaves the
+   browser. Largest step; its exact scope is agreed with Hannah before starting.
+
+Every tool ships with tests, a tutorial and a physical (or, for visualisation tools, a visual)
+checklist, and stays *in progress* until Hannah has checked it.
+
 ## Throughout
 
 Every app ships with tests and at least one tutorial.

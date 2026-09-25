@@ -27,10 +27,12 @@ describe('tools.json', () => {
 			expect(tool.description.trim()).not.toBe('');
 		});
 
-		it('links to its folder in the PaperPrototyping repo', () => {
-			expect(tool.processingUrl).toMatch(
-				/^https:\/\/github\.com\/Hannahathome\/PaperPrototyping\/tree\/main\/[A-Za-z]+$/,
-			);
+		it('links to its folder in the PaperPrototyping repo, or says where the source is', () => {
+			if (tool.processingUrl === null) {
+				expect(tool.sourceNote?.trim()).toBeTruthy();
+			} else {
+				expect(tool.processingUrl).toMatch(/^https:\/\/github\.com\/Hannahathome\/PaperPrototyping\/tree\/main\/[A-Za-z]+$/);
+			}
 		});
 
 		it('has an app when available, none while planned, as a relative path', () => {
