@@ -79,7 +79,8 @@ R         = perimeter / (2 · n · sin(π/n))
 A frame specified in the wrong quantity will not seat inside its shell.
 
 - Source: `docs/shared-concepts.md`, "Radii vs perimeters"
-- Test: pending (Phase 2, FrustumSupport core)
+- Test: `tests/tools/paperpolyhedra/geometry.test.ts` (circumradius round trip); the
+  FrustumSupport conversion gets its own test in Phase 3
 
 ## Rotational phase between PaperPolyhedra and OpenSCAD
 
@@ -94,18 +95,76 @@ millimetres out at n = 3 and n = 5.
 
 Print geometry uses `MM = 2.8346` (72 DPI), cut geometry `MM_V = MM · 96/72` (96 DPI). Mixing
 them is 33 % wrong on the cutting mat. The web version works in mm and emits physical units,
-so these constants should not appear outside one tested conversion in `src/lib/`.
+so these constants should not appear outside one tested conversion in `src/lib/`. They live
+only in `tests/helpers/processing.ts`, to read Processing fixtures.
 
 - Source: `docs/shared-concepts.md`, "Units"
-- Test: pending (Phase 1, `src/lib/units`)
+- Test: `tests/lib/units.test.ts`; every Processing comparison reads fixtures at `MM_V`
 
-## Frustum panel height is the slant height
+## Frustum panel height: not the true slant height
 
-When top and bottom perimeters differ, the panel height is the hypotenuse, not the vertical
-rise. Using the vertical height makes a shape that is slightly too short and won't close.
+When top and bottom perimeters differ, the panel height is a hypotenuse, not the vertical
+rise. But Processing computes it as `√(h² + (bottom side − top side)²)`, while the true slant
+height of a frustum face is `√(h² + (bottom apothem − top apothem)²)`, with
+`apothem = side / (2·tan(π/n))`. They agree only for prisms. The net still closes (any set of
+equal trapezoids folds into *some* frustum), but not to the entered height. Examples:
 
-- Source: `docs/shared-concepts.md`, "Frustums"
-- Test: pending (Phase 5, PaperPolyhedra core)
+| Shape (fixture) | Entered height | Folds to |
+|---|---|---|
+| `triangle_frustum` (Ø70 → Ø40) | 50 mm | 55.85 mm |
+| `square_frustum` (45 → 25) | 50 mm | 52.92 mm |
+| `hexagon_frustum_inverted` (Ø40 → Ø60) | 40 mm | 40.31 mm |
+
+Processing's 3D view draws the entered height, and ScaffoldShell's frame is built to the
+entered height (`Frame.pde`, `d.height = s.cylinder.z`), so for frustums the frame and the
+folded shell disagree. ScaffoldShell's net code is identical to PaperPolyhedra's.
+
+**Decision (Hannah, 2026-09-25): the web net matches Processing exactly**, including this.
+The web app reports the height the net really folds to (`ShapeDims.foldedHeight`), and its
+3D preview shows that height.
+
+- Source: `Param.pde`, `setParams()` ("height fix" lines); same in `ScaffoldShell/Param.pde`
+- Test: `tests/tools/paperpolyhedra/geometry.test.ts` (formula and folded height),
+  `processing-match.test.ts` (fails for the three frustums if the true slant is used)
+
+## PaperPolyhedra "diameter" inputs
+
+The sidebar's TOP/BOTTOM DIAMETER is not one quantity. For 4 sides it is the **side length**
+(perimeter = 4·d); for any other number of sides it is the **circumscribed diameter**
+(perimeter = n·d·sin(π/n)). JSON import (`json_import.pde`) uses the same rule. Internally
+everything runs on perimeters (`cylinder.x` top, `cylinder.y` bottom).
+
+- Source: `UI.pde`, `applyToModel()`
+- Test: `tests/tools/paperpolyhedra/geometry.test.ts`
+
+## Hook tab offset uses the print scale in the cut file
+
+`drawTzTopFolds` passes `hookOffset * MM` (72 DPI) to the hook tab even while the cut file is
+drawn at `MM_V` (96 DPI). With `hookOffset = −1` mm, the hook's barb is −1 mm on the print but
+−0.75 mm in the cut file. The web version uses −0.75 mm (what is actually cut) for both.
+
+- Source: `tools.pde`, `drawTzTopFolds()`
+- Test: `processing-match.test.ts` (all eight fixtures fail with −1 mm)
+
+## Lids can fall outside the cutting area
+
+Lids are placed below the strip at `max(1.25 × strip height, strip height + tab + extra + 2)`
+and side by side, with no check against the 280 × 200 mm cutting area. All three frustum
+fixtures put part of a lid or the strip outside it, so the cutter would not cut those lines.
+The web app keeps the same layout and warns.
+
+- Source: `PaperPolyhedra.pde`, `drawPlan()`
+- Test: `tests/tools/paperpolyhedra/geometry.test.ts`, `fitsCutArea` in `src/lib/export.ts`
+
+## Tab and flap clamping
+
+`setParams()` limits tab depth to half the shorter side and half the panel height, flap depth
+to half the shorter side, and flap taper to 0.33 × panel height. Strip tabs have a neck of
+0.8 × tab depth, lid tabs and the hook 0.2 ×. Tabs cover one half of each edge: the right half
+on the bottom edge and lids, the left half on the top edge.
+
+- Source: `Param.pde`, `setParams()`; `api.pde`
+- Test: `tests/tools/paperpolyhedra/geometry.test.ts`
 
 ## Variable polygons: circumradius by binary search
 
@@ -113,4 +172,4 @@ For per-edge widths `s[i]`, R is found by binary search so that `Σ 2·arcsin(s[
 Non-convergence means the edges are not physically realisable.
 
 - Source: `docs/shared-concepts.md`, "Variable polygons"
-- Test: pending (Phase 5, PaperPolyhedra core)
+- Test: none yet; per-edge shapes are outside the basic web version
