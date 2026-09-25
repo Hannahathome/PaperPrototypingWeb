@@ -1,0 +1,13 @@
+---
+import { Badge } from '@astrojs/starlight/components';
+import { STATUS_LABELS, type ToolStatus } from '../data/tools';
+
+interface Props {
+	status: ToolStatus;
+}
+
+const { status } = Astro.props;
+const variant = ({ planned: 'default', 'in-progress': 'caution', available: 'success' } as const)[status];
+---
+
+<Badge text={STATUS_LABELS[status]} variant={variant} />

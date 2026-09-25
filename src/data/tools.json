@@ -1,0 +1,72 @@
+[
+	{
+		"id": "paperpolyhedra",
+		"name": "PaperPolyhedra",
+		"category": "maker",
+		"status": "planned",
+		"description": "The main tool. Turns 3D polygon/prism specs into printable, foldable nets with tabs, flaps, lids, Kresling patterns and fiducial markers.",
+		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPolyhedra",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "scaffoldshell",
+		"name": "ScaffoldShell",
+		"category": "maker",
+		"status": "planned",
+		"description": "PaperPolyhedra and FrustumSupport merged. The foldable shell plus the 3D-printed scaffold that goes inside it, sized from the shell rather than typed in. Exports PDF, SVG and OpenSCAD.",
+		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/ScaffoldShell",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "paperphicons",
+		"name": "PaperPhicons",
+		"category": "maker",
+		"status": "planned",
+		"description": "The voxel cutter. Generates cut files for physical icon blocks (cuboids) with ArUco markers for tracking.",
+		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPhicons",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "dataphysicalisation",
+		"name": "DataPhysicalisation",
+		"category": "maker",
+		"status": "planned",
+		"description": "Maps CSV columns onto physical dimensions (height, diameter, sides, colour), previews the result in 3D, and exports JSON that PaperPolyhedra imports.",
+		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/DataPhysicalisation",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "paperblox",
+		"name": "PaperBlox",
+		"category": "maker",
+		"status": "planned",
+		"description": "A stripped-down PaperPolyhedra for quick blocks and teaching contexts.",
+		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperBlox",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "frustumsupport",
+		"name": "FrustumSupport",
+		"category": "maker",
+		"status": "planned",
+		"description": "Internal support-structure generator for frustum-shaped shells. Superseded by ScaffoldShell; kept until that has been validated against a printed frame.",
+		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/FrustumSupport",
+		"appPath": null,
+		"tutorials": []
+	},
+	{
+		"id": "widgetgenerator",
+		"name": "WidgetGenerator",
+		"category": "visualisation",
+		"status": "planned",
+		"description": "Standalone generator for button/widget templates used inside PaperPolyhedra.",
+		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/WidgetGenerator",
+		"appPath": null,
+		"tutorials": []
+	}
+]

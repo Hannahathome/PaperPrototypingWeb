@@ -1,0 +1,14 @@
+---
+// Every tutorial on the site, grouped by tool.
+import { tools } from '../data/tools';
+import ToolTutorials from './ToolTutorials.astro';
+---
+
+{
+	tools.map((tool) => (
+		<>
+			<h2 id={tool.id}>{tool.name}</h2>
+			<ToolTutorials id={tool.id} />
+		</>
+	))
+}

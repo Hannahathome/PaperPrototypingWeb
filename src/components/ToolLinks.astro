@@ -1,0 +1,61 @@
+---
+// The three buttons shown for every tool: web app, tutorials, Processing version.
+import type { Tool } from '../data/tools';
+import { withBase } from '../lib/paths';
+
+interface Props {
+	tool: Tool;
+}
+
+const { tool } = Astro.props;
+const appReady = tool.status === 'available' && tool.appPath !== null;
+---
+
+<div class="tool-links not-content">
+	{
+		appReady ? (
+			<a class="button primary" href={withBase(tool.appPath!)}>
+				Open web app
+			</a>
+		) : (
+			<span class="button primary" aria-disabled="true" title="The web app is not available yet">
+				Open web app
+			</span>
+		)
+	}
+	<a class="button" href={withBase(`tools/${tool.id}/#tutorials`)}>Tutorials</a>
+	<a class="button" href={tool.processingUrl} rel="external">Processing version</a>
+</div>
+
+<style>
+	.tool-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+	.button {
+		display: inline-block;
+		padding: 0.35rem 0.9rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 999px;
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-sm);
+		text-decoration: none;
+		line-height: 1.5;
+	}
+	.button:hover {
+		border-color: var(--sl-color-text-accent);
+	}
+	.button.primary {
+		background-color: var(--sl-color-text-accent);
+		border-color: var(--sl-color-text-accent);
+		color: var(--sl-color-black);
+	}
+	.button[aria-disabled='true'] {
+		background-color: transparent;
+		border-color: var(--sl-color-gray-5);
+		border-style: dashed;
+		color: var(--sl-color-gray-3);
+		cursor: not-allowed;
+	}
+</style>

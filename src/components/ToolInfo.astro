@@ -1,0 +1,29 @@
+---
+// Header block for a tool page: status, description and the three buttons.
+import { CATEGORY_LABELS, getTool } from '../data/tools';
+import StatusBadge from './StatusBadge.astro';
+import ToolLinks from './ToolLinks.astro';
+
+interface Props {
+	id: string;
+}
+
+const tool = getTool(Astro.props.id);
+---
+
+<div class="tool-info">
+	<p>
+		<StatusBadge status={tool.status} />
+		<span class="category">{CATEGORY_LABELS[tool.category]}</span>
+	</p>
+	<p>{tool.description}</p>
+	<ToolLinks tool={tool} />
+</div>
+
+<style>
+	.category {
+		margin-left: 0.5rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+</style>

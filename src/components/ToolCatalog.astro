@@ -1,0 +1,30 @@
+---
+// Home page tool listing: one section per category, one card per tool from tools.json.
+import { CATEGORIES, CATEGORY_LABELS, toolsInCategory } from '../data/tools';
+import ToolCard from './ToolCard.astro';
+---
+
+{
+	CATEGORIES.map((category) => (
+		<section class="tool-section">
+			<h2 id={`${category}-tools`}>{CATEGORY_LABELS[category]}</h2>
+			<div class="tool-grid not-content">
+				{toolsInCategory(category).map((tool) => (
+					<ToolCard tool={tool} />
+				))}
+			</div>
+		</section>
+	))
+}
+
+<style>
+	.tool-section + .tool-section {
+		margin-top: 3rem;
+	}
+	.tool-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+</style>

@@ -1,0 +1,31 @@
+---
+// Lists the tutorials in src/content/docs/tutorials/<id>/. Adding a file there
+// is enough to make it appear; no metadata needs editing.
+import { getCollection } from 'astro:content';
+import { getTool } from '../data/tools';
+import { withBase } from '../lib/paths';
+
+interface Props {
+	id: string;
+}
+
+const tool = getTool(Astro.props.id);
+const tutorials = (await getCollection('docs', (entry) => entry.id.startsWith(`tutorials/${tool.id}/`))).sort(
+	(a, b) => a.data.title.localeCompare(b.data.title),
+);
+---
+
+{
+	tutorials.length > 0 ? (
+		<ul>
+			{tutorials.map((entry) => (
+				<li>
+					<a href={withBase(`${entry.id}/`)}>{entry.data.title}</a>
+					{entry.data.description && <> — {entry.data.description}</>}
+				</li>
+			))}
+		</ul>
+	) : (
+		<p>No tutorials for {tool.name} yet.</p>
+	)
+}
