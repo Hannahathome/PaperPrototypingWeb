@@ -1,0 +1,16 @@
+{
+	"id": "pentagon_prism",
+	"sides": 5,
+	"topDiameter": 50,
+	"bottomDiameter": 50,
+	"height": 40,
+	"tabDepth": 15,
+	"flapDepth": 5,
+	"flapTaper": 5,
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "PaperPolyhedra",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

@@ -1,0 +1,10 @@
+[
+	{ "id": "triangle_prism", "sides": 3, "topDiameter": 60, "bottomDiameter": 60, "height": 50, "tabDepth": 15, "flapDepth": 5, "flapTaper": 5 },
+	{ "id": "square_prism", "sides": 4, "topDiameter": 40, "bottomDiameter": 40, "height": 60, "tabDepth": 15, "flapDepth": 5, "flapTaper": 5 },
+	{ "id": "pentagon_prism", "sides": 5, "topDiameter": 50, "bottomDiameter": 50, "height": 40, "tabDepth": 15, "flapDepth": 5, "flapTaper": 5 },
+	{ "id": "hexagon_prism", "sides": 6, "topDiameter": 50, "bottomDiameter": 50, "height": 50, "tabDepth": 15, "flapDepth": 5, "flapTaper": 5 },
+	{ "id": "square_frustum", "sides": 4, "topDiameter": 25, "bottomDiameter": 45, "height": 50, "tabDepth": 15, "flapDepth": 5, "flapTaper": 5 },
+	{ "id": "triangle_frustum", "sides": 3, "topDiameter": 40, "bottomDiameter": 70, "height": 50, "tabDepth": 15, "flapDepth": 5, "flapTaper": 5 },
+	{ "id": "hexagon_frustum_inverted", "sides": 6, "topDiameter": 60, "bottomDiameter": 40, "height": 40, "tabDepth": 15, "flapDepth": 5, "flapTaper": 5 },
+	{ "id": "hexagon_prism_small_tabs", "sides": 6, "topDiameter": 50, "bottomDiameter": 50, "height": 50, "tabDepth": 10, "flapDepth": 8, "flapTaper": 3 }
+]
