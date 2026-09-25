@@ -33,10 +33,10 @@
 		"id": "dataphysicalisation",
 		"name": "DataPhysicalisation",
 		"category": "maker",
-		"status": "planned",
+		"status": "in-progress",
 		"description": "Maps CSV columns onto physical dimensions (height, diameter, sides, colour), previews the result in 3D, and exports JSON that PaperPolyhedra imports.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/DataPhysicalisation",
-		"appPath": null,
+		"appPath": "apps/dataphysicalisation/",
 		"tutorials": []
 	},
 	{

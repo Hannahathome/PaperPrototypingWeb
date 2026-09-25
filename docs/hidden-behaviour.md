@@ -276,3 +276,49 @@ front folds and cuts red, back (diagonal) folds blue. Kept as is.
 
 `bboxW` is computed at the top of `draw()` from the previous frame's sizes. Harmless when
 using the UI; the fixture harness waits a few frames before exporting.
+
+## DataPhysicalisation → PaperPolyhedra
+
+Fixtures: `tests/fixtures/dataphysicalisation/` (Processing exports of `animals.csv`) and
+`tests/fixtures/dataphysicalisation-examples/` (the files in `DataPhysicalisation/examples/`).
+
+### Bar exports are not read by PaperPolyhedra
+
+Bar mode exports `width` and `depth`, but PaperPolyhedra's `buildShapeFromJSON` only reads
+`sides`, `diameter`, `height`, `label`, `marker_id` and `color`. Every bar therefore imports as
+the default: 4 sides, 30 mm. All files in `examples/`, including the "canonical"
+`polyhedra_export.json`, are bar exports. **Decision (Hannah, 2026-09-25):** the web export
+also writes `sides: 4` and `diameter` = width for bars, so both PaperPolyhedra versions build
+them at the previewed size. `width`/`depth` stay for compatibility. Bars whose width and depth
+differ are flagged: PaperPolyhedra makes them square, using the width.
+
+- Test: `tests/tools/dataphysicalisation/handoff.test.ts`
+
+### Four-sided shapes: diameter means two things
+
+DataPhysicalisation previews every prism with `diameter` as the corner-to-corner size, but
+PaperPolyhedra reads a 4-sided `diameter` as the side length, so the paper square came out √2
+(41 %) larger than previewed. **Decision (Hannah, 2026-09-25):** the web export writes the side
+length (diameter / √2) for 4-sided polyhedra. Other side counts are unchanged.
+
+- Test: `handoff.test.ts` ("import with the previewed corner-to-corner size, 4 sides included")
+
+### Separate width and depth cannot be reached in Processing
+
+`barLinked = false` (width and depth from two columns) is implemented, but the button that
+toggles it is hidden ("kept for future use") and there are no selectors for the width/depth
+columns: they are set automatically to the 2nd and 3rd number columns. The web app offers the
+mode with column selectors.
+
+### Scaling and colours
+
+Values are normalised over **all** rows, even when *shapes to show* uses only the first ones.
+Sides are `(int) map(norm, 0, 1, 3, maxSides)`, truncated, so only the largest value reaches
+the maximum. Colours are Processing's own arithmetic in 32-bit floats: `lerpColor` from
+(50, 80, 255) to (255, 60, 50) for numbers, HSB hue `map(i, 0, categories, 0, 300)` at 80 %
+saturation and 90 % brightness for categories (truncated, not rounded, to 0–255), and hue bands
+at 85 % saturation for thresholds. Cells that are not numbers become NaN (Processing's
+`float()`); the web app refuses to export shapes without a height.
+
+- Test: `tests/tools/dataphysicalisation/processing-match.test.ts` (sizes within 0.001 mm,
+  colours exact, five cases)

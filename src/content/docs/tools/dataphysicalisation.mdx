@@ -10,8 +10,25 @@ import ToolTutorials from "../../../components/ToolTutorials.astro";
 
 ## About
 
-Placeholder: a longer introduction to DataPhysicalisation will follow once its web version is being built.
-Until then, see the [Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/DataPhysicalisation) for the full tool and its documentation.
+The [web app](../../apps/dataphysicalisation/) is a basic version of DataPhysicalisation. Load a
+**CSV file** (or try the example data), choose which columns become the height, width or
+diameter, number of sides and colour of each shape, and check the result in **3D** or as a
+**2D chart**. Then send the shapes straight to [PaperPolyhedra](../paperpolyhedra/), or
+download them as a JSON file.
+
+- **Bars** (boxes) take their width from one column, or width and depth from two.
+- **Polyhedra** (prisms) also take their number of sides from a column.
+- **Relative scaling** gives the smallest value a minimum size; **true size** scales from zero,
+  so the ratios between values stay exact.
+- **Colour** follows a number column as a blue-to-red gradient (or bands between your
+  thresholds), or a text column with one colour per category.
+
+Sizes and colours match the [Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/DataPhysicalisation).
+Two things were changed so that PaperPolyhedra builds exactly what you see here: bars now also
+carry `sides` and `diameter` (the Processing PaperPolyhedra ignored their width), and
+4-sided shapes are written as a side length. Your data never leaves your browser.
+
+The web app is in beta until printed shapes have been checked.
 
 ## Tutorials
 

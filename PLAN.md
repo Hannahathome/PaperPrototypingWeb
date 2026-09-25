@@ -112,7 +112,7 @@ Cuboid nets, ArUco markers drawn as vector squares from the dictionary (not take
 PNG sheets), and the three-file export. The physical check includes testing that a camera
 detects the markers.
 
-## Phase 5: DataPhysicalisation
+## Phase 5: DataPhysicalisation (built; in beta until printed shapes are checked)
 
 CSV upload, column mapping, scale controls, a three.js view and JSON export. The JSON must
 stay compatible with the PaperPolyhedra import; the files in `DataPhysicalisation/examples/`
