@@ -8,14 +8,16 @@ interface Props {
 }
 
 const { tool } = Astro.props;
-const appReady = tool.status === 'available' && tool.appPath !== null;
+// An app can be opened once it exists; while the tool is in progress it is marked as a beta.
+const appReady = tool.appPath !== null;
+const appLabel = tool.status === 'available' ? 'Open web app' : 'Open web app (beta)';
 ---
 
 <div class="tool-links not-content">
 	{
 		appReady ? (
 			<a class="button primary" href={withBase(tool.appPath!)}>
-				Open web app
+				{appLabel}
 			</a>
 		) : (
 			<span class="button primary" aria-disabled="true" title="The web app is not available yet">

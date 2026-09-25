@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CATEGORIES, STATUSES, tools } from '../../src/data/tools';
 
@@ -32,12 +33,14 @@ describe('tools.json', () => {
 			);
 		});
 
-		it('has an appPath only when available, as a relative path', () => {
-			if (tool.status === 'available') {
-				expect(tool.appPath).toMatch(/^apps\/[a-z0-9-]+\/$/);
-			} else {
-				expect(tool.appPath).toBeNull();
-			}
+		it('has an app when available, none while planned, as a relative path', () => {
+			if (tool.status === 'available') expect(tool.appPath).not.toBeNull();
+			if (tool.status === 'planned') expect(tool.appPath).toBeNull();
+			if (tool.appPath !== null) expect(tool.appPath).toMatch(/^apps\/[a-z0-9-]+\/$/);
+		});
+
+		it('points appPath at an existing app page', () => {
+			if (tool.appPath !== null) expect(existsSync(`src/pages/${tool.appPath}index.astro`)).toBe(true);
 		});
 
 		it('has a tutorials array', () => {

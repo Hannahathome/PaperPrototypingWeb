@@ -3,10 +3,10 @@
 		"id": "paperpolyhedra",
 		"name": "PaperPolyhedra",
 		"category": "maker",
-		"status": "planned",
+		"status": "in-progress",
 		"description": "The main tool. Turns 3D polygon/prism specs into printable, foldable nets with tabs, flaps, lids, Kresling patterns and fiducial markers.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPolyhedra",
-		"appPath": null,
+		"appPath": "apps/paperpolyhedra/",
 		"tutorials": []
 	},
 	{

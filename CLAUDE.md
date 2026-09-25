@@ -95,8 +95,9 @@ A tool core builds a `Sheet`; `buildExportFiles(sheet, name)` gives the three fi
 `src/data/tools.json` drives the home page cards, the sidebar and the tool page headers.
 Fields: `id` (lowercase slug, also the URL and tutorial folder name), `name`, `category`
 (`maker` | `visualisation`), `status` (`planned` | `in-progress` | `available`),
-`description`, `processingUrl`, `appPath` (e.g. `apps/frustumsupport/`, null until
-available; tests require it to be set exactly when status is `available`), `tutorials`.
+`description`, `processingUrl`, `appPath` (e.g. `apps/frustumsupport/`; null while
+`planned`, required when `available`, optional while `in-progress`, when the card shows
+"Open web app (beta)"), `tutorials`. A tool becomes `available` only after its physical check.
 
 Tutorials are **discovered from the folder** `src/content/docs/tutorials/<id>/`, so Hannah can
 add one without editing JSON. The `tutorials` array is currently unused and always empty.
