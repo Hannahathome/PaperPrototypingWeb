@@ -1,0 +1,228 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getTool } from '../../../data/tools';
+import { DEFAULT_FRAME, DEFAULT_RIG } from '../../../tools/frustumsupport/core/params';
+
+const tool = getTool('frustumsupport');
+const f = DEFAULT_FRAME;
+const r = DEFAULT_RIG;
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'FrustumSupport',
+		description: 'Design a 3D-printable support frame for a frustum-shaped paper shell and download it as OpenSCAD.',
+		tableOfContents: false,
+	}}
+>
+	<p class="intro">
+		A basic web version of FrustumSupport: a strut frame that goes inside a folded paper frustum, with mounts
+		("rigs") for electronics. It downloads an OpenSCAD file, identical to what
+		the <a href={tool.processingUrl}>Processing version</a> writes. Open it in
+		<a href="https://openscad.org/">OpenSCAD</a>, render (F6), export STL and print.
+	</p>
+
+	<div class="app not-content">
+		<form class="controls" onsubmit="return false">
+			<fieldset id="frameFields">
+				<legend>Frustum</legend>
+				<label>Number of sides <input id="sides" type="number" min="3" step="1" value={f.sides} /></label>
+				<label>Bottom radius (mm) <input id="bottomRadius" type="number" min="0" step="0.5" value={f.bottomRadius} /></label>
+				<label>Top radius (mm) <input id="topRadius" type="number" min="0" step="0.5" value={f.topRadius} /></label>
+				<label>Height (mm) <input id="height" type="number" min="0" step="0.5" value={f.height} /></label>
+				<label>Edge radius (mm) <input id="edgeRadius" type="number" min="0" step="0.5" value={f.edgeRadius} /></label>
+				<p class="hint">
+					Radii are measured from the centre to a corner (circumradius), not perimeters as in PaperPolyhedra. The frame's
+					corner 0 points along +x.
+				</p>
+				<label class="check"><input id="rigsEnabled" type="checkbox" checked={f.rigsEnabled} /> Internal rigs (cage with spokes)</label>
+			</fieldset>
+
+			<fieldset id="rigFields">
+				<legend>Rigs</legend>
+				<div class="row">
+					<select id="rigList" aria-label="Selected rig"></select>
+					<button id="addRig" type="button" title="Add a copy of this rig">+</button>
+					<button id="removeRig" type="button" title="Remove this rig">−</button>
+				</div>
+				<label>Electronics template <select id="rigTemplate"></select></label>
+				<div id="rigValues" class="grid">
+					<label>Width <input id="rigWidth" type="number" min="0" step="0.5" value={r.width} /></label>
+					<label>Depth <input id="rigDepth" type="number" min="0" step="0.5" value={r.depth} /></label>
+					<label>Height <input id="rigHeight" type="number" min="0" step="0.5" value={r.height} /></label>
+					<label>Offset X <input id="rigOffsetX" type="number" step="0.5" value={r.offsetX} /></label>
+					<label>Offset Y <input id="rigOffsetY" type="number" step="0.5" value={r.offsetY} /></label>
+					<label>Offset Z <input id="rigOffsetZ" type="number" min="0" step="0.5" value={r.offsetZ} /></label>
+					<label>Rotation (°) <input id="rigRotation" type="number" step="0.5" value={r.rotation} /></label>
+				</div>
+			</fieldset>
+
+			<fieldset id="strutFields">
+				<legend>Posts</legend>
+				<label class="check"><input id="dualStruts" type="checkbox" checked={f.dualStruts} /> Two posts per rig face</label>
+				<label>Post spacing (mm) <input id="strutSpacing" type="number" min="0" step="0.5" value={f.strutSpacing} /></label>
+			</fieldset>
+
+			<fieldset>
+				<legend>Export</legend>
+				<label>File name <input id="name" type="text" value="frame" /></label>
+				<button id="export" type="button">Download OpenSCAD file</button>
+				<p id="status" role="status"></p>
+				<p class="hint">The wedge flap length (8 mm) is written near the top of the file; change it there in OpenSCAD.</p>
+			</fieldset>
+		</form>
+
+		<figure>
+			<div id="view3d" class="view3d" aria-label="3D preview of the frame. Drag to rotate, scroll to zoom."></div>
+			<figcaption>
+				Drag to rotate, scroll to zoom. The preview shows the strut layout; the wedge flaps and the top trim appear only
+				in OpenSCAD. <button id="resetView" type="button" class="link">Reset view</button>
+			</figcaption>
+		</figure>
+	</div>
+</StarlightPage>
+
+<script>
+	import { startApp } from '../../../tools/frustumsupport/ui/app';
+
+	startApp();
+</script>
+
+<style is:global>
+	:root {
+		--sl-content-width: 76rem;
+	}
+</style>
+
+<style>
+	.app {
+		display: grid;
+		grid-template-columns: minmax(15rem, 19rem) 1fr;
+		gap: 1.5rem;
+		align-items: start;
+		margin-top: 1.5rem;
+	}
+	@media (max-width: 60rem) {
+		.app {
+			grid-template-columns: 1fr;
+		}
+	}
+	.app [hidden] {
+		display: none !important;
+	}
+	.controls {
+		display: grid;
+		gap: 1rem;
+	}
+	fieldset {
+		display: grid;
+		gap: 0.6rem;
+		margin: 0;
+		padding: 0.75rem 1rem 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	legend {
+		padding: 0 0.3rem;
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	label {
+		display: grid;
+		gap: 0.25rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+	label.check {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.6rem;
+	}
+	.row {
+		display: flex;
+		gap: 0.4rem;
+	}
+	.row select {
+		flex: 1;
+	}
+	input[type='number'],
+	input[type='text'],
+	select {
+		width: 100%;
+		padding: 0.35rem 0.5rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 0.25rem;
+		background: var(--sl-color-black);
+		color: var(--sl-color-white);
+		font: inherit;
+	}
+	input:disabled {
+		opacity: 0.5;
+	}
+	.row button {
+		min-width: 2.2rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 0.25rem;
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-white);
+		font: inherit;
+		cursor: pointer;
+	}
+	.row button:disabled {
+		opacity: 0.4;
+		cursor: default;
+	}
+	.hint {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	#export {
+		padding: 0.5rem 1rem;
+		border: 0;
+		border-radius: 999px;
+		background-color: var(--sl-color-text-accent);
+		color: var(--sl-color-black);
+		font: inherit;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	#status {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+		overflow-wrap: anywhere;
+	}
+	figure {
+		margin: 0;
+	}
+	.view3d {
+		height: 34rem;
+		border: 1px solid var(--sl-color-gray-5);
+		background: radial-gradient(circle at 50% 35%, #3a4150, #1f232b);
+		touch-action: none;
+	}
+	.view3d :global(canvas) {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	figcaption {
+		margin-top: 0.4rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+	button.link {
+		padding: 0;
+		border: 0;
+		background: none;
+		color: var(--sl-color-text-accent);
+		font: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+</style>

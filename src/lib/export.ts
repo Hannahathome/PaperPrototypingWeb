@@ -37,6 +37,11 @@ export function exportFileNames(name: string, date: Date): { pdf: string; fold: 
 	};
 }
 
+/** Name for a single exported file that is not part of the print-and-cut set, e.g. an OpenSCAD model. */
+export function singleFileName(name: string, extension: string, date: Date): string {
+	return `${sanitiseName(name)}_${exportStamp(date)}.${extension}`;
+}
+
 /** True when every cut and fold line lies inside the 280 × 200 mm cutting area. */
 export function fitsCutArea(sheet: Sheet): boolean {
 	const bounds = boundsOf(sheet.paths.filter((path) => path.kind !== 'print'));

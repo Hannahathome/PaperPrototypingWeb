@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildExportFiles, exportFileNames, exportStamp, fitsCutArea, foldSvg, sanitiseName } from '../../src/lib/export';
+import { buildExportFiles, exportFileNames, exportStamp, fitsCutArea, foldSvg, sanitiseName, singleFileName } from '../../src/lib/export';
 import { parseSvg } from '../helpers/svg';
 
 const date = new Date(2026, 8, 25, 14, 5, 9);
@@ -16,6 +16,10 @@ describe('export names', () => {
 			fold: 'hexagon_fold_9_25_14_05_09.svg',
 			calib: 'hexagon_calib_9_25_14_05_09.svg',
 		});
+	});
+
+	it('names single files with the same stamp', () => {
+		expect(singleFileName('frame', 'scad', date)).toBe('frame_9_25_14_05_09.scad');
 	});
 
 	it('sanitises names', () => {
