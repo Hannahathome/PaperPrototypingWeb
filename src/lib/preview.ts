@@ -27,7 +27,6 @@ export function previewSvg(sheet: Sheet, { title = 'Sheet preview' }: { title?: 
 
 	const parts: string[] = [
 		`<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff"/>`,
-		`<rect x="0" y="0" width="${CUT_AREA.width}" height="${CUT_AREA.height}" ${stroke(PREVIEW_COLOURS.cutArea, 1, 'stroke-dasharray="4 3"')}/>`,
 	];
 
 	for (const image of sheet.images ?? []) {
@@ -35,6 +34,7 @@ export function previewSvg(sheet: Sheet, { title = 'Sheet preview' }: { title?: 
 			`<image href="${image.dataUrl}" x="${fmt(image.at[0])}" y="${fmt(image.at[1])}" width="${fmt(image.width)}" height="${fmt(image.height)}" preserveAspectRatio="none"/>`,
 		);
 	}
+	parts.push(`<rect x="0" y="0" width="${CUT_AREA.width}" height="${CUT_AREA.height}" ${stroke(PREVIEW_COLOURS.cutArea, 1, 'stroke-dasharray="4 3"')}/>`);
 	for (const path of sheet.paths.filter((p) => p.kind === 'print')) {
 		parts.push(pathElement(path, path.fill ? `fill="${path.fill}" stroke="none"` : stroke(PREVIEW_COLOURS.print, 1)));
 	}

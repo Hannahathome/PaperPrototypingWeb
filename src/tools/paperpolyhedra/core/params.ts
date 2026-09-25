@@ -21,13 +21,17 @@ export interface ShapeInput {
 	flapTaper: number;
 }
 
-/** The Processing defaults (Param.pde, UI.pde). */
+/**
+ * Starting shape for the web app. Processing starts at Ø40 × 100 mm (Param.pde, UI.pde), whose
+ * lids fall outside the cutting area. Tab depth 10 mm is one of Processing's presets (its
+ * default, 15 mm, would be limited to half the 25 mm side); flaps use Processing's defaults.
+ */
 export const DEFAULT_INPUT: ShapeInput = {
 	sides: 6,
-	topDiameter: 40,
-	bottomDiameter: 40,
-	height: 100,
-	tabDepth: 15,
+	topDiameter: 50,
+	bottomDiameter: 50,
+	height: 50,
+	tabDepth: 10,
 	flapDepth: 5,
 	flapTaper: 5,
 };

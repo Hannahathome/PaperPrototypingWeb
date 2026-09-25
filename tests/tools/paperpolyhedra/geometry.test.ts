@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Point } from '../../../src/lib/drawing';
 import { buildNet, lidDimensions } from '../../../src/tools/paperpolyhedra/core/net';
+import { foldedSolid } from '../../../src/tools/paperpolyhedra/core/solid';
 import { apothem, circumradius, perimeterFromDiameter, shapeDims, type ShapeInput } from '../../../src/tools/paperpolyhedra/core/params';
 
 const base: ShapeInput = { sides: 6, topDiameter: 50, bottomDiameter: 50, height: 50, tabDepth: 15, flapDepth: 5, flapTaper: 5 };
@@ -108,5 +109,26 @@ describe('lidDimensions', () => {
 		const square = lidDimensions(4, 40, 10);
 		expect(square.width).toBeCloseTo(60, 10);
 		expect(square.height).toBeCloseTo(60, 10);
+	});
+});
+
+describe.each(shapes)('%s folded solid', (_, input) => {
+	const net = buildNet(input);
+	const solid = foldedSolid(net.dims);
+	const d3 = (a: number[], b: number[]) => Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+
+	it('has rim edges equal to the net panel edges', () => {
+		const n = net.dims.sides;
+		for (let i = 0; i < n; i++) {
+			expect(d3(solid.bottom[i], solid.bottom[(i + 1) % n])).toBeCloseTo(net.dims.bottomSide, 9);
+			expect(d3(solid.top[i], solid.top[(i + 1) % n])).toBeCloseTo(net.dims.topSide, 9);
+		}
+	});
+
+	it('has slanted edges equal to the net panels’ slanted edges (the net folds into exactly this shape)', () => {
+		const [bl, , , tl] = net.panels[0].corners;
+		for (let i = 0; i < net.dims.sides; i++) {
+			expect(d3(solid.bottom[i], solid.top[i])).toBeCloseTo(dist(bl, tl), 9);
+		}
 	});
 });
