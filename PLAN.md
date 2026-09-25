@@ -17,7 +17,7 @@ Astro Starlight + TypeScript + Vitest, folder layout, `src/data/tools.json`, hom
 tool cards, one page per tool, tutorial template and guide, GitHub Pages deploy that is
 blocked by failing tests, and this plan.
 
-## Phase 1: shared foundation
+## Phase 1: shared foundation (built; waiting for the physical check)
 
 - `src/lib/units`: millimetres everywhere; any DPI conversion a cutter genuinely needs lives
   in one tested function here.

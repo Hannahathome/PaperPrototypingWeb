@@ -75,6 +75,21 @@ scripts/check-links.mjs      post-build link check
 docs/                        developer notes (not published)
 ```
 
+## Shared library (`src/lib/`)
+
+- `units.ts`: page sizes (`A4_LANDSCAPE`, `CUT_AREA` 280 × 200 mm) and `mmToPx`/`pxToMm`,
+  the only mm conversions in `src/`.
+- `drawing.ts`: the model every tool core returns: a `Sheet` of `Path`s (`cut` | `fold` |
+  `print`), `Label`s and `RasterImage`s, all in mm, origin top-left, y down.
+  `toCutterPaths` turns fold paths into real dash segments (Processing's `drawDashedLine`);
+  cutter software ignores `stroke-dasharray`, so never rely on it.
+- `svg.ts` (cutter SVG in mm), `pdf.ts` (jsPDF, A4, mm), `calibration.ts` (crosses),
+  `export.ts` (names, stamp, `buildExportFiles`, `fitsCutArea`), `files.ts` (browser
+  download/upload), `preview.ts` (on-screen sheet preview), `paths.ts` (`withBase`).
+
+A tool core builds a `Sheet`; `buildExportFiles(sheet, name)` gives the three files. Processing's
+`MM`/`MM_V` constants live only in `tests/helpers/processing.ts`, for reading fixtures.
+
 ## Tool metadata
 
 `src/data/tools.json` drives the home page cards, the sidebar and the tool page headers.
