@@ -1,0 +1,9 @@
+name,speed_kmh,weight_kg,lifespan_years,legs,class
+Cheetah,112,54,12,4,mammal
+Peregrine Falcon,389,1.1,15,2,bird
+"Sailfish, Atlantic",110,90,13,0,fish
+Pronghorn,88.5,50,10,4,mammal
+Ostrich,70,104,45,2,bird
+Garden Snail,0.05,0.005,5,0,mollusc
+Blue Whale,50,150000,90,0,mammal
+Emperor Penguin,9,23,20,2,bird

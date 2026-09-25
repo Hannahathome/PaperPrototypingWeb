@@ -1,0 +1,337 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getTool } from '../../../data/tools';
+import { DEFAULT_SETTINGS } from '../../../tools/dataphysicalisation/core/mapping';
+
+const tool = getTool('dataphysicalisation');
+const d = DEFAULT_SETTINGS;
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'DataPhysicalisation',
+		description: 'Turn a CSV dataset into physical shapes and hand them to PaperPolyhedra.',
+		tableOfContents: false,
+	}}
+>
+	<p class="intro">
+		A basic web version of DataPhysicalisation: load a CSV, choose which columns become height, width or diameter,
+		sides and colour, check the result, and send the shapes to PaperPolyhedra to print and cut. Sizes and colours match
+		the <a href={tool.processingUrl}>Processing version</a>. Your data stays in your browser.
+	</p>
+
+	<div class="app not-content">
+		<form id="controls" class="controls" onsubmit="return false">
+			<fieldset>
+				<legend>Data</legend>
+				<label>CSV file <input id="csvFile" type="file" accept=".csv,text/csv" /></label>
+				<button id="useExample" type="button" class="secondary">Try the example data</button>
+				<p id="source" class="hint"></p>
+			</fieldset>
+
+			<fieldset>
+				<legend>Shapes</legend>
+				<label>Shape <select id="mode"><option value="bars">Bars (boxes)</option><option value="polyhedra">Polyhedra (prisms)</option></select></label>
+				<label id="barSizeField">Bar size <select id="barSize"><option value="linked">One column for width and depth</option><option value="separate">Separate width and depth columns</option></select></label>
+				<label>Scaling <select id="scaling"><option value="false">Relative (smallest value gets the minimum)</option><option value="true">True size (from zero, keeps ratios)</option></select></label>
+				<label>Shapes to show <input id="visible" type="number" min="1" step="1" value="1" /></label>
+			</fieldset>
+
+			<fieldset>
+				<legend>Columns</legend>
+				<label>Label <select id="mapLabel"></select></label>
+				<label>Height <select id="mapHeight"></select></label>
+				<label id="diameterField">Width / diameter <select id="mapDiameter"></select></label>
+				<label id="widthField" hidden>Width <select id="mapWidth"></select></label>
+				<label id="depthField" hidden>Depth <select id="mapDepth"></select></label>
+				<div id="sidesFields" hidden>
+					<label>Sides <select id="mapSides"></select></label>
+				</div>
+				<label>Colour <select id="mapColour"></select></label>
+				<label>Colour thresholds <input id="thresholds" type="text" placeholder="e.g. 10, 50, 100" /></label>
+				<p class="hint">Numbers give a blue-to-red gradient, or bands split at the thresholds; text gives one colour per category.</p>
+			</fieldset>
+
+			<fieldset>
+				<legend>Sizes (mm)</legend>
+				<label>Maximum height <input id="scaleH" type="number" min="10" max="200" step="1" value={d.scaleH} /></label>
+				<label>Maximum width / diameter <input id="scaleDiam" type="number" min="1" max="100" step="1" value={d.scaleDiam} /></label>
+				<div id="minFields" class="grid">
+					<label>Min height (% of max) <input id="minHeightPct" type="number" min="0" max="80" step="1" value={d.minHeightPct} /></label>
+					<label>Min width (% of max) <input id="minDiamPct" type="number" min="0" max="80" step="1" value={d.minDiamPct} /></label>
+				</div>
+				<label id="sidesMax">Most sides <input id="scaleSides" type="number" min="3" max="30" step="1" value={d.scaleSides} /></label>
+			</fieldset>
+
+			<fieldset>
+				<legend>Export</legend>
+				<button id="send" type="button">Open in PaperPolyhedra</button>
+				<label>File name <input id="name" type="text" value="export" /></label>
+				<button id="export" type="button" class="secondary">Download JSON</button>
+				<p id="status" role="status"></p>
+			</fieldset>
+		</form>
+
+		<div class="views">
+			<p id="empty" class="hint">Load a CSV file, or try the example data, to start.</p>
+			<div id="workspace" hidden>
+				<div id="notes" class="notes" role="note" hidden></div>
+				<div id="viewTabs" class="tabs" role="radiogroup" aria-label="View">
+					<label class="check"><input type="radio" name="view" id="view3dRadio" checked /> 3D</label>
+					<label class="check"><input type="radio" name="view" id="view2d" /> 2D chart</label>
+				</div>
+				<figure id="view3dBox">
+					<div id="view3d" class="view3d" aria-label="3D view of the shapes. Drag to rotate, scroll to zoom."></div>
+					<figcaption>
+						Drag to rotate, scroll to zoom.
+						<button id="view-front" type="button" class="link">Front</button>
+						<button id="view-top" type="button" class="link">Top</button>
+						<button id="view-side" type="button" class="link">Side</button>
+						<button id="view-iso" type="button" class="link">Isometric</button>
+					</figcaption>
+				</figure>
+				<div id="chart" class="chart" hidden></div>
+				<div id="legend" class="legend"></div>
+				<table class="shapes">
+					<thead><tr><th>Label</th><th>Height (mm)</th><th>Width (mm)</th><th>Sides</th></tr></thead>
+					<tbody id="shapes"></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</StarlightPage>
+
+<script>
+	import { startApp } from '../../../tools/dataphysicalisation/ui/app';
+
+	startApp();
+</script>
+
+<style is:global>
+	:root {
+		--sl-content-width: 76rem;
+	}
+</style>
+
+<style>
+	.secondary {
+		padding: 0.4rem 0.9rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--sl-color-white);
+		font: inherit;
+		cursor: pointer;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.6rem;
+	}
+	.tabs {
+		display: flex;
+		gap: 1rem;
+		margin-bottom: 0.5rem;
+	}
+	.view3d {
+		position: relative;
+	}
+	.chart :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-height: 30rem;
+		color: var(--sl-color-gray-2);
+	}
+	.legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem 1rem;
+		margin: 0.5rem 0;
+		font-size: var(--sl-text-xs);
+	}
+	:global(.swatch) {
+		display: inline-block;
+		width: 0.8rem;
+		height: 0.8rem;
+		margin-right: 0.35rem;
+		vertical-align: -0.1rem;
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	.shapes {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: var(--sl-text-sm);
+		font-variant-numeric: tabular-nums;
+	}
+	.shapes th,
+	.shapes :global(td) {
+		padding: 0.25rem 0.5rem;
+		border-bottom: 1px solid var(--sl-color-gray-5);
+		text-align: left;
+	}
+	.app {
+		display: grid;
+		grid-template-columns: minmax(15rem, 19rem) 1fr;
+		gap: 1.5rem;
+		align-items: start;
+		margin-top: 1.5rem;
+	}
+	@media (max-width: 60rem) {
+		.app {
+			grid-template-columns: 1fr;
+		}
+	}
+	.controls {
+		display: grid;
+		gap: 1rem;
+	}
+	/* The label/fieldset display rules below would otherwise override the hidden attribute. */
+	.app [hidden] {
+		display: none !important;
+	}
+	fieldset {
+		display: grid;
+		gap: 0.6rem;
+		margin: 0;
+		padding: 0.75rem 1rem 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	legend {
+		padding: 0 0.3rem;
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	label {
+		display: grid;
+		gap: 0.25rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+	label.check {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	input[type='number'],
+	input[type='text'],
+	select {
+		width: 100%;
+		padding: 0.35rem 0.5rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 0.25rem;
+		background: var(--sl-color-black);
+		color: var(--sl-color-white);
+		font: inherit;
+	}
+	input:disabled {
+		opacity: 0.5;
+	}
+	input[type='file'] {
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+	.hint {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	#export {
+		padding: 0.5rem 1rem;
+		border: 0;
+		border-radius: 999px;
+		background-color: var(--sl-color-text-accent);
+		color: var(--sl-color-black);
+		font: inherit;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	#export:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+	#status {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+		overflow-wrap: anywhere;
+	}
+	.views {
+		display: grid;
+		gap: 1rem;
+		min-width: 0;
+	}
+	.facts {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.2rem 1rem;
+		margin: 0;
+		font-size: var(--sl-text-sm);
+	}
+	.facts :global(dt) {
+		color: var(--sl-color-gray-3);
+	}
+	.facts :global(dd) {
+		margin: 0;
+		color: var(--sl-color-white);
+		font-variant-numeric: tabular-nums;
+	}
+	.notes {
+		padding: 0.6rem 0.9rem;
+		border-left: 3px solid var(--sl-color-orange);
+		background: var(--sl-color-orange-low);
+		font-size: var(--sl-text-sm);
+	}
+	.notes :global(p) {
+		margin: 0.2rem 0;
+	}
+	figure {
+		margin: 0;
+	}
+	.sheet :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	.view3d {
+		height: 24rem;
+		border: 1px solid var(--sl-color-gray-5);
+		background: radial-gradient(circle at 50% 35%, #ffffff, #d9dde3);
+		touch-action: none;
+	}
+	.view3d :global(canvas) {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem 1.25rem;
+		margin-top: 0.4rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+	.key::before {
+		content: '';
+		display: inline-block;
+		width: 1.5rem;
+		margin-right: 0.4rem;
+		vertical-align: middle;
+		border-top: 2px solid var(--c);
+	}
+	.key.dashed::before {
+		border-top-style: dashed;
+	}
+	button.link {
+		padding: 0;
+		border: 0;
+		background: none;
+		color: var(--sl-color-text-accent);
+		font: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+</style>
