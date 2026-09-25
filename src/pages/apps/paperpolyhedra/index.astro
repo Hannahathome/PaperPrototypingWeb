@@ -1,0 +1,283 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getTool } from '../../../data/tools';
+import { PREVIEW_COLOURS } from '../../../lib/preview';
+import { withBase } from '../../../lib/paths';
+import { DEFAULT_INPUT } from '../../../tools/paperpolyhedra/core/params';
+
+const tool = getTool('paperpolyhedra');
+const d = DEFAULT_INPUT;
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'PaperPolyhedra',
+		description: 'Make a printable, foldable net for a prism or frustum, with tabs, lids and your own artwork.',
+		tableOfContents: false,
+	}}
+>
+	<p class="intro">
+		A basic web version of PaperPolyhedra: prisms and frustums with tabs, lids, a fill colour and images. Its nets
+		match the <a href={tool.processingUrl}>Processing version</a> exactly. First time? Check your printer and cutter
+		with the <a href={withBase('apps/calibration/')}>calibration test sheet</a>.
+	</p>
+
+	<div class="app not-content">
+		<form id="controls" class="controls" onsubmit="return false">
+			<fieldset>
+				<legend>Shape</legend>
+				<label>Number of sides <input id="sides" type="number" min="3" max="24" step="1" value={d.sides} /></label>
+				<label title="Side length for 4 sides; for other shapes the diameter of the circle through the corners, as in the Processing version.">
+					Top diameter (mm) <input id="topDiameter" type="number" min="1" step="0.5" value={d.topDiameter} />
+				</label>
+				<label class="check"><input id="lock" type="checkbox" checked /> Bottom same as top</label>
+				<label>Bottom diameter (mm) <input id="bottomDiameter" type="number" min="1" step="0.5" value={d.bottomDiameter} disabled /></label>
+				<label>Height (mm) <input id="height" type="number" min="1" step="0.5" value={d.height} /></label>
+				<p class="hint">For 4 sides, "diameter" is the side length. For other shapes it is the diameter of the circle through the corners.</p>
+			</fieldset>
+
+			<fieldset>
+				<legend>Tabs and flaps</legend>
+				<label>Tab depth (mm) <input id="tabDepth" type="number" min="0" step="0.5" value={d.tabDepth} list="tabPresets" /></label>
+				<datalist id="tabPresets"><option value="5"></option><option value="10"></option><option value="15"></option></datalist>
+				<label>Flap depth (mm) <input id="flapDepth" type="number" min="0" step="0.5" value={d.flapDepth} /></label>
+				<label>Flap taper (mm) <input id="flapTaper" type="number" min="0" step="0.5" value={d.flapTaper} /></label>
+			</fieldset>
+
+			<fieldset>
+				<legend>Colour and images</legend>
+				<label class="check"><input id="fillOn" type="checkbox" /> Fill colour <input id="fill" type="color" value="#9ecae1" aria-label="Fill colour" /></label>
+				<label>
+					Side images
+					<select id="sideMode">
+						<option value="none">None</option>
+						<option value="strip">One image across all panels</option>
+						<option value="perPanel">One image per panel</option>
+					</select>
+				</label>
+				<label id="stripField" hidden>Strip image <input id="stripImage" type="file" accept="image/*" /></label>
+				<label id="panelField" hidden>
+					<span>Panel images (pick up to <span id="panelCount">{d.sides}</span>, used in order)</span>
+					<input id="panelImages" type="file" accept="image/*" multiple />
+				</label>
+				<div id="lidFields" hidden>
+					<label>Top lid image <input id="topLidImage" type="file" accept="image/*" /></label>
+					<label>Bottom lid image <input id="bottomLidImage" type="file" accept="image/*" /></label>
+				</div>
+				<label id="rotateField" class="check" hidden><input id="rotate" type="checkbox" /> Turn side images upside down</label>
+				<p id="imageHint" class="hint" hidden>
+					As in the Processing version, the top of a side image goes to the bottom rim, so it ends up upside down on the
+					folded shape. Tick "Turn side images upside down" to have it read upright. A fill colour prints over images.
+					Images stay on your computer; nothing is uploaded.
+				</p>
+			</fieldset>
+
+			<fieldset>
+				<legend>Export</legend>
+				<label>File name <input id="name" type="text" value="paperpolyhedra" /></label>
+				<button id="export" type="button">Download PDF + cut files</button>
+				<p id="status" role="status"></p>
+			</fieldset>
+		</form>
+
+		<div class="views">
+			<dl id="facts" class="facts"></dl>
+			<div id="notes" class="notes" role="note" hidden></div>
+
+			<figure>
+				<div id="sheet" class="sheet"></div>
+				<figcaption>
+					<span style={`--c: ${PREVIEW_COLOURS.cut}`} class="key solid">Cut</span>
+					<span style={`--c: ${PREVIEW_COLOURS.fold}`} class="key dashed">Fold</span>
+					<span style={`--c: ${PREVIEW_COLOURS.cutArea}`} class="key dashed">Cutting area, 280 × 200 mm</span>
+				</figcaption>
+			</figure>
+
+			<figure>
+				<div id="view3d" class="view3d" aria-label="3D preview of the folded shape. Drag to rotate, scroll to zoom."></div>
+				<figcaption>
+					The folded shape. Drag to rotate, scroll to zoom. <button id="resetView" type="button" class="link">Reset view</button>
+				</figcaption>
+			</figure>
+		</div>
+	</div>
+</StarlightPage>
+
+<script>
+	import { startApp } from '../../../tools/paperpolyhedra/ui/app';
+
+	startApp();
+</script>
+
+<style is:global>
+	:root {
+		--sl-content-width: 76rem;
+	}
+</style>
+
+<style>
+	.app {
+		display: grid;
+		grid-template-columns: minmax(15rem, 19rem) 1fr;
+		gap: 1.5rem;
+		align-items: start;
+		margin-top: 1.5rem;
+	}
+	@media (max-width: 60rem) {
+		.app {
+			grid-template-columns: 1fr;
+		}
+	}
+	.controls {
+		display: grid;
+		gap: 1rem;
+	}
+	/* The label/fieldset display rules below would otherwise override the hidden attribute. */
+	.app [hidden] {
+		display: none !important;
+	}
+	fieldset {
+		display: grid;
+		gap: 0.6rem;
+		margin: 0;
+		padding: 0.75rem 1rem 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	legend {
+		padding: 0 0.3rem;
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	label {
+		display: grid;
+		gap: 0.25rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+	label.check {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	input[type='number'],
+	input[type='text'],
+	select {
+		width: 100%;
+		padding: 0.35rem 0.5rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 0.25rem;
+		background: var(--sl-color-black);
+		color: var(--sl-color-white);
+		font: inherit;
+	}
+	input:disabled {
+		opacity: 0.5;
+	}
+	input[type='file'] {
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+	.hint {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	#export {
+		padding: 0.5rem 1rem;
+		border: 0;
+		border-radius: 999px;
+		background-color: var(--sl-color-text-accent);
+		color: var(--sl-color-black);
+		font: inherit;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	#export:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+	#status {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+		overflow-wrap: anywhere;
+	}
+	.views {
+		display: grid;
+		gap: 1rem;
+		min-width: 0;
+	}
+	.facts {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.2rem 1rem;
+		margin: 0;
+		font-size: var(--sl-text-sm);
+	}
+	.facts :global(dt) {
+		color: var(--sl-color-gray-3);
+	}
+	.facts :global(dd) {
+		margin: 0;
+		color: var(--sl-color-white);
+		font-variant-numeric: tabular-nums;
+	}
+	.notes {
+		padding: 0.6rem 0.9rem;
+		border-left: 3px solid var(--sl-color-orange);
+		background: var(--sl-color-orange-low);
+		font-size: var(--sl-text-sm);
+	}
+	.notes :global(p) {
+		margin: 0.2rem 0;
+	}
+	figure {
+		margin: 0;
+	}
+	.sheet :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	.view3d {
+		height: 24rem;
+		border: 1px solid var(--sl-color-gray-5);
+		background: radial-gradient(circle at 50% 35%, #ffffff, #d9dde3);
+		touch-action: none;
+	}
+	.view3d :global(canvas) {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem 1.25rem;
+		margin-top: 0.4rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+	.key::before {
+		content: '';
+		display: inline-block;
+		width: 1.5rem;
+		margin-right: 0.4rem;
+		vertical-align: middle;
+		border-top: 2px solid var(--c);
+	}
+	.key.dashed::before {
+		border-top-style: dashed;
+	}
+	button.link {
+		padding: 0;
+		border: 0;
+		background: none;
+		color: var(--sl-color-text-accent);
+		font: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+</style>
