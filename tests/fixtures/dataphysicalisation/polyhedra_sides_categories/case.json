@@ -1,0 +1,27 @@
+{
+	"id": "polyhedra_sides_categories",
+	"csv": "animals.csv",
+	"mapping": {
+		"label": null,
+		"height": "lifespan_years",
+		"diameter": "weight_kg",
+		"sides": "legs",
+		"color": "class"
+	},
+	"mode": "polyhedra",
+	"barSize": "linked",
+	"trueSize": false,
+	"scaleH": 80,
+	"minHeightPct": 10,
+	"scaleDiam": 40,
+	"minDiamPct": 25,
+	"scaleSides": 12,
+	"thresholds": "",
+	"visible": 0,
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "DataPhysicalisation",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

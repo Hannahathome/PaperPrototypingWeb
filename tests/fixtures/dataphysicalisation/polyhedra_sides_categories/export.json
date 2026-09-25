@@ -1,0 +1,58 @@
+[
+  {
+    "color": "#E52D2D",
+    "diameter": 10.010799407958984,
+    "sides": 12,
+    "label": "shape_0",
+    "height": 13.929411888122559
+  },
+  {
+    "color": "#B7E52D",
+    "diameter": 10.000219345092773,
+    "sides": 7,
+    "label": "shape_1",
+    "height": 16.47058868408203
+  },
+  {
+    "color": "#2DE589",
+    "diameter": 10.017998695373535,
+    "sides": 3,
+    "label": "shape_2",
+    "height": 14.776470184326172
+  },
+  {
+    "color": "#E52D2D",
+    "diameter": 10.00999927520752,
+    "sides": 12,
+    "label": "shape_3",
+    "height": 12.235294342041016
+  },
+  {
+    "color": "#B7E52D",
+    "diameter": 10.020798683166504,
+    "sides": 7,
+    "label": "shape_4",
+    "height": 41.882354736328125
+  },
+  {
+    "color": "#2D5BE5",
+    "diameter": 10,
+    "sides": 3,
+    "label": "shape_5",
+    "height": 8
+  },
+  {
+    "color": "#E52D2D",
+    "diameter": 40,
+    "sides": 3,
+    "label": "shape_6",
+    "height": 80
+  },
+  {
+    "color": "#B7E52D",
+    "diameter": 10.004598617553711,
+    "sides": 7,
+    "label": "shape_7",
+    "height": 20.705883026123047
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "depth": 25,
+    "color": "#22E583",
+    "width": 12.536958694458008,
+    "label": "Cheetah",
+    "height": 4.941176414489746
+  },
+  {
+    "depth": 16.25,
+    "color": "#B4E522",
+    "width": 25,
+    "label": "Peregrine Falcon",
+    "height": 7.058823585510254
+  },
+  {
+    "depth": 7.500000476837158,
+    "color": "#22E583",
+    "width": 12.446972846984863,
+    "label": "Sailfish, Atlantic",
+    "height": 5.647058963775635
+  },
+  {
+    "depth": 25,
+    "color": "#22E583",
+    "width": 11.47962474822998,
+    "label": "Pronghorn",
+    "height": 3.529411792755127
+  },
+  {
+    "depth": 16.25,
+    "color": "#2253E5",
+    "width": 10.647255897521973,
+    "label": "Ostrich",
+    "height": 28.235294342041016
+  }
+]

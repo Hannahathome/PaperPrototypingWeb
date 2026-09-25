@@ -1,0 +1,25 @@
+{
+	"id": "bars_linked_true_size",
+	"csv": "animals.csv",
+	"mapping": {
+		"height": "speed_kmh",
+		"diameter": "lifespan_years",
+		"color": "class"
+	},
+	"mode": "bars",
+	"barSize": "linked",
+	"trueSize": true,
+	"scaleH": 150,
+	"minHeightPct": 20,
+	"scaleDiam": 30,
+	"minDiamPct": 20,
+	"scaleSides": 30,
+	"thresholds": "",
+	"visible": 0,
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "DataPhysicalisation",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

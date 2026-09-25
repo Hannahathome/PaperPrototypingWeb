@@ -1,0 +1,58 @@
+[
+  {
+    "color": "#6D4AC4",
+    "diameter": 4.005759239196777,
+    "sides": 30,
+    "label": "Cheetah",
+    "height": 43.026092529296875
+  },
+  {
+    "color": "#FF3C32",
+    "diameter": 4.00011682510376,
+    "sides": 16,
+    "label": "Peregrine Falcon",
+    "height": 100
+  },
+  {
+    "color": "#6C4AC5",
+    "diameter": 4.009599685668945,
+    "sides": 3,
+    "label": "Sailfish, Atlantic",
+    "height": 42.61473083496094
+  },
+  {
+    "color": "#614BD0",
+    "diameter": 4.005332946777344,
+    "sides": 30,
+    "label": "Pronghorn",
+    "height": 38.192569732666016
+  },
+  {
+    "color": "#574CDA",
+    "diameter": 4.011092662811279,
+    "sides": 16,
+    "label": "Ostrich",
+    "height": 34.387451171875
+  },
+  {
+    "color": "#3250FF",
+    "diameter": 4,
+    "sides": 3,
+    "label": "Garden Snail",
+    "height": 20
+  },
+  {
+    "color": "#4C4DE5",
+    "diameter": 20,
+    "sides": 3,
+    "label": "Blue Whale",
+    "height": 30.273815155029297
+  },
+  {
+    "color": "#3750FA",
+    "diameter": 4.002452850341797,
+    "sides": 16,
+    "label": "Emperor Penguin",
+    "height": 21.840852737426758
+  }
+]
