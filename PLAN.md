@@ -33,7 +33,7 @@ blocked by failing tests, and this plan.
 
 **Done when** the calibration sheet prints and cuts to size.
 
-## Phase 2: PaperPolyhedra basic (built; in beta until the physical check)
+## Phase 2: PaperPolyhedra basic (done; physical check passed 2026-09-25)
 
 ### Scope (agreed with Hannah)
 

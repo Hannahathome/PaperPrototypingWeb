@@ -42,4 +42,4 @@ For each: set it up, download, print, cut, fold, then tick.
 
 | Date | Shape | Printer | Cutter / software | Paper | Result | By |
 |---|---|---|---|---|---|---|
-| | | | | | | |
+| 2026-09-25 | Triangle prism, hexagon prism, square frustum, images | | | | Passed (reported by Hannah) | Hannah |
