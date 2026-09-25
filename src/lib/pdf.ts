@@ -25,6 +25,7 @@ function drawPaths(doc: jsPDF, paths: Path[], lineWidth: number): void {
 	doc.setLineWidth(lineWidth);
 	for (const path of paths) {
 		if (path.points.length < 2) continue;
+		doc.setDrawColor(path.colour ?? '#000000');
 		if (path.fill) doc.setFillColor(path.fill);
 		tracePath(doc, path);
 		if (path.fill) doc.fill();
@@ -51,7 +52,7 @@ export function buildPdf(sheet: Sheet, { compress = true }: PdfOptions = {}): js
 	doc.setTextColor('#000000');
 	for (const label of sheet.labels ?? []) {
 		doc.setFontSize(mmToPx(label.size, 72));
-		doc.text(label.text, label.at[0], label.at[1], { baseline: 'alphabetic' });
+		doc.text(label.text, label.at[0], label.at[1], { baseline: label.baseline ?? 'alphabetic', align: label.align ?? 'left' });
 	}
 
 	drawPaths(doc, printCrosses(), CROSS_WIDTH_MM);

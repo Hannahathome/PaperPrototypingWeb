@@ -18,6 +18,10 @@ export interface Path {
 	closed?: boolean;
 	/** Fill colour for `print` paths (CSS hex, e.g. "#e0e0e0"). Cut and fold paths are never filled. */
 	fill?: string;
+	/** Line colour on the print (CSS hex). Default black. The cutter files are always black. */
+	colour?: string;
+	/** Fold dash and gap in mm, for tools whose folds differ from FOLD_DASH / FOLD_GAP. */
+	dash?: readonly [dash: number, gap: number];
 }
 
 /** Printed text. Never sent to the cutter. */
@@ -27,6 +31,10 @@ export interface Label {
 	at: Point;
 	/** Text height in mm. */
 	size: number;
+	/** Horizontal anchor at `at`. Default left. */
+	align?: 'left' | 'center';
+	/** Vertical anchor at `at`. Default the alphabetic baseline. */
+	baseline?: 'alphabetic' | 'middle';
 }
 
 /** Raster artwork placed on the print. Never sent to the cutter. */
@@ -93,7 +101,9 @@ export function toCutterPaths(paths: Path[]): Path[] {
 				return [path];
 			case 'fold':
 				return segmentsOf(path).flatMap(([a, b]) =>
-					dashSegments(a, b).map(([p, q]): Path => ({ kind: 'fold', points: [p, q] })),
+					dashSegments(a, b, ...(path.dash ?? [FOLD_DASH, FOLD_GAP])).map(
+						([p, q]): Path => ({ kind: 'fold', points: [p, q], ...(path.colour ? { colour: path.colour } : {}) }),
+					),
 				);
 			case 'print':
 				return [];

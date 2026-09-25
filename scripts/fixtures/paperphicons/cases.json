@@ -1,0 +1,5 @@
+[
+	{ "id": "default_block", "width": 50, "length": 50, "height": 20, "markerId": 48, "markerSize": 16, "repeat": 1, "markerOnSide": false },
+	{ "id": "tall_block_marker_on_side", "width": 30, "length": 60, "height": 25, "markerId": 7, "markerSize": 20, "repeat": 1, "markerOnSide": true },
+	{ "id": "small_cube_three_copies", "width": 30, "length": 30, "height": 30, "markerId": 100, "markerSize": 12, "repeat": 3, "markerOnSide": false }
+]

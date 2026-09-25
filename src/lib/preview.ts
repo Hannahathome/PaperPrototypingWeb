@@ -48,7 +48,7 @@ export function previewSvg(sheet: Sheet, { title = 'Sheet preview' }: { title?: 
 	}
 	for (const label of sheet.labels ?? []) {
 		parts.push(
-			`<text x="${fmt(label.at[0])}" y="${fmt(label.at[1])}" font-size="${fmt(label.size)}" font-family="Helvetica, Arial, sans-serif" fill="#000">${escapeXml(label.text)}</text>`,
+			`<text x="${fmt(label.at[0])}" y="${fmt(label.at[1])}" font-size="${fmt(label.size)}" font-family="Helvetica, Arial, sans-serif" fill="#000"${label.align === 'center' ? ' text-anchor="middle"' : ''}${label.baseline === 'middle' ? ' dominant-baseline="middle"' : ''}>${escapeXml(label.text)}</text>`,
 		);
 	}
 
