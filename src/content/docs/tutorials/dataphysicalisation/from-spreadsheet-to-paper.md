@@ -31,8 +31,8 @@ the values in your spreadsheet.
    *Relative* scaling, the smallest value gets the minimum percentage you set; with *True
    size*, sizes are proportional to the values from zero, which keeps ratios honest but can make
    small values very thin.
-5. **Check.** Look at the 3D view (or the 2D chart for bars) and the table. Every shape must be
-   big enough to fold: the smallest width should be at least about 10 mm.
+5. **Check.** Look at the 3D view (or the 2D chart for bars) and the table. Very small shapes
+   are hard to fold; PaperPolyhedra tells you when it had to make a shape's tabs smaller.
 6. **Send to PaperPolyhedra.** Click *Open in PaperPolyhedra*. The shapes appear in the list
    and are arranged on the sheet; shapes that do not fit are left unticked.
 7. **Place the shapes.** Drag them on the sheet preview, or click *Arrange*. Untick shapes to
