@@ -1,0 +1,39 @@
+{
+	"id": "triangle_two_rigs_dual",
+	"nside": 3,
+	"bottomRadius": 45,
+	"topRadius": 35.5,
+	"height": 60,
+	"edgeRadius": 1.5,
+	"rigsEnabled": true,
+	"dualStruts": true,
+	"strutSpacing": 12.5,
+	"rigs": [
+		{
+			"template": "M5Core_lying",
+			"width": 54,
+			"depth": 54,
+			"height": 17,
+			"offsetX": -3.5,
+			"offsetY": 2,
+			"offsetZ": 4,
+			"rotation": 30
+		},
+		{
+			"template": "Custom",
+			"width": 20.3,
+			"depth": 10.8,
+			"height": 7.25,
+			"offsetX": 12,
+			"offsetY": -7.5,
+			"offsetZ": 30,
+			"rotation": -45
+		}
+	],
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "FrustumSupport",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

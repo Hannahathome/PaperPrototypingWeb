@@ -1,0 +1,29 @@
+{
+	"id": "odd_values",
+	"nside": 5,
+	"bottomRadius": 33.3,
+	"topRadius": 18.7,
+	"height": 52.1,
+	"edgeRadius": 0.8,
+	"rigsEnabled": true,
+	"dualStruts": false,
+	"strutSpacing": 15,
+	"rigs": [
+		{
+			"template": "Custom",
+			"width": 0.1,
+			"depth": 1234.5,
+			"height": 0.003,
+			"offsetX": 0,
+			"offsetY": 0,
+			"offsetZ": 0,
+			"rotation": 22.5
+		}
+	],
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "FrustumSupport",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

@@ -1,0 +1,29 @@
+{
+	"id": "hourglass_top",
+	"nside": 6,
+	"bottomRadius": 20,
+	"topRadius": 30,
+	"height": 40,
+	"edgeRadius": 1,
+	"rigsEnabled": true,
+	"dualStruts": false,
+	"strutSpacing": 15,
+	"rigs": [
+		{
+			"template": "M5Atom",
+			"width": 24,
+			"depth": 24,
+			"height": 31.5,
+			"offsetX": 0,
+			"offsetY": 0,
+			"offsetZ": 8.5,
+			"rotation": 0
+		}
+	],
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "FrustumSupport",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}
