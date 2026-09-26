@@ -63,16 +63,38 @@ function attr(tag: string, name: string): string | null {
 	return new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1] ?? null;
 }
 
+/** Cubic curves are sampled into this many straight segments (t = k / CURVE_STEPS). */
+export const CURVE_STEPS = 8;
+
 function pathSegments(d: string): Segment[] {
 	const segments: Segment[] = [];
 	let start: [number, number] | null = null;
 	let current: [number, number] | null = null;
-	for (const [, command, args] of d.matchAll(/([MLZ])\s*([^MLZ]*)/gi)) {
+	for (const [, command, args] of d.matchAll(/([MLZC])\s*([^MLZC]*)/gi)) {
 		if (command !== command.toUpperCase()) throw new Error(`Relative path command ${command} not supported`);
 		const numbers = args.trim() === '' ? [] : args.trim().split(/[\s,]+/).map(Number);
 		if (command === 'Z') {
 			if (current && start) segments.push([current, start]);
 			current = start;
+			continue;
+		}
+		if (command === 'C') {
+			for (let i = 0; i + 5 < numbers.length; i += 6) {
+				const p0 = current!;
+				const [c1, c2, p1]: [number, number][] = [
+					[numbers[i], numbers[i + 1]],
+					[numbers[i + 2], numbers[i + 3]],
+					[numbers[i + 4], numbers[i + 5]],
+				];
+				for (let k = 1; k <= CURVE_STEPS; k++) {
+					const t = k / CURVE_STEPS;
+					const m = 1 - t;
+					const at = (j: 0 | 1) => m * m * m * p0[j] + 3 * m * m * t * c1[j] + 3 * m * t * t * c2[j] + t * t * t * p1[j];
+					const point: [number, number] = [at(0), at(1)];
+					segments.push([current!, point]);
+					current = point;
+				}
+			}
 			continue;
 		}
 		for (let i = 0; i + 1 < numbers.length; i += 2) {
