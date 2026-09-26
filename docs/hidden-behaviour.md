@@ -322,3 +322,46 @@ at 85 % saturation for thresholds. Cells that are not numbers become NaN (Proces
 
 - Test: `tests/tools/dataphysicalisation/processing-match.test.ts` (sizes within 0.001 mm,
   colours exact, five cases)
+
+## ScaffoldShell
+
+Fixtures: `tests/fixtures/scaffoldshell/`. The shell net is PaperPolyhedra's (identical code);
+see also [review-for-hannah.md](review-for-hannah.md), items 1 and 2.
+
+### Scaffold height
+
+`frameDimsFor()` takes the frame height from the entered height (`cylinder.z`), while the net
+folds to the height from "Frustum panel height" above. Prisms are exact; frustum frames are
+short (narrowing) or too wide at the top (widening). Kept as Processing does it, by decision
+(2026-09-26), and listed for review.
+
+- Source: `ScaffoldShell/Frame.pde`, `frameDimsFor()`
+- Test: `tests/tools/scaffoldshell/scad.test.ts` (the .scad matches Processing's)
+
+### Numbers are String.format("%.4f") of floats
+
+`scadNum()` writes `String.format(Locale.US, "%.4f", float)`: the float is widened to double,
+Java takes that double's digits (FloatingDecimal) and rounds them half up, with the sign of the
+value (so `-0.0000` appears). This differs from JavaScript's `toFixed` on negative ties
+(Java −0.03125 → `-0.0313`, `toFixed` → `-0.0312`). The perimeters and radii behind the numbers
+are also float arithmetic (`n · d · sin(π/n)`); the port computes them in 32-bit floats.
+
+- Test: `tests/lib/java-format.test.ts` (5016 values from Processing's Java 17)
+
+### Rig windows
+
+A rig face within strut radius + 1 mm of the paper cuts a rounded square (16 or 50 mm; Auto
+takes 50 when the face is at least 50 mm across) into the top lid, or into the wall panel it
+faces within 35°. Corners are Processing's `rect(…, r)` corners: quadratic curves with the
+control point at the sharp corner (r = 2 mm), not circular arcs. Windows are cut before the
+outlines. A window that crosses a fold line or the lid edge is flagged but still cut. Wall
+positions are mapped with the net's panel height (`rigPanelFlatHeightMM`, Processing's formula).
+
+- Source: `RigCutout.pde`, `LidFrame.pde`, `SidePanelFrame.pde`, `Cutout.pde` (`cutoutCornerRadius`)
+- Test: `tests/tools/scaffoldshell/processing-match.test.ts` (net and windows match the cut files)
+
+### Fixture harness: export as the E key does
+
+`exportPlan()` must run with `bSavePDF = true` (the E key sets it and `draw()` exports).
+Calling it without that draws on-screen extras into the files, e.g. "Rig 1" labels in the cut
+SVG. Both harnesses set it.

@@ -14,10 +14,10 @@
 		"id": "scaffoldshell",
 		"name": "ScaffoldShell",
 		"category": "maker",
-		"status": "planned",
+		"status": "in-progress",
 		"description": "PaperPolyhedra and FrustumSupport merged. The foldable shell plus the 3D-printed scaffold that goes inside it, sized from the shell rather than typed in. Exports PDF, SVG and OpenSCAD.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/ScaffoldShell",
-		"appPath": null,
+		"appPath": "apps/scaffoldshell/",
 		"tutorials": [],
 		"sourceNote": null
 	},

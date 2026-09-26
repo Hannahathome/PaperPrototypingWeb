@@ -119,7 +119,7 @@ stay compatible with the PaperPolyhedra import; the files in `DataPhysicalisatio
 become fixtures. Then add JSON import to the PaperPolyhedra web app, so the two connect in
 the browser.
 
-## Phase 6: ScaffoldShell basic and the visualisation tools
+## Phase 6: ScaffoldShell basic and the visualisation tools (ScaffoldShell built, in beta; WidgetGenerator and PaperBlox wait for a description)
 
 ScaffoldShell reuses the cores from Phases 2 and 3, so nothing is ported twice.
 WidgetGenerator and other visualisation tools go under their own section. PaperBlox is
