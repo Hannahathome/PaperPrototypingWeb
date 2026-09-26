@@ -1,0 +1,49 @@
+{
+	"id": "triangle_frustum_two_rigs",
+	"sides": 3,
+	"topDiameter": 70,
+	"bottomDiameter": 90,
+	"height": 55,
+	"tabDepth": 10,
+	"flapDepth": 5,
+	"flapTaper": 5,
+	"frame": {
+		"strutRadius": 1,
+		"clearance": 0.4,
+		"dualStruts": false,
+		"strutSpacing": 15,
+		"flapLength": 8,
+		"rigs": [
+			{
+				"preset": "Custom",
+				"width": 20.3,
+				"depth": 12.5,
+				"height": 18,
+				"offsetX": -4,
+				"offsetY": 3.5,
+				"offsetZ": 2,
+				"rotation": 30,
+				"cutoutFace": 5,
+				"cutoutSize": 1
+			},
+			{
+				"preset": "M5Atom lying",
+				"width": 24,
+				"depth": 31.5,
+				"height": 24,
+				"offsetX": 2,
+				"offsetY": -1,
+				"offsetZ": 26,
+				"rotation": 0,
+				"cutoutFace": 1,
+				"cutoutSize": 1
+			}
+		]
+	},
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "ScaffoldShell",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

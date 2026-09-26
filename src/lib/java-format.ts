@@ -86,8 +86,11 @@ function developLongDigits(decExponent: number, lvalue: bigint, insignificant: n
 	return { digits: reversed.reverse(), decExponent: decExponent + 1 };
 }
 
-/** FloatingDecimal.BinaryToASCIIBuffer.dtoa with isCompatibleFormat = true. */
-function dtoa(binExp: number, fractBits: bigint, nSignificantBits: number): Digits {
+/**
+ * FloatingDecimal.BinaryToASCIIBuffer.dtoa. `compatible` is true for Float/Double.toString and
+ * false for String.format, where it always produces at least two digits.
+ */
+function dtoa(binExp: number, fractBits: bigint, nSignificantBits: number, compatible = true): Digits {
 	const tailZeros = trailingZeros(fractBits);
 	const nFractBits = EXP_SHIFT + 1 - tailZeros;
 	const nTinyBits = Math.max(0, nFractBits - binExp - 1);
@@ -127,7 +130,7 @@ function dtoa(binExp: number, fractBits: bigint, nSignificantBits: number): Digi
 	let lowDigitDifference: bigint;
 	const bBits = nFractBits + B2 + (B5 < N_5_BITS.length ? N_5_BITS[B5] : B5 * 3);
 	const tenSBits = S2 + 1 + (S5 + 1 < N_5_BITS.length ? N_5_BITS[S5 + 1] : (S5 + 1) * 3);
-	const eForm = () => decExp < -3 || decExp >= 8;
+	const eForm = () => !compatible || decExp < -3 || decExp >= 8;
 
 	if (bBits < 64 && tenSBits < 64) {
 		// Java int (32-bit) or long (64-bit) arithmetic, with wraparound.
@@ -250,6 +253,93 @@ export function javaFloatString(value: number): string {
 	}
 	binExp -= 127;
 	return layout(negative, dtoa(binExp, BigInt(fract) << BigInt(EXP_SHIFT - 23), nSignificantBits));
+}
+
+/** FloatingDecimal.getBinaryToASCIIConverter(double, compatible): the digits of a double. */
+function doubleDigits(d: number, compatible: boolean): Digits {
+	const view = new DataView(new ArrayBuffer(8));
+	view.setFloat64(0, d);
+	const bits = view.getBigUint64(0);
+	let fract = bits & ((1n << 52n) - 1n);
+	let binExp = Number((bits >> 52n) & 0x7ffn);
+	let nSignificantBits: number;
+	if (binExp === 0) {
+		let leadingZeros = 0;
+		for (let b = 63n; b >= 0n && ((fract >> b) & 1n) === 0n; b--) leadingZeros++;
+		const shift = leadingZeros - (63 - EXP_SHIFT);
+		fract <<= BigInt(shift);
+		binExp = 1 - shift;
+		nSignificantBits = 64 - leadingZeros;
+	} else {
+		fract |= FRACT_HOB;
+		nSignificantBits = EXP_SHIFT + 1;
+	}
+	return dtoa(binExp - 1023, fract, nSignificantBits, compatible);
+}
+
+/** FormattedFloatingDecimal.applyPrecision: round the digit string half up to `prec` digits. */
+function applyPrecision(r: Digits, prec: number): number {
+	const d = r.digits;
+	if (prec >= d.length || prec < 0) return r.decExponent;
+	if (prec === 0) {
+		const up = d[0] >= 5;
+		d.fill(0);
+		if (up) d[0] = 1;
+		return up ? r.decExponent + 1 : r.decExponent;
+	}
+	if (d[prec] >= 5) {
+		let i = prec - 1;
+		while (d[i] === 9 && i > 0) i--;
+		if (d[i] === 9) {
+			d.fill(0);
+			d[0] = 1;
+			return r.decExponent + 1;
+		}
+		d[i] += 1;
+		d.fill(0, i + 1);
+	} else {
+		d.fill(0, prec);
+	}
+	return r.decExponent;
+}
+
+/**
+ * Java's `String.format(Locale.US, "%.Nf", floatValue)`, as ScaffoldShell's scadNum() writes
+ * numbers (e.g. 20.3 → "20.3000"). The float is widened to double; Java takes that double's
+ * digits and rounds them half up, so results can differ from Number.toFixed. The sign comes
+ * from the value, so -0 and small negatives print as "-0.0000".
+ */
+export function javaFormatFixed(value: number, precision: number): string {
+	const d = Math.fround(value);
+	if (Number.isNaN(d)) return 'NaN';
+	const negative = d < 0 || Object.is(d, -0);
+	if (!Number.isFinite(d)) return negative ? '-Infinity' : 'Infinity';
+	const sign = negative ? '-' : '';
+	const fraction = (text: string) => {
+		// Formatter.addZeros: pad the fraction to the precision.
+		if (precision === 0) return text;
+		const dot = text.indexOf('.');
+		const have = dot < 0 ? 0 : text.length - dot - 1;
+		return (dot < 0 ? `${text}.` : text) + '0'.repeat(precision - have);
+	};
+	if (d === 0) return sign + fraction('0');
+	const r = doubleDigits(Math.abs(d), false);
+	const exp = applyPrecision(r, r.decExponent + precision);
+	const digits = r.digits.join('');
+	const n = digits.length;
+	let mantissa: string;
+	if (exp > 0) {
+		if (n < exp) mantissa = digits + '0'.repeat(exp - n);
+		else {
+			const t = Math.min(n - exp, precision);
+			mantissa = digits.slice(0, exp) + (t > 0 ? `.${digits.slice(exp, exp + t)}` : '');
+		}
+	} else {
+		const zeros = Math.max(0, Math.min(-exp, precision));
+		const t = Math.max(0, Math.min(n, precision + exp));
+		mantissa = zeros > 0 || t > 0 ? `0.${'0'.repeat(zeros)}${digits.slice(0, t)}` : '0';
+	}
+	return sign + fraction(mantissa);
 }
 
 /** Java's `"" + intValue`. */

@@ -1,0 +1,37 @@
+{
+	"id": "octagon_prism_wall_window_dual",
+	"sides": 8,
+	"topDiameter": 80,
+	"bottomDiameter": 80,
+	"height": 70,
+	"tabDepth": 10,
+	"flapDepth": 5,
+	"flapTaper": 5,
+	"frame": {
+		"strutRadius": 1.2,
+		"clearance": 0.5,
+		"dualStruts": true,
+		"strutSpacing": 12.5,
+		"flapLength": 6,
+		"rigs": [
+			{
+				"preset": "M5Core",
+				"width": 54,
+				"depth": 17,
+				"height": 54,
+				"offsetX": 0,
+				"offsetY": 27.5,
+				"offsetZ": 6,
+				"rotation": 0,
+				"cutoutFace": 2,
+				"cutoutSize": 0
+			}
+		]
+	},
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "ScaffoldShell",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

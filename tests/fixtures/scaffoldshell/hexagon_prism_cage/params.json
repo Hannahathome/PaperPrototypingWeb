@@ -1,0 +1,24 @@
+{
+	"id": "hexagon_prism_cage",
+	"sides": 6,
+	"topDiameter": 50,
+	"bottomDiameter": 50,
+	"height": 50,
+	"tabDepth": 10,
+	"flapDepth": 5,
+	"flapTaper": 5,
+	"frame": {
+		"strutRadius": 1,
+		"clearance": 0.4,
+		"dualStruts": false,
+		"strutSpacing": 15,
+		"flapLength": 8,
+		"rigs": []
+	},
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "ScaffoldShell",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

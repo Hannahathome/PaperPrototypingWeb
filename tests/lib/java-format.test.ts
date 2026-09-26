@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { javaFloatString, javaIntString } from '../../src/lib/java-format';
+import { javaFloatString, javaFormatFixed, javaIntString } from '../../src/lib/java-format';
 
 // Expected values are what Java prints for `"" + (float) x`.
 describe('javaFloatString', () => {
@@ -52,6 +52,21 @@ describe('javaFloatString against Java 17 (Processing 4.3 runtime)', () => {
 			return actual === expected ? [] : [`${expected} → ${actual}`];
 		});
 		expect(rows).toHaveLength(5000);
+		expect(mismatches.slice(0, 10)).toEqual([]);
+	});
+});
+
+describe('javaFormatFixed against Java 17 String.format("%.4f")', () => {
+	it('matches 5016 values formatted by Java, including negative zero and exact ties', () => {
+		const rows = readFileSync('tests/fixtures/java-format/fixed-4.tsv', 'utf8').trim().split('\n');
+		const view = new DataView(new ArrayBuffer(4));
+		const mismatches = rows.flatMap((row) => {
+			const [bits, expected] = row.split('\t');
+			view.setInt32(0, Number(bits));
+			const actual = javaFormatFixed(view.getFloat32(0), 4);
+			return actual === expected ? [] : [`${expected} → ${actual}`];
+		});
+		expect(rows.length).toBeGreaterThan(5000);
 		expect(mismatches.slice(0, 10)).toEqual([]);
 	});
 });

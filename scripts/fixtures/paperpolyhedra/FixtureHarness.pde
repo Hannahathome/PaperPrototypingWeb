@@ -47,7 +47,10 @@ public class FixtureHarness {
 
     applyToModel();
     uiExportFilename = id;
+    // Export exactly as the E key does: draw() calls exportPlan() with bSavePDF set.
+    bSavePDF = true;
     exportPlan();
+    bSavePDF = false;
     println("[fixtures] exported " + id + " perimeters top/bottom " + cylinder.x + " / " + cylinder.y + " height " + cylinder.z);
   }
 }
