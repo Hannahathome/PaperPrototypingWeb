@@ -2,8 +2,8 @@
 // shapes are placed by dragging them on the sheet preview (or arranged automatically), and
 // can be imported from a JSON file (e.g. from DataPhysicalisation). Everything geometric comes
 // from ../core; this file only displays, places and exports what the core returns.
-import type { Point, Sheet } from '../../../lib/drawing';
-import { buildExportFiles } from '../../../lib/export';
+import type { Path, Point, Sheet } from '../../../lib/drawing';
+import { buildExportFiles, type ExportFile } from '../../../lib/export';
 import { downloadAll, readAsDataUrl, readAsText } from '../../../lib/files';
 import { takeHandoff } from '../../../lib/handoff';
 import { escapeXml, previewContent, previewFrame } from '../../../lib/preview';
@@ -14,6 +14,7 @@ import { importShapes } from '../core/import';
 import { arrangeOffsets, insideCutArea, netBounds, offsetIntoFreeSpot, overlappingPairs, touchesCrossZone, translateNet, type Bounds } from '../core/layout';
 import { buildNet, type Net } from '../core/net';
 import { DEFAULT_INPUT, type ShapeInput } from '../core/params';
+import type { FrameGeometry } from '../../scaffoldshell/core/frame';
 import { ShapeView3D } from './view3d';
 
 const PREVIEW_DPI = 60;
@@ -45,6 +46,28 @@ interface SheetShape {
 	include: boolean;
 	/** Bumped when the shape's images change, so its cached preview is rebuilt. */
 	version: number;
+	/** Per-shape data of an extension (e.g. ScaffoldShell's scaffold settings); plain JSON. */
+	ext: unknown;
+}
+
+/** What an extension of the app (ScaffoldShell) can add, per shape. */
+export interface AppExtension<T> {
+	/** Data for a new shape, and a deep copy for "Add a copy". */
+	create(): T;
+	copy(data: T): T;
+	/** Called once with a callback to use whenever the extension's own controls change data. */
+	mount(context: { changed: () => void; current: () => { data: T; shape: ShapeInput } }): void;
+	/** Show the selected shape's data in the extension's controls, and read the controls back. */
+	write(data: T, shape: ShapeInput): void;
+	read(data: T): void;
+	/** Extra cut paths on a placed net (drawn before it, so inner cuts come first). */
+	paths(data: T, shape: ShapeInput, net: Net): Path[];
+	/** Notes about the selected shape. */
+	notes(data: T, shape: ShapeInput): string[];
+	/** Something to draw inside the shape in the 3D view. */
+	view3d(data: T, shape: ShapeInput): FrameGeometry | null;
+	/** Extra files to download with the sheet. */
+	files(items: { data: T; shape: ShapeInput; label: string; index: number }[], name: string, date: Date): ExportFile[];
 }
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -111,9 +134,14 @@ export function printableSheet(net: Net, art: Artwork, imageFor: (slot: ImageSlo
 	};
 }
 
-/** A shape's printable sheet at `offset`. */
-function shapeSheet(shape: SheetShape, offset: Point, dpi: number): Sheet {
+/** A shape's printable sheet at `offset`, with `extra` cut paths (e.g. windows) first. */
+function shapeSheet(shape: SheetShape, offset: Point, dpi: number, extra?: (net: Net) => Path[]): Sheet {
 	const net = translateNet(buildNet(shape.input), offset);
+	const sheet = shapeArtworkSheet(shape, net, dpi);
+	return extra ? { ...sheet, paths: [...extra(net), ...sheet.paths] } : sheet;
+}
+
+function shapeArtworkSheet(shape: SheetShape, net: Net, dpi: number): Sheet {
 	const { look } = shape;
 	const art = buildArtwork(net, {
 		fill: look.fillOn ? look.fill : null,
@@ -137,9 +165,10 @@ function shapeSheet(shape: SheetShape, offset: Point, dpi: number): Sheet {
 	return printableSheet(net, art, imageFor, dpi);
 }
 
-export function startApp(): void {
+export function startApp(ext?: AppExtension<any>): void {
 	const view = new ShapeView3D($('view3d'));
-	const shapes: SheetShape[] = [{ label: 'Shape 1', input: { ...DEFAULT_INPUT }, lock: true, look: newLook(), offset: [0, 0], include: true, version: 0 }];
+	const shapes: SheetShape[] = [{ label: 'Shape 1', input: { ...DEFAULT_INPUT }, lock: true, look: newLook(), offset: [0, 0], include: true, version: 0, ext: ext?.create() }];
+	const extraPaths = (shape: SheetShape) => (ext ? (net: Net) => ext.paths(shape.ext, shape.input, net) : undefined);
 	let selected = 0;
 	let timer: number | undefined;
 	/** Cached preview content per shape (at offset 0), so dragging only moves a group. */
@@ -167,12 +196,15 @@ export function startApp(): void {
 		$<HTMLInputElement>('rotate').checked = s.look.rotate;
 		for (const id of ['stripImage', 'panelImages', 'topLidImage', 'bottomLidImage']) $<HTMLInputElement>(id).value = '';
 		showImageFields();
+		ext?.write(s.ext, s.input);
 	};
 
 	const readForm = () => {
 		const s = current();
 		s.lock = $<HTMLInputElement>('lock').checked;
 		const top = num('topDiameter');
+		// Show the bottom value that is actually used while it follows the top.
+		if (s.lock) $<HTMLInputElement>('bottomDiameter').value = String(top);
 		s.input = {
 			sides: num('sides'),
 			topDiameter: top,
@@ -187,6 +219,7 @@ export function startApp(): void {
 		s.look.fill = $<HTMLInputElement>('fill').value;
 		s.look.sideMode = $<HTMLSelectElement>('sideMode').value as SideMode;
 		s.look.rotate = $<HTMLInputElement>('rotate').checked;
+		ext?.read(s.ext);
 		$<HTMLInputElement>('bottomDiameter').disabled = s.lock;
 	};
 
@@ -208,10 +241,10 @@ export function startApp(): void {
 	// ── Sheet ───────────────────────────────────────────────────────────────
 	const previewOf = (shape: SheetShape) => {
 		const i = shape.look.images;
-		const key = JSON.stringify([shape.input, shape.look.fillOn, shape.look.fill, shape.look.sideMode, shape.look.rotate, shape.version, i.panels.length]);
+		const key = JSON.stringify([shape.input, shape.look.fillOn, shape.look.fill, shape.look.sideMode, shape.look.rotate, shape.version, i.panels.length, shape.ext]);
 		const cached = previewCache.get(shape);
 		if (cached && cached.key === key) return cached;
-		const entry = { key, svg: previewContent(shapeSheet(shape, [0, 0], PREVIEW_DPI)), bounds: netBounds(buildNet(shape.input)) };
+		const entry = { key, svg: previewContent(shapeSheet(shape, [0, 0], PREVIEW_DPI, extraPaths(shape))), bounds: netBounds(buildNet(shape.input)) };
 		previewCache.set(shape, entry);
 		return entry;
 	};
@@ -295,6 +328,7 @@ export function startApp(): void {
 		if (d.flapDepth < s.input.flapDepth - 1e-9) clamped.push(`flap depth to ${fmt(d.flapDepth)}`);
 		if (d.flapTaper < s.input.flapTaper - 1e-9) clamped.push(`flap taper to ${fmt(d.flapTaper)}`);
 		if (clamped.length) notes.push(`Limited ${clamped.join(', ')} to fit the selected shape's panels.`);
+		if (ext) notes.push(...ext.notes(s.ext, s.input));
 		$('notes').innerHTML = notes.map((n) => `<p>${n}</p>`).join('');
 		$('notes').hidden = notes.length === 0;
 		$('panelCount').textContent = String(d.sides);
@@ -307,7 +341,7 @@ export function startApp(): void {
 			panels: Array.from({ length: d.sides }, (_, i) => turned(look.images.panels[i] ?? null, look.rotate)),
 			topLid: look.images.topLid,
 			bottomLid: look.images.bottomLid,
-		});
+		}, ext ? ext.view3d(s.ext, s.input) : null);
 	};
 
 	const update = () => {
@@ -387,6 +421,7 @@ export function startApp(): void {
 			offset: [0, 0],
 			include: true,
 			version: base.version,
+			ext: ext ? ext.copy(base.ext) : undefined,
 		};
 		shapes.push(copy);
 		placeNew(copy);
@@ -416,6 +451,7 @@ export function startApp(): void {
 					offset: [0, 0],
 					include: true,
 					version: 0,
+					ext: ext?.create(),
 				}),
 			);
 			if (replace) shapes.splice(0, shapes.length);
@@ -516,9 +552,14 @@ export function startApp(): void {
 		$('status').textContent = 'Preparing files…';
 		try {
 			await new Promise((resolve) => setTimeout(resolve, 20)); // let the status paint
-			const sheets = onSheet.map((s) => shapeSheet(s, s.offset, PRINT_DPI));
+			const sheets = onSheet.map((s) => shapeSheet(s, s.offset, PRINT_DPI, extraPaths(s)));
 			const sheet: Sheet = { paths: sheets.flatMap((s) => s.paths), images: sheets.flatMap((s) => s.images ?? []) };
-			const files = buildExportFiles(sheet, $<HTMLInputElement>('name').value);
+			const name = $<HTMLInputElement>('name').value;
+			const date = new Date();
+			const files = [
+				...buildExportFiles(sheet, name, date),
+				...(ext ? ext.files(onSheet.map((s) => ({ data: s.ext, shape: s.input, label: s.label, index: shapes.indexOf(s) })), name, date) : []),
+			];
 			await downloadAll(files);
 			$('status').textContent = `Downloaded ${files.map((f) => f.name).join(', ')}.`;
 		} catch (error) {
@@ -529,6 +570,13 @@ export function startApp(): void {
 	});
 
 	// ── Start ───────────────────────────────────────────────────────────────
+	ext?.mount({
+		changed: () => {
+			readForm();
+			schedule();
+		},
+		current: () => ({ data: current().ext, shape: current().input }),
+	});
 	writeForm();
 	update();
 	if (new URLSearchParams(window.location.search).get('import') === 'handoff') {

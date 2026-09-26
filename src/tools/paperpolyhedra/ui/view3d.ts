@@ -6,6 +6,7 @@ import type { TextureSource } from '../../../lib/raster';
 import { STRIP_DENSITY, TESSELLATION_DENSITY, type SideMode } from '../core/artwork';
 import type { ShapeDims } from '../core/params';
 import { foldedSolid, type Vec3 } from '../core/solid';
+import type { FrameGeometry } from '../../scaffoldshell/core/frame';
 
 export interface Look {
 	fill: string | null;
@@ -65,18 +66,65 @@ export class ShapeView3D {
 		return texture;
 	}
 
+	/** With a frame inside, the shell is drawn see-through so the frame shows. */
+	private seeThrough = false;
+
 	private material(fill: string | null, image: TextureSource | null): THREE.Material {
-		if (fill) return new THREE.MeshStandardMaterial({ color: fill, roughness: 0.9, side: THREE.DoubleSide });
+		const clear = this.seeThrough ? { transparent: true, opacity: 0.28, depthWrite: false } : {};
+		if (fill) return new THREE.MeshStandardMaterial({ color: fill, roughness: 0.9, side: THREE.DoubleSide, ...clear });
 		return new THREE.MeshStandardMaterial({
 			color: '#ffffff',
 			map: image ? this.texture(image) : null,
 			roughness: 0.9,
 			side: THREE.DoubleSide,
 			...(image ? {} : { color: PAPER }),
+			...clear,
 		});
 	}
 
-	update(dims: ShapeDims, look: Look): void {
+	/**
+	 * The scaffold inside the shell. Frame space is z up with its origin at the middle of the
+	 * ENTERED height (as ScaffoldShell places it), so it sits at height / 2 above the shell's
+	 * bottom; for frustums the folded shell is taller or shorter than that (see the notes).
+	 */
+	private addFrame(frame: FrameGeometry, height: number): void {
+		const toThree = ([x, y, z]: Vec3) => new THREE.Vector3(x, z + height / 2, -y);
+		const r = Math.max(frame.strutRadius, 0.3);
+		const strut = ([a, b]: [Vec3, Vec3], colour: string) => {
+			const p = toThree(a);
+			const q = toThree(b);
+			const length = p.distanceTo(q);
+			if (length < 1e-6) return;
+			const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r, r, length, 12), new THREE.MeshStandardMaterial({ color: colour, roughness: 0.6 }));
+			mesh.position.copy(p).add(q).multiplyScalar(0.5);
+			mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), q.clone().sub(p).normalize());
+			this.group.add(mesh);
+		};
+		const joint = (at: Vec3, colour: string) => {
+			const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, 12, 8), new THREE.MeshStandardMaterial({ color: colour, roughness: 0.6 }));
+			mesh.position.copy(toThree(at));
+			this.group.add(mesh);
+		};
+		for (const s of [...frame.ring, ...frame.wallStruts]) strut(s, '#9aa3ad');
+		for (const v of frame.bottom) joint(v, '#e65a5a');
+		for (const s of frame.floorSpokes) strut(s, '#82aaff');
+		for (const rig of frame.rigs) {
+			for (const s of [rig.spine, rig.baseLink]) strut(s, '#f0be6e');
+			for (const s of [...rig.posts, ...rig.connectors]) strut(s, '#8fbf5a');
+			const [w, d, h] = rig.box.size;
+			const geometry = new THREE.BoxGeometry(w, h, d);
+			const box = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: '#8abeb7', transparent: true, opacity: 0.35, depthWrite: false }));
+			const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color: '#5c8f89' }));
+			for (const o of [box, edges]) {
+				o.position.copy(toThree(rig.box.centre));
+				o.rotation.y = (rig.box.rotation * Math.PI) / 180;
+				this.group.add(o);
+			}
+		}
+	}
+
+	update(dims: ShapeDims, look: Look, frame: FrameGeometry | null = null): void {
+		this.seeThrough = !!frame && frame.valid;
 		for (const child of [...this.group.children]) {
 			this.group.remove(child);
 			if (child instanceof THREE.Mesh || child instanceof THREE.LineSegments) {
@@ -154,6 +202,7 @@ export class ShapeView3D {
 		edgeGeometry.setAttribute('position', new THREE.Float32BufferAttribute(edges.flatMap(([x, y, z]) => [x, z, -y]), 3));
 		this.group.add(new THREE.LineSegments(edgeGeometry, new THREE.LineBasicMaterial({ color: '#3a3a3a' })));
 
+		if (frame && frame.valid) this.addFrame(frame, dims.height);
 		this.group.position.y = -solid.height / 2;
 		if (!this.framed) this.frame(Math.max(solid.height, ...solid.bottom.map((p) => Math.hypot(p[0], p[1]) * 2)));
 		this.render();

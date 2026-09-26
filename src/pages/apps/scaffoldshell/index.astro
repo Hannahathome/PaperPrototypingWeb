@@ -1,0 +1,100 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import PolyhedraApp from '../../../components/PolyhedraApp.astro';
+import { getTool } from '../../../data/tools';
+import { withBase } from '../../../lib/paths';
+import { DEFAULT_FRAME_SETTINGS, NEW_RIG, RIG_CUT_FACE_NAMES, RIG_CUT_SIZE_NAMES } from '../../../tools/scaffoldshell/core/frame';
+
+const tool = getTool('scaffoldshell');
+const f = DEFAULT_FRAME_SETTINGS;
+const r = NEW_RIG;
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'ScaffoldShell',
+		description: 'A foldable paper shell plus the 3D-printable scaffold that goes inside it, sized from the shell.',
+		tableOfContents: false,
+	}}
+>
+	<p class="intro">
+		A basic web version of ScaffoldShell: everything in the PaperPolyhedra app, plus a scaffold for each shape, a
+		3D-printable strut frame with mounts ("rigs") for electronics, sized from the shell itself. It downloads the usual
+		print and cut files plus an OpenSCAD file per scaffold, all matching the
+		<a href={tool.processingUrl}>Processing version</a>. First time? Use the <a
+			href={withBase('apps/calibration/')}>calibration test sheet</a
+		>.
+	</p>
+
+	<PolyhedraApp>
+		<fieldset slot="panels" id="scaffoldFields">
+			<legend>Scaffold</legend>
+			<label class="check"><input id="sfEnabled" type="checkbox" /> Build a scaffold for this shape</label>
+			<div id="sfFields" hidden>
+				<p id="sfDerived" class="hint"></p>
+				<label>Strut radius (mm) <input id="sfStrut" type="number" min="0.1" step="0.1" value={f.strutRadius} /></label>
+				<label
+					title="Measure a folded shell and set the difference here; 0.4 mm is a starting guess, not a measurement."
+					>Clearance to the paper (mm) <input id="sfClearance" type="number" min="0" step="0.1" value={f.clearance} /></label
+				>
+				<label>Wall flap length (mm) <input id="sfFlap" type="number" min="0" step="0.5" value={f.flapLength} /></label>
+				<label class="check"><input id="sfDual" type="checkbox" /> Two posts per rig face</label>
+				<label>Post spacing (mm) <input id="sfSpacing" type="number" min="0" step="0.5" value={f.strutSpacing} /></label>
+
+				<div class="row">
+					<select id="rigList" aria-label="Selected rig"></select>
+					<button id="addRig" type="button" class="small">Add rig</button>
+					<button id="removeRig" type="button" class="small">Remove</button>
+				</div>
+				<div id="rigFields" hidden>
+					<label>Component <select id="rigPreset"></select></label>
+					<div class="grid">
+						<label>Width <input id="rigWidth" type="number" min="0" step="0.5" value={r.width} /></label>
+						<label>Depth <input id="rigDepth" type="number" min="0" step="0.5" value={r.depth} /></label>
+						<label>Height <input id="rigHeight" type="number" min="0" step="0.5" value={r.height} /></label>
+						<label>Offset X <input id="rigOffsetX" type="number" step="0.5" value={r.offsetX} /></label>
+						<label>Offset Y <input id="rigOffsetY" type="number" step="0.5" value={r.offsetY} /></label>
+						<label>Offset Z <input id="rigOffsetZ" type="number" step="0.5" value={r.offsetZ} /></label>
+						<label>Rotation (°) <input id="rigRotation" type="number" step="0.5" value={r.rotation} /></label>
+					</div>
+					<label>
+						Window in the paper
+						<select id="rigWindow">{RIG_CUT_FACE_NAMES.map((name, i) => <option value={i}>{name}</option>)}</select>
+					</label>
+					<label>
+						Window size
+						<select id="rigWindowSize">{RIG_CUT_SIZE_NAMES.map((name, i) => <option value={i}>{name}</option>)}</select>
+					</label>
+					<p id="rigStatus" class="hint"></p>
+				</div>
+				<p class="hint">
+					Clearance is the one number the app cannot work out: fold a shell, measure it, and set the difference.
+				</p>
+			</div>
+		</fieldset>
+	</PolyhedraApp>
+</StarlightPage>
+
+<script>
+	import { startApp } from '../../../tools/paperpolyhedra/ui/app';
+	import { scaffoldExtension } from '../../../tools/scaffoldshell/ui/extension';
+
+	document.querySelector<HTMLInputElement>('#name')!.value = 'scaffoldshell';
+	startApp(scaffoldExtension());
+</script>
+
+<style>
+	#sfFields,
+	#rigFields {
+		display: grid;
+		gap: 0.6rem;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.6rem;
+	}
+	#rigList {
+		flex: 1;
+	}
+</style>
