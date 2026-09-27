@@ -80,11 +80,11 @@
 		"id": "phiconwidgets",
 		"name": "Phicon Widgets",
 		"category": "maker",
-		"status": "planned",
-		"description": "PaperPhicons blocks with cut-outs (squares, pills, circles) in the marker face, for tangible knobs, slots and buttons.",
+		"status": "in-progress",
+		"description": "PaperPhicons blocks with cut-outs (squares, pills, circles) in the base face, for tangible knobs, slots and buttons.",
 		"processingUrl": null,
 		"sourceNote": "TEI27Software (local folder, not on GitHub): PaperPhicons_Boilerplate_v1_1_Cutout",
-		"appPath": null,
+		"appPath": "apps/phiconwidgets/",
 		"tutorials": []
 	},
 	{

@@ -1,0 +1,82 @@
+---
+// The PaperPhicons app layout: block, marker, export, facts, notes, the sheet preview and the 3D
+// view. Used by PaperPhicons and Phicon Widgets, which adds its cut-outs through the "panels"
+// slot and the marker offset through `markerOffset`. The page provides the script.
+import { PREVIEW_COLOURS } from '../lib/preview';
+import '../styles/app.css';
+import type { BlockInput } from '../tools/paperphicons/core/block';
+
+interface Props {
+	defaults: BlockInput;
+	/** Default export file name. */
+	fileName: string;
+	/** Show the marker offset field (Phicon Widgets). */
+	markerOffset?: boolean;
+}
+
+const { defaults: d, fileName, markerOffset = false } = Astro.props;
+---
+
+<div class="app not-content">
+	<form id="controls" class="controls" onsubmit="return false">
+		<fieldset>
+			<legend>Block</legend>
+			<label>Width (mm) <input id="width" type="number" min="1" max="100" step="1" value={d.width} /></label>
+			<label>Length (mm) <input id="length" type="number" min="1" max="100" step="1" value={d.length} /></label>
+			<label>Height (mm) <input id="height" type="number" min="1" max="100" step="1" value={d.height} /></label>
+			<label>Copies <input id="copies" type="number" min="1" max="16" step="1" value={d.copies} /></label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Marker</legend>
+			<label>First marker id (0–1023) <input id="firstMarkerId" type="number" min="0" max="1023" step="1" value={d.firstMarkerId} /></label>
+			<label>Marker size (mm) <input id="markerSize" type="number" min="5" max="50" step="1" value={d.markerSize} /></label>
+			<label>
+				Marker on
+				<select id="markerFace">
+					<option value="base" selected={!d.markerOnSide}>Base (width × length)</option>
+					<option value="side" selected={d.markerOnSide}>Side wall (height × length)</option>
+				</select>
+			</label>
+			{
+				markerOffset && (
+					<label>
+						Marker offset along the length (mm)
+						<input id="markerOffsetY" type="number" min="-50" max="50" step="1" value={d.markerOffsetY ?? 0} />
+					</label>
+				)
+			}
+			<p class="hint">The size is the black square. A white margin of one cell (size ÷ 7) is added around it; keep it clear.</p>
+		</fieldset>
+
+		<slot name="panels" />
+
+		<fieldset>
+			<legend>Export</legend>
+			<label>File name <input id="name" type="text" value={fileName} /></label>
+			<button id="export" type="button">Download PDF + cut files</button>
+			<p id="status" role="status"></p>
+		</fieldset>
+	</form>
+
+	<div class="views">
+		<dl id="facts" class="facts"></dl>
+		<div id="notes" class="notes" role="note" hidden></div>
+
+		<figure>
+			<div id="sheet" class="sheet"></div>
+			<figcaption>
+				<span style={`--c: ${PREVIEW_COLOURS.cut}`} class="key solid">Cut</span>
+				<span style={`--c: ${PREVIEW_COLOURS.fold}`} class="key dashed">Fold</span>
+				<span style={`--c: ${PREVIEW_COLOURS.cutArea}`} class="key dashed">Cutting area, 280 × 200 mm</span>
+			</figcaption>
+		</figure>
+
+		<figure>
+			<div id="view3d" class="view3d" aria-label="3D preview of the first block. Drag to rotate, scroll to zoom."></div>
+			<figcaption>
+				The first block, folded. Drag to rotate, scroll to zoom. <button id="resetView" type="button" class="link">Reset view</button>
+			</figcaption>
+		</figure>
+	</div>
+</div>

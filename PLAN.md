@@ -146,7 +146,7 @@ is not a separate tool.
 
 Order, smallest and best-founded first:
 
-1. **Phicon Widgets** (maker; `PaperPhicons_Boilerplate_v1_1_Cutout`). The PaperPhicons block
+1. **Phicon Widgets** (maker; `PaperPhicons_Boilerplate_v1_1_Cutout`; built 2026-09-27, in beta). The PaperPhicons block
    with cut-outs in the marker face: squares, pills (stadiums) and circles, each with a size
    and an offset from the face centre in mm. Reuses the Phase 4 core; the cut-outs are extra
    closed cut paths. Fixtures: the sketch's own exports in its `output/` folder

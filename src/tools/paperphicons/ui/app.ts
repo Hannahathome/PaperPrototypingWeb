@@ -1,15 +1,29 @@
 // PaperPhicons web app: reads the form, asks the core for the sheet, previews and exports it.
+// Phicon Widgets reuses it with an extension that adds its cut-outs.
+import type { Point } from '../../../lib/drawing';
 import { buildExportFiles } from '../../../lib/export';
 import { downloadAll } from '../../../lib/files';
 import { previewSvg } from '../../../lib/preview';
-import { buildBlockSheet, type BlockInput } from '../core/block';
+import { buildBlockSheet, type BlockInput, type BlockSheet } from '../core/block';
 import { BlockView3D } from './view3d';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const num = (id: string) => Number($<HTMLInputElement>(id).value);
 
-export function startApp(): void {
+/** What a tool built on this app adds: its own panel, sheet and holes in the 3D view. */
+export interface PhiconsExtension {
+	/** Wire up the extension's controls; call `changed` after every edit. */
+	mount(changed: () => void): void;
+	build(input: BlockInput): BlockSheet;
+	/** Outlines to show as holes in the base face of the 3D view, in mm from its centre. */
+	holes(input: BlockInput): Point[][];
+}
+
+const plain: PhiconsExtension = { mount: () => {}, build: (input) => buildBlockSheet(input), holes: () => [] };
+
+export function startApp(ext: PhiconsExtension = plain): void {
 	const view = new BlockView3D($('view3d'));
+	const offsetField = document.getElementById('markerOffsetY') as HTMLInputElement | null;
 
 	const readInput = (): BlockInput => ({
 		width: num('width'),
@@ -19,11 +33,12 @@ export function startApp(): void {
 		markerSize: num('markerSize'),
 		copies: Math.max(1, Math.min(16, Math.trunc(num('copies')))),
 		markerOnSide: $<HTMLSelectElement>('markerFace').value === 'side',
+		markerOffsetY: offsetField ? Number(offsetField.value) || 0 : 0,
 	});
 
 	const update = () => {
 		const input = readInput();
-		const result = buildBlockSheet(input);
+		const result = ext.build(input);
 		const ids = result.markerIds;
 		$('facts').innerHTML = [
 			['Marker ids', ids.length > 1 ? `${ids[0]}–${ids[ids.length - 1]}` : String(ids[0])],
@@ -41,7 +56,7 @@ export function startApp(): void {
 		$('notes').hidden = notes.length === 0;
 		$<HTMLButtonElement>('export').disabled = result.errors.length > 0;
 		$('sheet').innerHTML = previewSvg(result.sheet, { title: 'PaperPhicons sheet preview' });
-		view.update(input, result.errors.length ? null : ids[0]);
+		view.update(input, result.errors.length ? null : ids[0], ext.holes(input));
 	};
 
 	let timer: number | undefined;
@@ -51,6 +66,7 @@ export function startApp(): void {
 	};
 	$('controls').addEventListener('input', schedule);
 	$('controls').addEventListener('change', schedule);
+	ext.mount(schedule);
 	$('resetView').addEventListener('click', () => {
 		view.reset();
 		update();
@@ -58,7 +74,7 @@ export function startApp(): void {
 
 	const button = $<HTMLButtonElement>('export');
 	button.addEventListener('click', async () => {
-		const result = buildBlockSheet(readInput());
+		const result = ext.build(readInput());
 		if (result.errors.length) return;
 		button.disabled = true;
 		try {

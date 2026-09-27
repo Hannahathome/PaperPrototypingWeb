@@ -1,13 +1,25 @@
 // Rotatable 3D preview of one folded block with its marker (three.js). Display only.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import type { Point } from '../../../lib/drawing';
 import { arucoOriginalBits } from '../core/aruco';
 import type { BlockInput } from '../core/block';
 
 const PAPER = '#f4f1ea';
+const HOLE = '#2b2b2b';
 
-/** A face texture: paper with the marker (and its white margin) centred at its true size. */
-function markerTexture(faceW: number, faceH: number, id: number, markerSize: number): THREE.CanvasTexture {
+interface FaceMarker {
+	id: number;
+	size: number;
+	/** Offset of its centre from the face centre (mm, x right, y down). */
+	offset: Point;
+}
+
+/**
+ * A face texture: paper with the marker (and its white margin) at its true size and holes drawn
+ * dark. Marker and holes are placed in mm from the face centre, x right and y down as on the sheet.
+ */
+function faceTexture(faceW: number, faceH: number, marker: FaceMarker | null, holes: Point[][]): THREE.CanvasTexture {
 	const scale = 12; // px per mm
 	const canvas = document.createElement('canvas');
 	canvas.width = Math.max(1, Math.round(faceW * scale));
@@ -15,9 +27,23 @@ function markerTexture(faceW: number, faceH: number, id: number, markerSize: num
 	const ctx = canvas.getContext('2d')!;
 	ctx.fillStyle = PAPER;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	if (marker) drawMarker(ctx, canvas, marker, scale);
+	ctx.fillStyle = HOLE;
+	for (const hole of holes) {
+		ctx.beginPath();
+		hole.forEach(([x, y], i) => ctx[i ? 'lineTo' : 'moveTo'](canvas.width / 2 + x * scale, canvas.height / 2 + y * scale));
+		ctx.closePath();
+		ctx.fill();
+	}
+	const texture = new THREE.CanvasTexture(canvas);
+	texture.colorSpace = THREE.SRGBColorSpace;
+	return texture;
+}
+
+function drawMarker(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, { id, size: markerSize, offset }: FaceMarker, scale: number): void {
 	const cell = (markerSize / 7) * scale;
-	const left = canvas.width / 2 - 4.5 * cell;
-	const top = canvas.height / 2 - 4.5 * cell;
+	const left = canvas.width / 2 + offset[0] * scale - 4.5 * cell;
+	const top = canvas.height / 2 + offset[1] * scale - 4.5 * cell;
 	ctx.fillStyle = '#ffffff';
 	ctx.fillRect(left, top, 9 * cell, 9 * cell);
 	ctx.fillStyle = '#000000';
@@ -28,9 +54,6 @@ function markerTexture(faceW: number, faceH: number, id: number, markerSize: num
 			if (bit) ctx.fillRect(left + (2 + c) * cell, top + (2 + r) * cell, cell + 0.5, cell + 0.5);
 		}),
 	);
-	const texture = new THREE.CanvasTexture(canvas);
-	texture.colorSpace = THREE.SRGBColorSpace;
-	return texture;
 }
 
 export class BlockView3D {
@@ -55,7 +78,8 @@ export class BlockView3D {
 		this.resize();
 	}
 
-	update(input: BlockInput, markerId: number | null): void {
+	/** `holes`: outlines cut out of the base face, in mm from its centre. */
+	update(input: BlockInput, markerId: number | null, holes: Point[][] = []): void {
 		for (const child of [...this.group.children]) {
 			this.group.remove(child);
 			if (child instanceof THREE.Mesh || child instanceof THREE.LineSegments) {
@@ -71,12 +95,15 @@ export class BlockView3D {
 		// three.js box: x = width, y = height (up), z = length. Face order: +x, −x, +y, −y, +z, −z.
 		const geometry = new THREE.BoxGeometry(W, H, L);
 		const paper = () => new THREE.MeshStandardMaterial({ color: PAPER, roughness: 0.9 });
-		const withMarker = (w: number, h: number) =>
-			markerId === null ? paper() : new THREE.MeshStandardMaterial({ map: markerTexture(w, h, markerId, input.markerSize), roughness: 0.9 });
+		const offset = input.markerOffsetY ?? 0;
+		const marker = (at: Point): FaceMarker | null => (markerId === null ? null : { id: markerId, size: input.markerSize, offset: at });
+		const textured = (w: number, h: number, m: FaceMarker | null, faceHoles: Point[][]) =>
+			m || faceHoles.length ? new THREE.MeshStandardMaterial({ map: faceTexture(w, h, m, faceHoles), roughness: 0.9 }) : paper();
+		// The side wall is H × L on the sheet, turned a quarter on the box (L across, H up).
 		const materials = [
-			input.markerOnSide ? withMarker(L, H) : paper(),
+			input.markerOnSide ? textured(L, H, marker([offset, 0]), []) : paper(),
 			paper(),
-			input.markerOnSide ? paper() : withMarker(W, L),
+			textured(W, L, input.markerOnSide ? null : marker([0, offset]), holes),
 			paper(),
 			paper(),
 			paper(),

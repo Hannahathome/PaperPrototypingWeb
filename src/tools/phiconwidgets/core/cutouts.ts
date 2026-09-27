@@ -48,6 +48,17 @@ export const DEFAULT_WIDGET: WidgetInput = {
 
 export const NEW_CUTOUT: Cutout = { shape: 'square', width: 20, height: 20, x: 0, y: 0, vertical: false };
 
+/**
+ * What the web app opens with. The sketch opens with a 20 mm square over the marker; the app
+ * opens with a knob hole instead, with the marker moved to the side wall, so the example passes
+ * its own checks.
+ */
+export const STARTING_WIDGET: WidgetInput = {
+	...DEFAULT_WIDGET,
+	markerOnSide: true,
+	cutouts: [{ shape: 'circle', width: 20, height: 20, x: 0, y: 0, vertical: false }],
+};
+
 /** Centre of the base face (W × L) of the block with its top-left at `at`. */
 export function baseFaceCentre(input: Pick<BlockInput, 'width' | 'length' | 'height'>, at: Point): Point {
 	const { x, y } = gridLines(input);

@@ -66,3 +66,11 @@ Processing PaperPolyhedra ignores bar exports' width, so bars import as 30 mm sq
 reads a 4-sided diameter as a side length (41 % larger than previewed). The web export writes
 `sides`/`diameter` for bars and side lengths for 4 sides. Processing's importer or exporter
 could get the same fix.
+
+## 6. PaperPolyhedra's first shape touches a calibration cross
+
+The first shape starts at Processing's pattern origin, (10, 20) mm. The top-left calibration
+cross reaches 10 mm around (10, 10), so its vertical arm ends at (10, 20), on the net's top
+edge, and the app shows "Shape 1 reaches a corner where a calibration cross is cut" as soon as
+it opens. Your physical check passed with this layout. Fixing it: start the first shape in a
+free spot (22 mm from the corner), as added shapes already do. Processing has the same layout.

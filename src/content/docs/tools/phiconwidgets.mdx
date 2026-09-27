@@ -1,6 +1,6 @@
 ---
 title: Phicon Widgets
-description: "PaperPhicons blocks with cut-outs (squares, pills, circles) in the marker face, for tangible knobs, slots and buttons."
+description: "PaperPhicons blocks with cut-outs (squares, pills, circles) in the base face, for tangible knobs, slots and buttons."
 ---
 
 import ToolInfo from "../../../components/ToolInfo.astro";
@@ -10,8 +10,22 @@ import ToolTutorials from "../../../components/ToolTutorials.astro";
 
 ## About
 
-Planned. This web tool will be based on the Processing sketch `PaperPhicons_Boilerplate_v1_1_Cutout` from the TEI'27
-software, which is not on GitHub yet, so there is no link to the Processing version.
+The [web app](../../apps/phiconwidgets/) makes [PaperPhicons](../paperphicons/) blocks with holes
+cut into their base face: squares and rectangles, pills (rounded slots, across or along the
+face) and circles. Each hole has a size and a position from the centre of the face, and every
+block on the sheet gets the same holes. Use them to let a knob, a slider or a button reach
+through the block, while the ArUco marker (on the base, moved aside with its offset, or on the
+side wall) lets a camera track it.
+
+The app warns when a hole reaches past the face into the folds, or cuts into the marker or its
+white margin, which would stop a camera from detecting it.
+
+It is based on the TEI'27 sketch `PaperPhicons_Boilerplate_v1_1_Cutout`, which is not on
+GitHub, so there is no link to it. The nets and holes match that sketch's exports; like the
+PaperPhicons web app, it follows the shared print-and-cut layout and fixes the sketch's cut-file
+spacing when there are several blocks.
+
+The web app is in beta until printed blocks have been checked.
 
 ## Tutorials
 

@@ -1,0 +1,86 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import PhiconsApp from '../../../components/PhiconsApp.astro';
+import { withBase } from '../../../lib/paths';
+import { STARTING_WIDGET } from '../../../tools/phiconwidgets/core/cutouts';
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Phicon Widgets',
+		description: 'PaperPhicons blocks with cut-outs in the base face, for tangible knobs, slots and buttons.',
+		tableOfContents: false,
+	}}
+>
+	<p class="intro">
+		A web version of the TEI'27 sketch <code>PaperPhicons_Boilerplate_v1_1_Cutout</code>: a <a href={withBase('tools/paperphicons/')}
+			>PaperPhicons</a
+		> block with holes (squares, pills and circles) cut into its base face, so knobs, sliders and buttons can reach
+		through. Its nets and holes match the sketch's exports. Print at <strong>actual size</strong>. First time? Use the <a
+			href={withBase('apps/calibration/')}>calibration test sheet</a
+		>.
+	</p>
+
+	<PhiconsApp defaults={STARTING_WIDGET} fileName="phiconwidgets" markerOffset>
+		<fieldset slot="panels" id="cutoutFields">
+			<legend>Cut-outs</legend>
+			<select id="cutList" size="4" aria-label="Cut-outs"></select>
+			<p id="cutCount" class="hint"></p>
+			<div class="row">
+				<button id="addCut" type="button" class="small">Add cut-out</button>
+				<button id="removeCut" type="button" class="small">Remove</button>
+			</div>
+			<div id="cutFields" class="cut-fields">
+				<label>
+					Shape
+					<select id="cutShape">
+						<option value="square">Square or rectangle</option>
+						<option value="pill">Pill (rounded slot)</option>
+						<option value="circle">Circle</option>
+					</select>
+				</label>
+				<div class="grid">
+					<label><span id="cutWidthLabel">Width (mm)</span> <input id="cutWidth" type="number" min="0.5" step="0.5" /></label>
+					<label id="cutHeightField"><span id="cutHeightLabel">Height (mm)</span> <input id="cutHeight" type="number" min="0.5" step="0.5" /></label>
+					<label>Right of centre (mm) <input id="cutX" type="number" step="0.5" /></label>
+					<label>Below centre (mm) <input id="cutY" type="number" step="0.5" /></label>
+				</div>
+				<label id="cutVerticalField" class="check"><input id="cutVertical" type="checkbox" /> Vertical (length down the face)</label>
+			</div>
+			<p class="hint">
+				Positions are from the centre of the base face (width × length) as it lies on the sheet. Every block on the sheet
+				gets the same cut-outs.
+			</p>
+		</fieldset>
+	</PhiconsApp>
+</StarlightPage>
+
+<script>
+	import { STARTING_WIDGET } from '../../../tools/phiconwidgets/core/cutouts';
+	import { widgetExtension } from '../../../tools/phiconwidgets/ui/extension';
+	import { startApp } from '../../../tools/paperphicons/ui/app';
+
+	startApp(widgetExtension(STARTING_WIDGET.cutouts));
+</script>
+
+<style>
+	.cut-fields {
+		display: grid;
+		gap: 0.6rem;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.5rem;
+	}
+	#cutList {
+		width: 100%;
+		padding: 0.25rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 0.25rem;
+		background: var(--sl-color-black);
+		color: var(--sl-color-white);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+	}
+</style>

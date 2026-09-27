@@ -365,3 +365,43 @@ positions are mapped with the net's panel height (`rigPanelFlatHeightMM`, Proces
 `exportPlan()` must run with `bSavePDF = true` (the E key sets it and `draw()` exports).
 Calling it without that draws on-screen extras into the files, e.g. "Rig 1" labels in the cut
 SVG. Both harnesses set it.
+
+## Phicon Widgets
+
+Source: TEI'27 sketch `PaperPhicons_Boilerplate_v1_1_Cutout` (local, not on GitHub). Fixtures:
+`tests/fixtures/phiconwidgets/`. The block net, markers and print layout are PaperPhicons'
+(identical code), with the same web decisions (shared print-and-cut layout, fixed copy spacing).
+
+### The cut-out being edited is always exported
+
+The sketch has a list of added cut-outs plus one being edited (green on screen), and exports
+both, so a block always has at least one cut-out unless "show cutouts" is off. The web app has
+only a list: what is listed is cut. The fixture harness makes a case's last cut-out the edited one.
+
+- Source: `Cutouts.pde`, `drawFrontCutouts()`
+
+### Cut-outs are on the base face, wherever the marker is
+
+Cut-outs are positioned from the centre of the W × L base face, also when the marker is on the
+side wall. The marker offset (`Marker_OffY`) moves the marker along the length, on either face.
+The sketch does not check overlaps; the web app warns when a cut-out cuts into the marker or its
+white margin, or reaches past the face.
+
+- Test: `tests/tools/phiconwidgets/cutouts.test.ts`
+
+### Circles and pills are polygons
+
+Circles are 64 points on the radius (so the hole is up to 0.12 % of the radius smaller than
+the circle: 0.012 mm for Ø20), pill ends 25 points each. The web version draws the same
+polygons. A pill runs along its longer side: with its "width" (Cut H) larger than its "length"
+(Cut W) it runs the other way, whatever *Vertical* says.
+
+- Test: `tests/tools/phiconwidgets/processing-match.test.ts`
+
+### Cut-file copies at 75 % spacing, but no 0.375 mm lid folds
+
+As in PaperPhicons, `bboxW`/`bboxH` are print-scale values used at cut scale, so cut copies (and
+their cut-outs) sit at 75 % of the printed spacing. Unlike PaperPhicons, this sketch calls
+`setDimension(…, true)` before the cut SVG, so the lid folds use the right thickness.
+
+- Test: `tests/tools/phiconwidgets/processing-match.test.ts` (pins the 75 % spacing)
