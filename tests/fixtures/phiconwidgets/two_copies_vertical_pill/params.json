@@ -1,0 +1,42 @@
+{
+	"id": "two_copies_vertical_pill",
+	"width": 40,
+	"length": 50,
+	"height": 15,
+	"markerId": 55,
+	"markerSize": 10,
+	"repeat": 2,
+	"markerOnSide": true,
+	"markerOffsetY": 5,
+	"cutouts": [
+		{
+			"shape": "pill",
+			"width": 30,
+			"height": 12,
+			"x": -8,
+			"y": 0,
+			"vertical": true
+		},
+		{
+			"shape": "square",
+			"width": 10,
+			"height": 20,
+			"x": 10,
+			"y": 5,
+			"vertical": false
+		},
+		{
+			"shape": "circle",
+			"width": 6,
+			"height": 0,
+			"x": 10,
+			"y": -17,
+			"vertical": false
+		}
+	],
+	"source": {
+		"folder": "TEI27Software",
+		"sketch": "PaperPhicons_Boilerplate_v1_1_Cutout",
+		"pdeSha256": "5eac3f2875b3375372bffc2deeb85d81a9d7109303630aef79c3d1d1c64341a9"
+	}
+}

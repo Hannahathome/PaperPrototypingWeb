@@ -23,6 +23,11 @@ export interface BlockInput {
 	copies: number;
 	/** Put the marker on the H × L wall instead of the W × L base (Processing "M_Pos"). */
 	markerOnSide: boolean;
+	/**
+	 * Moves the marker along the face's length (mm, + = down on the sheet). Only the TEI'27
+	 * boilerplate (Phicon Widgets) has it (Marker_OffY); PaperPhicons leaves it at 0.
+	 */
+	markerOffsetY?: number;
 }
 
 /** Processing's defaults (PaperPhicons.pde, UI.pde). */
@@ -104,7 +109,7 @@ export function blockPaths(input: BlockInput, at: Point, { foldThickness = THICK
 export function markerCentre(input: BlockInput, at: Point): Point {
 	const { x, y } = gridLines(input);
 	const cx = input.markerOnSide ? (x[3] + x[2]) / 2 : (x[1] + x[2]) / 2;
-	return [at[0] + cx, at[1] + (y[1] + y[2]) / 2];
+	return [at[0] + cx, at[1] + (y[1] + y[2]) / 2 + (input.markerOffsetY ?? 0)];
 }
 
 /**
@@ -170,9 +175,10 @@ export interface BlockSheet {
 /**
  * All copies on one sheet, in two columns as Processing lays them out. The cut file uses the
  * same spacing as the print (in Processing the cut copies were spaced at 75 %, see
- * docs/hidden-behaviour.md).
+ * docs/hidden-behaviour.md). `extraPaths` adds paths to each copy (with its top-left at `at`),
+ * drawn before the net, as Phicon Widgets does with its cut-outs.
  */
-export function buildBlockSheet(input: BlockInput): BlockSheet {
+export function buildBlockSheet(input: BlockInput, extraPaths?: (at: Point) => Path[]): BlockSheet {
 	const copies = Math.max(1, Math.trunc(input.copies));
 	const [dx, dy] = blockSpacing(input);
 	const paths: Path[] = [];
@@ -182,10 +188,13 @@ export function buildBlockSheet(input: BlockInput): BlockSheet {
 	const warnings: string[] = [];
 	const outer = (input.markerSize * 9) / 7;
 	const [faceW, faceL] = [input.markerOnSide ? input.height : input.width, input.length];
+	const offset = input.markerOffsetY ?? 0;
 	if (outer > Math.min(faceW, faceL)) {
 		warnings.push(
 			`The marker with its white margin is ${outer.toFixed(1)} mm, larger than its ${faceW} × ${faceL} mm face; cameras need the white margin to detect it.`,
 		);
+	} else if (Math.abs(offset) + outer / 2 > faceL / 2 + 1e-9) {
+		warnings.push(`With its ${offset} mm offset, the marker (${outer.toFixed(1)} mm with its white margin) runs off its face.`);
 	}
 	const lastId = input.firstMarkerId + copies - 1;
 	if (input.firstMarkerId < 0 || lastId >= ARUCO_ORIGINAL_SIZE) {
@@ -195,6 +204,7 @@ export function buildBlockSheet(input: BlockInput): BlockSheet {
 		const at: Point = [ORIGIN[0] + (i % 2) * dx, ORIGIN[1] + Math.floor(i / 2) * dy];
 		const id = input.firstMarkerId + i;
 		markerIds.push(id);
+		if (extraPaths) paths.push(...extraPaths(at));
 		paths.push(...blockPaths(input, at));
 		if (id >= 0 && id < ARUCO_ORIGINAL_SIZE) {
 			const centre = markerCentre(input, at);

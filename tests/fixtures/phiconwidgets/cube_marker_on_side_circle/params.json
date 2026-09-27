@@ -1,0 +1,26 @@
+{
+	"id": "cube_marker_on_side_circle",
+	"width": 30,
+	"length": 30,
+	"height": 30,
+	"markerId": 0,
+	"markerSize": 16,
+	"repeat": 1,
+	"markerOnSide": true,
+	"markerOffsetY": 0,
+	"cutouts": [
+		{
+			"shape": "circle",
+			"width": 20,
+			"height": 20,
+			"x": 0,
+			"y": 0,
+			"vertical": false
+		}
+	],
+	"source": {
+		"folder": "TEI27Software",
+		"sketch": "PaperPhicons_Boilerplate_v1_1_Cutout",
+		"pdeSha256": "5eac3f2875b3375372bffc2deeb85d81a9d7109303630aef79c3d1d1c64341a9"
+	}
+}
