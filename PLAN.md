@@ -119,11 +119,21 @@ stay compatible with the PaperPolyhedra import; the files in `DataPhysicalisatio
 become fixtures. Then add JSON import to the PaperPolyhedra web app, so the two connect in
 the browser.
 
-## Phase 6: ScaffoldShell basic and the visualisation tools (ScaffoldShell built, in beta; WidgetGenerator and PaperBlox wait for a description)
+## Phase 6: ScaffoldShell, WidgetGenerator and PaperBlox (ScaffoldShell built, in beta; the other two wait for their code)
 
 ScaffoldShell reuses the cores from Phases 2 and 3, so nothing is ported twice.
-WidgetGenerator and other visualisation tools go under their own section. PaperBlox is
-covered by the PaperPolyhedra basic version; its card can point there.
+
+WidgetGenerator and PaperBlox have no code in the PaperPrototyping repo yet; Hannah is looking
+for their sources (2026-09-27), and both stay *planned* until then.
+
+- **WidgetGenerator** (visualisation): shows what a widget will look like, a box with cut-outs in
+  which smaller frustums move. The closest code found is TEI27's `SlidingFrustumBoxCP5`, built
+  as its own tool, *Sliding Frustum Box* (Phase 7, step 6). If the WidgetGenerator code turns out
+  to be close to it, the two can merge.
+- **PaperBlox** (maker): the first version of the system; an origami pattern that folds a box
+  with an integrated ArUco marker. Candidates found: `PaperVoxels/VoxelCutterV8` (double-sided
+  front/back folds, no ArUco in the code) and the `Voxels code` folder in the PaperBlox study
+  folder. Not yet confirmed.
 
 ## Phase 7: TEI'27 tools
 
@@ -157,7 +167,7 @@ Order, smallest and best-founded first:
    minimum-energy curve U_min(H) with sliders for sides, radius, rest height and rest twist,
    and the unit-cell diagram with the twist offset `R·sin(γ)`. Tested against values computed
    with the Python script.
-6. **Phicon Box Fit** (visualisation; `SlidingFrustumBoxCP5`). Up to four Phicons (frustum or
+6. **Sliding Frustum Box** (visualisation; `SlidingFrustumBoxCP5`; renamed from Phicon Box Fit, 2026-09-27). Up to four Phicons (frustum or
    Kresling cell with the fold physics) in one box, their ceiling cross-sections and sliding
    envelopes, and the numeric read-outs. Reuses the Kresling model from step 5.
 7. **Phicon Playground** (visualisation; `PaperPhicon_AppBuilder_v2`). The webcam tracks printed

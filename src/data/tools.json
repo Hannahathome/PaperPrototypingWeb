@@ -48,7 +48,7 @@
 		"name": "PaperBlox",
 		"category": "maker",
 		"status": "planned",
-		"description": "A stripped-down PaperPolyhedra for quick blocks and teaching contexts.",
+		"description": "The first version of the system: an origami pattern that folds a box with an integrated ArUco marker.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperBlox",
 		"appPath": null,
 		"tutorials": [],
@@ -70,7 +70,7 @@
 		"name": "WidgetGenerator",
 		"category": "visualisation",
 		"status": "planned",
-		"description": "Standalone generator for button/widget templates used inside PaperPolyhedra.",
+		"description": "Shows what a widget will look like: a box with cut-outs in which smaller frustums move around.",
 		"processingUrl": "https://github.com/Hannahathome/PaperPrototyping/tree/main/WidgetGenerator",
 		"appPath": null,
 		"tutorials": [],
@@ -121,8 +121,8 @@
 		"tutorials": []
 	},
 	{
-		"id": "phiconboxfit",
-		"name": "Phicon Box Fit",
+		"id": "slidingfrustumbox",
+		"name": "Sliding Frustum Box",
 		"category": "visualisation",
 		"status": "planned",
 		"description": "Up to four Phicons (frustums or Kresling cells) in one box, with their sliding range and cross-section at the ceiling.",
