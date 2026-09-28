@@ -1,6 +1,6 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { CATEGORIES, STATUSES, tools } from '../../src/data/tools';
+import { CATEGORIES, MAKER_GROUP_LABELS, MAKER_GROUPS, STATUSES, tools } from '../../src/data/tools';
 
 describe('tools.json', () => {
 	it('has at least one tool', () => {
@@ -13,9 +13,25 @@ describe('tools.json', () => {
 		for (const id of ids) expect(id).toMatch(/^[a-z0-9-]+$/);
 	});
 
+	it('lists maker tools group by group, in the MAKER_GROUPS order', () => {
+		const groups = tools.filter((t) => t.category === 'maker').map((t) => MAKER_GROUPS.indexOf(t.group!));
+		expect(groups).toEqual([...groups].sort((a, b) => a - b));
+	});
+
+	it('keeps the sidebar groups in astro.config.mjs in step with MAKER_GROUPS', () => {
+		const config = readFileSync('astro.config.mjs', 'utf8');
+		const listed = [...config.matchAll(/\['([a-z]+)', '([^']+)'\]/g)].map((m) => [m[1], m[2]]);
+		expect(listed).toEqual(MAKER_GROUPS.map((g) => [g, MAKER_GROUP_LABELS[g].label]));
+	});
+
 	describe.each(tools)('$id', (tool) => {
 		it('has a valid category', () => {
 			expect(CATEGORIES).toContain(tool.category);
+		});
+
+		it('has a maker group when it is a maker tool, none otherwise', () => {
+			if (tool.category === 'maker') expect(MAKER_GROUPS).toContain(tool.group);
+			else expect(tool.group).toBeNull();
 		});
 
 		it('has a valid status', () => {

@@ -16,6 +16,25 @@ function toolLinks(category) {
 		.map((tool) => ({ label: tool.name, slug: `tools/${tool.id}` }));
 }
 
+/** Maker tool groups, in the order of src/data/tools.ts (MAKER_GROUPS). */
+const MAKER_GROUPS = [
+	['paper', 'Paper tools'],
+	['strut', 'Strut tools'],
+	['combined', 'Combined tools'],
+	['support', 'Support tools'],
+	['mini', 'Mini tools'],
+];
+
+/** Sidebar sub-groups of the maker tools, each with its tool pages in tools.json order. */
+function makerGroups() {
+	return MAKER_GROUPS.map(([group, label]) => ({
+		label,
+		items: tools
+			.filter((tool) => tool.category === 'maker' && tool.group === group)
+			.map((tool) => ({ label: tool.name, slug: `tools/${tool.id}` })),
+	}));
+}
+
 /**
  * One sidebar group per tool that has at least one tutorial. Tools without
  * tutorials are left out so the sidebar shows no empty groups. Files starting
@@ -58,7 +77,7 @@ export default defineConfig({
 						{ label: 'Check your printer and cutter', slug: 'guides/calibration' },
 					],
 				},
-				{ label: 'Maker tools', items: toolLinks('maker') },
+				{ label: 'Maker tools', items: makerGroups() },
 				{ label: 'Visualisation tools', items: toolLinks('visualisation') },
 				{
 					label: 'Tutorials',

@@ -98,10 +98,18 @@ A tool core builds a `Sheet`; `buildExportFiles(sheet, name)` gives the three fi
 
 `src/data/tools.json` drives the home page cards, the sidebar and the tool page headers.
 Fields: `id` (lowercase slug, also the URL and tutorial folder name), `name`, `category`
-(`maker` | `visualisation`), `status` (`planned` | `in-progress` | `available`),
-`description`, `processingUrl`, `appPath` (e.g. `apps/frustumsupport/`; null while
+(`maker` | `visualisation`), `group` (maker tools only, null otherwise: `paper` | `strut` |
+`combined` | `support` | `mini`), `status` (`planned` | `in-progress` | `available`),
+`description`, `processingUrl`, `sourceNote`, `appPath` (e.g. `apps/frustumsupport/`; null while
 `planned`, required when `available`, optional while `in-progress`, when the card shows
 "Open web app (beta)"), `tutorials`. A tool becomes `available` only after its physical check.
+
+**Order.** The home page and sidebar show tools in `tools.json` order. Maker tools are grouped
+(decided with Hannah, 2026-09-28): paper tools (PaperBlox, PaperPhicons, PaperPolyhedra), strut
+tools (FrustumSupport), combined tools (ScaffoldShell), support tools (DataPhysicalisation) and
+mini tools built on the paper tools (Phicon Widgets, Rounded Boxes, Oblique Boxes). Group labels
+live in `MAKER_GROUP_LABELS` (`src/data/tools.ts`) and in `MAKER_GROUPS` in `astro.config.mjs`;
+a test keeps the two in step, and another checks `tools.json` lists maker tools group by group.
 
 Tutorials are **discovered from the folder** `src/content/docs/tutorials/<id>/`, so Hannah can
 add one without editing JSON. The `tutorials` array is currently unused and always empty.

@@ -1,25 +1,46 @@
 ---
-// Home page tool listing: one section per category, one card per tool from tools.json.
-import { CATEGORIES, CATEGORY_LABELS, toolsInCategory } from '../data/tools';
+// Home page tool listing: maker tools in their groups, then visualisation tools, one card per
+// tool from tools.json, in tools.json order.
+import { CATEGORY_LABELS, MAKER_GROUP_LABELS, MAKER_GROUPS, toolsInCategory, toolsInGroup } from '../data/tools';
 import ToolCard from './ToolCard.astro';
 ---
 
-{
-	CATEGORIES.map((category) => (
-		<section class="tool-section">
-			<h2 id={`${category}-tools`}>{CATEGORY_LABELS[category]}</h2>
-			<div class="tool-grid not-content">
-				{toolsInCategory(category).map((tool) => (
-					<ToolCard tool={tool} />
-				))}
-			</div>
-		</section>
-	))
-}
+<section class="tool-section">
+	<h2 id="maker-tools">{CATEGORY_LABELS.maker}</h2>
+	{
+		MAKER_GROUPS.map((group) => (
+			<>
+				<h3 id={`${group}-tools`}>{MAKER_GROUP_LABELS[group].label}</h3>
+				<p class="group-blurb">{MAKER_GROUP_LABELS[group].blurb}</p>
+				<div class="tool-grid not-content">
+					{toolsInGroup(group).map((tool) => (
+						<ToolCard tool={tool} />
+					))}
+				</div>
+			</>
+		))
+	}
+</section>
+
+<section class="tool-section">
+	<h2 id="visualisation-tools">{CATEGORY_LABELS.visualisation}</h2>
+	<div class="tool-grid not-content">
+		{toolsInCategory('visualisation').map((tool) => (
+			<ToolCard tool={tool} />
+		))}
+	</div>
+</section>
 
 <style>
 	.tool-section + .tool-section {
 		margin-top: 3rem;
+	}
+	h3 {
+		margin-top: 2rem;
+	}
+	.group-blurb {
+		margin-top: 0.25rem;
+		color: var(--sl-color-gray-3);
 	}
 	.tool-grid {
 		display: grid;
