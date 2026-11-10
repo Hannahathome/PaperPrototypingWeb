@@ -19,7 +19,7 @@ design it in the FrustumSupport web app, render it in OpenSCAD and print it.
 
 1. **Measure the shell as radii.** FrustumSupport needs the distance from the centre to a
    corner (the circumradius) at the bottom and the top, and the height. If you made the shell
-   in PaperPolyhedra: for 3, 5, 6 or more sides the radius is half the "diameter"; for 4 sides
+   in PaperPhicons: for 3, 5, 6 or more sides the radius is half the "diameter"; for 4 sides
    it is the side length divided by 1.414.
 2. **Set the frustum.** Enter the number of sides, bottom radius, top radius and height. *Edge
    radius* is the thickness of the struts divided by 2; 1 mm gives 2 mm struts.
@@ -38,14 +38,14 @@ design it in the FrustumSupport web app, render it in OpenSCAD and print it.
 **The frame does not fit into the shell.**
 Check that you entered radii, not diameters or perimeters. The entered radii are the frame's
 outside size, so make them a little smaller than the shell's to leave room for the paper
-(PaperPolyhedra assumes paper 0.25 mm thick).
+(PaperPhicons assumes paper 0.25 mm thick).
 
-**The frame is shorter or taller than a PaperPolyhedra frustum.**
-PaperPolyhedra frustums fold to a slightly different height than the one you typed; the
-PaperPolyhedra app shows the real folded height. Use that height here.
+**The frame is shorter or taller than a PaperPhicons frustum.**
+PaperPhicons frustums fold to a slightly different height than the one you typed; the
+PaperPhicons app shows the real folded height. Use that height here.
 
 **The wall struts are in the middle of the paper's sides instead of in the corners.**
-The frame's first corner points along the x axis, while PaperPolyhedra's shells are turned
+The frame's first corner points along the x axis, while PaperPhicons' shells are turned
 differently. Rotate the frame when you place it, or wait for ScaffoldShell, which lines the two
 up automatically.
 

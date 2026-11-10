@@ -1,4 +1,4 @@
-// PaperPhicons web app: reads the form, asks the core for the sheet, previews and exports it.
+// PaperBlox web app: reads the form, asks the core for the sheet, previews and exports it.
 // Phicon Widgets reuses it with an extension that adds its cut-outs.
 import type { Point } from '../../../lib/drawing';
 import { buildExportFiles } from '../../../lib/export';
@@ -55,7 +55,7 @@ export function startApp(ext: PhiconsExtension = plain): void {
 		$('notes').innerHTML = notes.map((n) => `<p>${n}</p>`).join('');
 		$('notes').hidden = notes.length === 0;
 		$<HTMLButtonElement>('export').disabled = result.errors.length > 0;
-		$('sheet').innerHTML = previewSvg(result.sheet, { title: 'PaperPhicons sheet preview' });
+		$('sheet').innerHTML = previewSvg(result.sheet, { title: 'PaperBlox sheet preview' });
 		view.update(input, result.errors.length ? null : ids[0], ext.holes(input));
 	};
 

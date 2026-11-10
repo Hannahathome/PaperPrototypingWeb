@@ -10,7 +10,7 @@ and track, for example in a study or a tangible interface.
 
 ## What you need
 
-- The [PaperPhicons web app](../../../apps/paperphicons/)
+- The [PaperBlox web app](../../../apps/paperblox/)
 - A printer, A4 paper (about 160 g/m²) and a vinyl cutter
 - A camera and tracking software that reads ArUco markers (for example OpenCV with the
   `DICT_ARUCO_ORIGINAL` dictionary)
@@ -53,5 +53,5 @@ cover it with a small piece of white paper.
 
 ## Last checked
 
-2026-09-25, PaperPhicons web app (first version). Not yet checked with printed blocks or a
+2026-09-25, PaperBlox web app (first version). Not yet checked with printed blocks or a
 camera.

@@ -25,12 +25,17 @@ export interface Tool {
 	sourceNote: string | null;
 	/** Path of the web app relative to the site base, e.g. "apps/frustumsupport/". Null until it exists. */
 	appPath: string | null;
+	/** Kept in tools.json but left off the site: no page, card, sidebar entry or tutorials. */
+	hidden?: boolean;
 	/** Reserved. Tutorials are discovered from src/content/docs/tutorials/<id>/, see CLAUDE.md. */
 	tutorials: string[];
 }
 
 // tools.json is checked against this shape by tests/data/tools.test.ts.
-export const tools = toolsJson as Tool[];
+/** Every tool in tools.json, hidden ones included. */
+export const allTools = toolsJson as Tool[];
+/** The tools shown on the site, in tools.json order. */
+export const tools = allTools.filter((tool) => !tool.hidden);
 
 export const CATEGORY_LABELS: Record<ToolCategory, string> = {
 	maker: 'Maker tools',

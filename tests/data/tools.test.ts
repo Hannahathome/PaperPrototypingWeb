@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { CATEGORIES, MAKER_GROUP_LABELS, MAKER_GROUPS, STATUSES, tools } from '../../src/data/tools';
+import { allTools as tools, CATEGORIES, MAKER_GROUP_LABELS, MAKER_GROUPS, STATUSES } from '../../src/data/tools';
 
 describe('tools.json', () => {
 	it('has at least one tool', () => {
@@ -59,6 +59,13 @@ describe('tools.json', () => {
 
 		it('points appPath at an existing app page', () => {
 			if (tool.appPath !== null) expect(existsSync(`src/pages/${tool.appPath}index.astro`)).toBe(true);
+		});
+
+		it('has no page, app or tutorials when hidden', () => {
+			if (!tool.hidden) return;
+			expect(existsSync(`src/content/docs/tools/${tool.id}.mdx`)).toBe(false);
+			expect(existsSync(`src/content/docs/tutorials/${tool.id}`)).toBe(false);
+			expect(tool.appPath).toBeNull();
 		});
 
 		it('has a tutorials array', () => {

@@ -10,15 +10,7 @@ the Processing sketches in [PaperPrototyping](https://github.com/Hannahathome/Pa
 
 | Maker tools | Visualisation tools |
 |---|---|
-| PaperPolyhedra, ScaffoldShell, PaperPhicons, DataPhysicalisation, PaperBlox, FrustumSupport | WidgetGenerator |
-
-See [PLAN.md](PLAN.md) for which tools are being ported, and in what order.
-
-## Adding a tutorial
-
-No web development needed. See the guide on the site,
-[How to add a tutorial](https://hannahathome.github.io/PaperPrototypingWeb/contributing/how-to-add-a-tutorial/),
-or its source in `src/content/docs/contributing/how-to-add-a-tutorial.md`.
+| PaperPhicons, PaperBlox, FrustumSupport, ScaffoldShell, DataPhysicalisation, Phicon Widgets | WidgetGenerator |
 
 ## Running it locally
 
