@@ -2,8 +2,11 @@ import toolsJson from './tools.json';
 
 export const CATEGORIES = ['maker', 'visualisation'] as const;
 export const STATUSES = ['planned', 'in-progress', 'available'] as const;
+/** Groups of maker tools, in the order the home page and sidebar show them. */
+export const MAKER_GROUPS = ['paper', 'strut', 'combined', 'support', 'mini'] as const;
 
 export type ToolCategory = (typeof CATEGORIES)[number];
+export type MakerGroup = (typeof MAKER_GROUPS)[number];
 export type ToolStatus = (typeof STATUSES)[number];
 
 export interface Tool {
@@ -11,10 +14,15 @@ export interface Tool {
 	id: string;
 	name: string;
 	category: ToolCategory;
+	/** Required for maker tools, null for visualisation tools. */
+	group: MakerGroup | null;
 	status: ToolStatus;
 	description: string;
-	/** The tool's folder in the PaperPrototyping (Processing) repo. */
-	processingUrl: string;
+	/** The tool's folder in the PaperPrototyping (Processing) repo, or null when the Processing
+	 * sketch is not online (see `sourceNote`). */
+	processingUrl: string | null;
+	/** Where the Processing source lives when it is not online, e.g. a local folder. */
+	sourceNote: string | null;
 	/** Path of the web app relative to the site base, e.g. "apps/frustumsupport/". Null until it exists. */
 	appPath: string | null;
 	/** Reserved. Tutorials are discovered from src/content/docs/tutorials/<id>/, see CLAUDE.md. */
@@ -29,6 +37,14 @@ export const CATEGORY_LABELS: Record<ToolCategory, string> = {
 	visualisation: 'Visualisation tools',
 };
 
+export const MAKER_GROUP_LABELS: Record<MakerGroup, { label: string }> = {
+	paper: { label: 'Paper tools' },
+	strut: { label: 'Strut tools' },
+	combined: { label: 'Combined tools' },
+	support: { label: 'Support tools' },
+	mini: { label: 'Mini tools' },
+};
+
 export const STATUS_LABELS: Record<ToolStatus, string> = {
 	planned: 'Planned',
 	'in-progress': 'In progress',
@@ -37,6 +53,10 @@ export const STATUS_LABELS: Record<ToolStatus, string> = {
 
 export function toolsInCategory(category: ToolCategory): Tool[] {
 	return tools.filter((tool) => tool.category === category);
+}
+
+export function toolsInGroup(group: MakerGroup): Tool[] {
+	return tools.filter((tool) => tool.category === 'maker' && tool.group === group);
 }
 
 export function getTool(id: string): Tool {

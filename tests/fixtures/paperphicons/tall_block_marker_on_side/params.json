@@ -1,0 +1,16 @@
+{
+	"id": "tall_block_marker_on_side",
+	"width": 30,
+	"length": 60,
+	"height": 25,
+	"markerId": 7,
+	"markerSize": 20,
+	"repeat": 1,
+	"markerOnSide": true,
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "PaperPhicons",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

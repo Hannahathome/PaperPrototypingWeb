@@ -1,0 +1,34 @@
+{
+	"id": "slot_pill_square_marker_offset",
+	"width": 60,
+	"length": 40,
+	"height": 20,
+	"markerId": 90,
+	"markerSize": 12,
+	"repeat": 1,
+	"markerOnSide": false,
+	"markerOffsetY": -12,
+	"cutouts": [
+		{
+			"shape": "pill",
+			"width": 40,
+			"height": 10,
+			"x": 0,
+			"y": 10,
+			"vertical": false
+		},
+		{
+			"shape": "square",
+			"width": 8,
+			"height": 6,
+			"x": 20,
+			"y": -12,
+			"vertical": false
+		}
+	],
+	"source": {
+		"folder": "TEI27Software",
+		"sketch": "PaperPhicons_Boilerplate_v1_1_Cutout",
+		"pdeSha256": "5eac3f2875b3375372bffc2deeb85d81a9d7109303630aef79c3d1d1c64341a9"
+	}
+}

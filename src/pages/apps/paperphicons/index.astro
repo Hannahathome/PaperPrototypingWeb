@@ -1,0 +1,24 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import PhiconsApp from '../../../components/PhiconsApp.astro';
+import { DEFAULT_BLOCK } from '../../../tools/paperphicons/core/block';
+
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'PaperPhicons',
+		description: 'Make print-and-cut blocks that carry ArUco markers, so a camera can track them.',
+		tableOfContents: false,
+	}}
+>
+	<p class="intro">Print at <strong>actual size</strong>.</p>
+
+	<PhiconsApp defaults={DEFAULT_BLOCK} fileName="paperphicons" />
+</StarlightPage>
+
+<script>
+	import { startApp } from '../../../tools/paperphicons/ui/app';
+
+	startApp();
+</script>

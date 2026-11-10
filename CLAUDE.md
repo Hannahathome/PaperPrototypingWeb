@@ -10,6 +10,10 @@ The Processing originals are in `C:\Users\20167196\Documents\GitHub\PaperPrototy
 (github.com/Hannahathome/PaperPrototyping). **Read it for reference; never modify it.**
 Start with its `README.md` and `docs/shared-concepts.md`.
 
+The TEI'27 tools (PLAN.md, Phase 7) come from `C:\Users\20167196\Documents\GitHub\TEI27Software`,
+a local folder that is not a git repo and not on GitHub. Read it for reference only; never
+modify it. Tools ported from it have `processingUrl: null` and a `sourceNote` in `tools.json`.
+
 ## Commands
 
 ```bash
@@ -75,13 +79,37 @@ scripts/check-links.mjs      post-build link check
 docs/                        developer notes (not published)
 ```
 
+## Shared library (`src/lib/`)
+
+- `units.ts`: page sizes (`A4_LANDSCAPE`, `CUT_AREA` 280 × 200 mm) and `mmToPx`/`pxToMm`,
+  the only mm conversions in `src/`.
+- `drawing.ts`: the model every tool core returns: a `Sheet` of `Path`s (`cut` | `fold` |
+  `print`), `Label`s and `RasterImage`s, all in mm, origin top-left, y down.
+  `toCutterPaths` turns fold paths into real dash segments (Processing's `drawDashedLine`);
+  cutter software ignores `stroke-dasharray`, so never rely on it.
+- `svg.ts` (cutter SVG in mm), `pdf.ts` (jsPDF, A4, mm), `calibration.ts` (crosses),
+  `export.ts` (names, stamp, `buildExportFiles`, `fitsCutArea`), `files.ts` (browser
+  download/upload), `preview.ts` (on-screen sheet preview), `paths.ts` (`withBase`).
+
+A tool core builds a `Sheet`; `buildExportFiles(sheet, name)` gives the three files. Processing's
+`MM`/`MM_V` constants live only in `tests/helpers/processing.ts`, for reading fixtures.
+
 ## Tool metadata
 
 `src/data/tools.json` drives the home page cards, the sidebar and the tool page headers.
 Fields: `id` (lowercase slug, also the URL and tutorial folder name), `name`, `category`
-(`maker` | `visualisation`), `status` (`planned` | `in-progress` | `available`),
-`description`, `processingUrl`, `appPath` (e.g. `apps/frustumsupport/`, null until
-available; tests require it to be set exactly when status is `available`), `tutorials`.
+(`maker` | `visualisation`), `group` (maker tools only, null otherwise: `paper` | `strut` |
+`combined` | `support` | `mini`), `status` (`planned` | `in-progress` | `available`),
+`description`, `processingUrl`, `sourceNote`, `appPath` (e.g. `apps/frustumsupport/`; null while
+`planned`, required when `available`, optional while `in-progress`, when the card shows
+"Open web app (beta)"), `tutorials`. A tool becomes `available` only after its physical check.
+
+**Order.** The home page and sidebar show tools in `tools.json` order. Maker tools are grouped
+(decided with Hannah, 2026-09-28): paper tools (PaperBlox, PaperPhicons, PaperPolyhedra), strut
+tools (FrustumSupport), combined tools (ScaffoldShell), support tools (DataPhysicalisation) and
+mini tools built on the paper tools (Phicon Widgets, Rounded Boxes, Oblique Boxes). Group labels
+live in `MAKER_GROUP_LABELS` (`src/data/tools.ts`) and in `MAKER_GROUPS` in `astro.config.mjs`;
+a test keeps the two in step, and another checks `tools.json` lists maker tools group by group.
 
 Tutorials are **discovered from the folder** `src/content/docs/tutorials/<id>/`, so Hannah can
 add one without editing JSON. The `tutorials` array is currently unused and always empty.

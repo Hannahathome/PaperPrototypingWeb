@@ -1,0 +1,16 @@
+{
+	"id": "small_cube_three_copies",
+	"width": 30,
+	"length": 30,
+	"height": 30,
+	"markerId": 100,
+	"markerSize": 12,
+	"repeat": 3,
+	"markerOnSide": false,
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "PaperPhicons",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

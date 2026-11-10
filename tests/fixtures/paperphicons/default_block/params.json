@@ -1,0 +1,16 @@
+{
+	"id": "default_block",
+	"width": 50,
+	"length": 50,
+	"height": 20,
+	"markerId": 48,
+	"markerSize": 16,
+	"repeat": 1,
+	"markerOnSide": false,
+	"source": {
+		"repo": "Hannahathome/PaperPrototyping",
+		"sketch": "PaperPhicons",
+		"commit": "13af212ffb5f8f60e4cd245f55e21c8b37f3d416",
+		"localChanges": false
+	}
+}

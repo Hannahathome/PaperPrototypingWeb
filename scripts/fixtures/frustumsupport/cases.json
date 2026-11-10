@@ -1,0 +1,29 @@
+[
+	{
+		"id": "hourglass_top",
+		"nside": 6, "bottomRadius": 20, "topRadius": 30, "height": 40, "edgeRadius": 1,
+		"rigsEnabled": true, "dualStruts": false, "strutSpacing": 15,
+		"rigs": [{ "template": "M5Atom", "width": 24, "depth": 24, "height": 31.5, "offsetX": 0, "offsetY": 0, "offsetZ": 8.5, "rotation": 0 }]
+	},
+	{
+		"id": "cage_only_octagon",
+		"nside": 8, "bottomRadius": 20, "topRadius": 25, "height": 40, "edgeRadius": 1,
+		"rigsEnabled": false, "dualStruts": false, "strutSpacing": 15,
+		"rigs": [{ "template": "Custom", "width": 24, "depth": 24, "height": 31.5, "offsetX": 0, "offsetY": 0, "offsetZ": 8.5, "rotation": 0 }]
+	},
+	{
+		"id": "triangle_two_rigs_dual",
+		"nside": 3, "bottomRadius": 45, "topRadius": 35.5, "height": 60, "edgeRadius": 1.5,
+		"rigsEnabled": true, "dualStruts": true, "strutSpacing": 12.5,
+		"rigs": [
+			{ "template": "M5Core_lying", "width": 54, "depth": 54, "height": 17, "offsetX": -3.5, "offsetY": 2, "offsetZ": 4, "rotation": 30 },
+			{ "template": "Custom", "width": 20.3, "depth": 10.8, "height": 7.25, "offsetX": 12, "offsetY": -7.5, "offsetZ": 30, "rotation": -45 }
+		]
+	},
+	{
+		"id": "odd_values",
+		"nside": 5, "bottomRadius": 33.3, "topRadius": 18.7, "height": 52.1, "edgeRadius": 0.8,
+		"rigsEnabled": true, "dualStruts": false, "strutSpacing": 15,
+		"rigs": [{ "template": "Custom", "width": 0.1, "depth": 1234.5, "height": 0.003, "offsetX": 0, "offsetY": 0, "offsetZ": 0, "rotation": 22.5 }]
+	}
+]
