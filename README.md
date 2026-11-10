@@ -10,7 +10,7 @@ the Processing sketches in [PaperPrototyping](https://github.com/Hannahathome/Pa
 
 | Maker tools | Visualisation tools |
 |---|---|
-| PaperPolyhedra, ScaffoldShell, PaperPhicons, DataPhysicalisation, PaperBlox, FrustumSupport | WidgetGenerator |
+| PaperPhicons, PaperBlox, FrustumSupport, ScaffoldShell, DataPhysicalisation, Phicon Widgets | WidgetGenerator |
 
 ## Running it locally
 

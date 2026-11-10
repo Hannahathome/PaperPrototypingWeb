@@ -1,24 +1,23 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import PhiconsApp from '../../../components/PhiconsApp.astro';
-import { DEFAULT_BLOCK } from '../../../tools/paperphicons/core/block';
+import PolyhedraApp from '../../../components/PolyhedraApp.astro';
 
 ---
 
 <StarlightPage
 	frontmatter={{
 		title: 'PaperPhicons',
-		description: 'Make print-and-cut blocks that carry ArUco markers, so a camera can track them.',
+		description: 'Make a printable, foldable net for a prism or frustum, with tabs, lids and your own artwork.',
 		tableOfContents: false,
 	}}
 >
 	<p class="intro">Print at <strong>actual size</strong>.</p>
 
-	<PhiconsApp defaults={DEFAULT_BLOCK} fileName="paperphicons" />
+	<PolyhedraApp />
 </StarlightPage>
 
 <script>
-	import { startApp } from '../../../tools/paperphicons/ui/app';
+	import { startApp } from '../../../tools/paperpolyhedra/ui/app';
 
 	startApp();
 </script>

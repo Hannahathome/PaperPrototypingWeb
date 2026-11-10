@@ -31,7 +31,7 @@ cut in the top lid so the M5Atom's screen shows through.
    For the 60 mm box, *Offset Z* 27.5 works. The window appears in the lid on the sheet.
 6. **Download.** Click *Download PDF + cut files*. You get the PDF, the two SVG files for the
    cutter and a `.scad` file for the scaffold.
-7. **Print and cut the shell**, as in [Make your first shape](../../paperpolyhedra/make-your-first-shape/).
+7. **Print and cut the shell**, as in [Make your first shape](../../paperphicons/make-your-first-shape/).
 8. **Print the scaffold.** Open the `.scad` in OpenSCAD, render (F6), export STL and print it.
 9. **Assemble.** Put the M5Atom on its rig, put the scaffold in the shell and close the shell.
 

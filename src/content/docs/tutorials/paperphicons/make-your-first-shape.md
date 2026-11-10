@@ -1,16 +1,16 @@
 ---
 title: Make your first shape
-description: Design a hexagonal prism in the PaperPolyhedra web app, print it, cut it and fold it.
+description: Design a hexagonal prism in the PaperPhicons web app, print it, cut it and fold it.
 ---
 
 ## Goal
 
-A folded paper hexagonal prism, 50 mm tall, made with the PaperPolyhedra web app. Along the
+A folded paper hexagonal prism, 50 mm tall, made with the PaperPhicons web app. Along the
 way you learn what each setting does and how to read the warnings.
 
 ## What you need
 
-- The [PaperPolyhedra web app](../../../apps/paperpolyhedra/)
+- The [PaperPhicons web app](../../../apps/paperphicons/)
 - A printer, A4 paper (about 160 g/m² folds well) and a vinyl cutter
 - Glue or double-sided tape for the glue flap (optional; the hook tab also holds)
 
@@ -59,5 +59,5 @@ size; a scaled print makes the lids a different size from the strip.
 
 ## Last checked
 
-2026-09-25, PaperPolyhedra web app (first version). Not yet checked with a physical print
+2026-09-25, PaperPhicons web app (first version). Not yet checked with a physical print
 and cut.

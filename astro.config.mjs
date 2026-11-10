@@ -2,7 +2,10 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import tools from './src/data/tools.json' with { type: 'json' };
+import allTools from './src/data/tools.json' with { type: 'json' };
+
+/** The tools shown on the site; hidden ones stay in tools.json only. */
+const tools = allTools.filter((tool) => !('hidden' in tool && tool.hidden));
 
 const REPO_URL = 'https://github.com/Hannahathome/PaperPrototypingWeb';
 

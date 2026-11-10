@@ -1,16 +1,16 @@
 ---
 title: Print and cut at actual size
-description: The print-and-cut routine that every PaperPolyhedra export follows.
+description: The print-and-cut routine that every PaperPhicons export follows.
 ---
 
 ## Goal
 
-Print a PaperPolyhedra net and cut it on a vinyl cutter so that the cut lines land exactly on
+Print a PaperPhicons net and cut it on a vinyl cutter so that the cut lines land exactly on
 the printed artwork. The same routine works for every tool that exports a PDF plus two SVG files.
 
 ## What you need
 
-- The [PaperPolyhedra Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPolyhedra) and an exported net
+- The [PaperPhicons Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPolyhedra) and an exported net
 - A printer and A4 paper
 - A Brother ScanNCut with its pen attachment and cutting mat
 - A ruler with millimetre markings

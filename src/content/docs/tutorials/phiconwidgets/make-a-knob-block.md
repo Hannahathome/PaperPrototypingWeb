@@ -30,7 +30,7 @@ so a camera can follow the block while someone turns the knob.
    *Square or rectangle* for a button.
 6. **Check the notes.** An orange note appears when a hole cuts into the marker or its white
    margin, or reaches past the face into the folds. Fix these before printing.
-7. **Download, print and cut** as in [Make trackable blocks](../../paperphicons/make-trackable-blocks/):
+7. **Download, print and cut** as in [Make trackable blocks](../../paperblox/make-trackable-blocks/):
    print at actual size, calibrate with the `_calib_` file, then cut the `_fold_` file.
 8. **Fold the block** with the holed face on top and fit the knob.
 

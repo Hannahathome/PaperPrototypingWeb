@@ -1,5 +1,5 @@
 // DataPhysicalisation web app: load a CSV, map columns, preview in 3D or as a 2D chart,
-// export JSON for PaperPolyhedra. All calculations come from ../core.
+// export JSON for PaperPhicons. All calculations come from ../core.
 import { downloadBlob, readAsText } from '../../../lib/files';
 import { sendHandoff } from '../../../lib/handoff';
 import { withBase } from '../../../lib/paths';
@@ -135,7 +135,7 @@ export function startApp(): void {
 		if (missing) notes.push(`${missing} row(s) have no number in the height column; they cannot be exported.`);
 		const uneven = nonSquareBars(shapes, s.mode).length;
 		if (uneven) {
-			notes.push(`${uneven} bar(s) have different width and depth. PaperPolyhedra makes square prisms, so it will use the width for both.`);
+			notes.push(`${uneven} bar(s) have different width and depth. PaperPhicons makes square prisms, so it will use the width for both.`);
 		}
 		$('notes').innerHTML = notes.map((n) => `<p>${n}</p>`).join('');
 		$('notes').hidden = notes.length === 0;
@@ -167,9 +167,9 @@ export function startApp(): void {
 	});
 	$('send').addEventListener('click', () => {
 		if (sendHandoff(`DataPhysicalisation (${fileName})`, exportJson())) {
-			window.location.href = withBase('apps/paperpolyhedra/?import=handoff');
+			window.location.href = withBase('apps/paperphicons/?import=handoff');
 		} else {
-			$('status').textContent = 'Your browser blocked passing the shapes on. Download the JSON and load it in PaperPolyhedra instead.';
+			$('status').textContent = 'Your browser blocked passing the shapes on. Download the JSON and load it in PaperPhicons instead.';
 		}
 	});
 
