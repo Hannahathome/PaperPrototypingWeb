@@ -11,8 +11,7 @@ and track, for example in a study or a tangible interface.
 ## What you need
 
 - The [PaperPhicons web app](../../../apps/paperphicons/)
-- A printer, A4 paper (about 160 g/m²) and a vinyl cutter, checked with the
-  [calibration test sheet](../../../apps/calibration/)
+- A printer, A4 paper (about 160 g/m²) and a vinyl cutter
 - A camera and tracking software that reads ArUco markers (for example OpenCV with the
   `DICT_ARUCO_ORIGINAL` dictionary)
 
@@ -29,8 +28,8 @@ and track, for example in a study or a tangible interface.
    face along the length.
 5. **Set the number of copies.** The sheet preview shows how many fit; an orange note appears
    when something falls outside the cutting area.
-6. **Download, print and cut.** Print the PDF at *Actual size*, cut the `_calib_` file first,
-   then the `_fold_` file.
+6. **Download, print and cut.** Print the PDF at *Actual size*.
+   Calibrate the cutter with the `_calib_` file and the pen attachment, then cut the `_fold_` file.
 7. **Fold.** Fold on the dashed lines. On the print, red and blue dashes are different kinds
    of fold (the Processing version calls them front and back folds); the blue ones are the
    diagonal folds in the corners.

@@ -12,8 +12,6 @@ way you learn what each setting does and how to read the warnings.
 
 - The [PaperPolyhedra web app](../../../apps/paperpolyhedra/)
 - A printer, A4 paper (about 160 g/m² folds well) and a vinyl cutter
-- A printer and cutter you have checked with the
-  [calibration test sheet](../../../apps/calibration/)
 - Glue or double-sided tape for the glue flap (optional; the hook tab also holds)
 
 ## Steps
@@ -34,10 +32,9 @@ way you learn what each setting does and how to read the warnings.
    an image. Tick *Turn side images upside down* if your image should read upright on the
    folded shape. Lid images are printed only when you also use side images.
 5. **Download.** Give the file a name and click *Download PDF + cut files*. You get three
-   files: the PDF for the printer, the `_fold_` SVG for the cutter, and the `_calib_` SVG with
-   registration marks.
-6. **Print and cut.** Print the PDF at *Actual size*. Cut the `_calib_` file first and check
-   the crosses line up, then cut the `_fold_` file. See
+   files: the PDF for the printer, the `_fold_` SVG for the cutter, and the `_calib_` SVG for
+   calibrating the cutter.
+6. **Print and cut.** Print the PDF at *Actual size*. Calibrate the cutter with the `_calib_` file and the pen attachment, then cut the `_fold_` file. See
    [Print and cut at actual size](../print-and-cut-at-actual-size/) for the details.
 7. **Fold.** Fold along all the dashed lines, printed side out. Close the strip: the hook tab
    on the last panel goes through the slit beside the glue flap on the first panel. Then fold

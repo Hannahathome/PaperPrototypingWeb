@@ -1,7 +1,6 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import PhiconsApp from '../../../components/PhiconsApp.astro';
-import { withBase } from '../../../lib/paths';
 import { STARTING_WIDGET } from '../../../tools/phiconwidgets/core/cutouts';
 ---
 
@@ -12,14 +11,7 @@ import { STARTING_WIDGET } from '../../../tools/phiconwidgets/core/cutouts';
 		tableOfContents: false,
 	}}
 >
-	<p class="intro">
-		A web version of the TEI'27 sketch <code>PaperPhicons_Boilerplate_v1_1_Cutout</code>: a <a href={withBase('tools/paperphicons/')}
-			>PaperPhicons</a
-		> block with holes (squares, pills and circles) cut into its base face, so knobs, sliders and buttons can reach
-		through. Its nets and holes match the sketch's exports. Print at <strong>actual size</strong>. First time? Use the <a
-			href={withBase('apps/calibration/')}>calibration test sheet</a
-		>.
-	</p>
+	<p class="intro">Print at <strong>actual size</strong>.</p>
 
 	<PhiconsApp defaults={STARTING_WIDGET} fileName="phiconwidgets" markerOffset>
 		<fieldset slot="panels" id="cutoutFields">
@@ -47,10 +39,7 @@ import { STARTING_WIDGET } from '../../../tools/phiconwidgets/core/cutouts';
 				</div>
 				<label id="cutVerticalField" class="check"><input id="cutVertical" type="checkbox" /> Vertical (length down the face)</label>
 			</div>
-			<p class="hint">
-				Positions are from the centre of the base face (width × length) as it lies on the sheet. Every block on the sheet
-				gets the same cut-outs.
-			</p>
+			<p class="hint">Positions are from the centre of the base face. All blocks get the same cut-outs.</p>
 		</fieldset>
 	</PhiconsApp>
 </StarlightPage>

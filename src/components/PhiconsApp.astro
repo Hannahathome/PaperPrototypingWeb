@@ -46,7 +46,7 @@ const { defaults: d, fileName, markerOffset = false } = Astro.props;
 					</label>
 				)
 			}
-			<p class="hint">The size is the black square. A white margin of one cell (size ÷ 7) is added around it; keep it clear.</p>
+			<p class="hint">Size of the black square. Keep the white margin (size ÷ 7) clear.</p>
 		</fieldset>
 
 		<slot name="panels" />
@@ -75,7 +75,7 @@ const { defaults: d, fileName, markerOffset = false } = Astro.props;
 		<figure>
 			<div id="view3d" class="view3d" aria-label="3D preview of the first block. Drag to rotate, scroll to zoom."></div>
 			<figcaption>
-				The first block, folded. Drag to rotate, scroll to zoom. <button id="resetView" type="button" class="link">Reset view</button>
+				Drag to rotate, scroll to zoom. <button id="resetView" type="button" class="link">Reset view</button>
 			</figcaption>
 		</figure>
 	</div>

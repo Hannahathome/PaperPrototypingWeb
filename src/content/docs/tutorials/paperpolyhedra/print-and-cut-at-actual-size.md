@@ -1,6 +1,6 @@
 ---
 title: Print and cut at actual size
-description: The print-and-cut routine that every PaperPolyhedra export follows, and how to check your setup before a long run.
+description: The print-and-cut routine that every PaperPolyhedra export follows.
 ---
 
 ## Goal
@@ -12,7 +12,7 @@ the printed artwork. The same routine works for every tool that exports a PDF pl
 
 - The [PaperPolyhedra Processing version](https://github.com/Hannahathome/PaperPrototyping/tree/main/PaperPolyhedra) and an exported net
 - A printer and A4 paper
-- A vinyl cutter with its cutting mat
+- A Brother ScanNCut with its pen attachment and cutting mat
 - A ruler with millimetre markings
 
 ## Steps
@@ -24,16 +24,15 @@ the printed artwork. The same routine works for every tool that exports a PDF pl
    |---|---|---|
    | `<name>_<stamp>.pdf` | Printer | Artwork, fills, labels |
    | `<name>_fold_<stamp>.svg` | Cutter | Cut lines and fold lines |
-   | `<name>_calib_<stamp>.svg` | Cutter | Registration marks only |
+   | `<name>_calib_<stamp>.svg` | Cutter (pen) | Calibration crosses |
 
 2. **Print the PDF at actual size.** In the print dialog choose *Actual size* (or *100 %*).
    Never use *Fit to page*: it shrinks the print and the cuts will no longer line up.
 3. **Check the print with a ruler.** Measure one edge whose length you know. It should match
    to within half a millimetre.
-4. **Cut the calibration file first.** Place the printed sheet on the mat and cut the
-   `_calib_` SVG. The marks should land on the printed registration marks. This is cheap, so
-   do it before every long run.
-5. **Cut the fold file** with the same origin. Fold lines are dashed so the cutter scores them
+4. **Calibrate.** Place the printed sheet on the mat and draw the `_calib_` SVG with the pen
+   attachment.
+5. **Cut the fold file**. Fold lines are dashed so the cutter scores them
    instead of cutting through.
 
 ## Common problems
@@ -43,8 +42,7 @@ The cutter is interpreting the file at a different DPI than it was exported at. 
 cutter software's import scale before changing anything in the tool.
 
 **The cuts are shifted but the right size.**
-The origin on the cutter differs from the one used for the calibration cut. Re-align and cut
-the calibration file again.
+Calibrate again with the `_calib_` file.
 
 **Fold lines are cut all the way through.**
 Check the dash-pattern or scoring setting in the cutter software.

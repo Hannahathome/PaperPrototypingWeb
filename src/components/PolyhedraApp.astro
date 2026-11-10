@@ -21,23 +21,20 @@ const d = DEFAULT_INPUT;
 				<button id="arrange" type="button" class="small">Arrange</button>
 			</div>
 			<label>Import shapes (JSON) <input id="importJson" type="file" accept=".json,application/json" /></label>
-			<p class="hint">
-				Click a shape to edit it below; untick it to leave it off this sheet. Drag shapes on the preview to place them;
-				arrow keys move the selected shape by 1 mm (Shift: 5 mm). JSON files from DataPhysicalisation work here.
-			</p>
+			<p class="hint">Drag shapes on the preview; arrow keys move 1 mm (Shift: 5 mm).</p>
 		</fieldset>
 
 		<fieldset>
 			<legend>Shape</legend>
 			<label>Label <input id="label" type="text" value="Shape 1" /></label>
 			<label>Number of sides <input id="sides" type="number" min="3" max="24" step="1" value={d.sides} /></label>
-			<label title="Side length for 4 sides; for other shapes the diameter of the circle through the corners, as in the Processing version.">
+			<label>
 				Top diameter (mm) <input id="topDiameter" type="number" min="1" step="0.5" value={d.topDiameter} />
 			</label>
 			<label class="check"><input id="lock" type="checkbox" checked /> Bottom same as top</label>
 			<label>Bottom diameter (mm) <input id="bottomDiameter" type="number" min="1" step="0.5" value={d.bottomDiameter} disabled /></label>
 			<label>Height (mm) <input id="height" type="number" min="1" step="0.5" value={d.height} /></label>
-			<p class="hint">For 4 sides, "diameter" is the side length. For other shapes it is the diameter of the circle through the corners.</p>
+			<p class="hint">Diameter of the circle through the corners; side length for 4 sides.</p>
 		</fieldset>
 
 		<fieldset>
@@ -70,11 +67,7 @@ const d = DEFAULT_INPUT;
 			</div>
 			<label id="rotateField" class="check" hidden><input id="rotate" type="checkbox" /> Turn side images upside down</label>
 			<p id="imageStatus" class="hint"></p>
-			<p id="imageHint" class="hint" hidden>
-				As in the Processing version, the top of a side image goes to the bottom rim, so it ends up upside down on the
-				folded shape. Tick "Turn side images upside down" to have it read upright. A fill colour prints over images.
-				Images stay on your computer; nothing is uploaded.
-			</p>
+			<p id="imageHint" class="hint" hidden>Side images print upside down unless you tick the box above. A fill colour covers images.</p>
 		</fieldset>
 
 		<slot name="panels" />
@@ -103,7 +96,7 @@ const d = DEFAULT_INPUT;
 		<figure>
 			<div id="view3d" class="view3d" aria-label="3D preview of the folded shape. Drag to rotate, scroll to zoom."></div>
 			<figcaption>
-				The folded shape. Drag to rotate, scroll to zoom. <button id="resetView" type="button" class="link">Reset view</button>
+				Drag to rotate, scroll to zoom. <button id="resetView" type="button" class="link">Reset view</button>
 			</figcaption>
 		</figure>
 	</div>

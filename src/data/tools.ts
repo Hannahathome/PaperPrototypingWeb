@@ -37,12 +37,12 @@ export const CATEGORY_LABELS: Record<ToolCategory, string> = {
 	visualisation: 'Visualisation tools',
 };
 
-export const MAKER_GROUP_LABELS: Record<MakerGroup, { label: string; blurb: string }> = {
-	paper: { label: 'Paper tools', blurb: 'Print-and-cut nets that fold into paper blocks and shapes.' },
-	strut: { label: 'Strut tools', blurb: 'A 3D-printable frame that goes inside a paper shape.' },
-	combined: { label: 'Combined tools', blurb: 'A paper shell and its printed frame, designed together.' },
-	support: { label: 'Support tools', blurb: 'Tools that prepare input for the others.' },
-	mini: { label: 'Mini tools', blurb: 'Small tools for one kind of block, built on the paper tools.' },
+export const MAKER_GROUP_LABELS: Record<MakerGroup, { label: string }> = {
+	paper: { label: 'Paper tools' },
+	strut: { label: 'Strut tools' },
+	combined: { label: 'Combined tools' },
+	support: { label: 'Support tools' },
+	mini: { label: 'Mini tools' },
 };
 
 export const STATUS_LABELS: Record<ToolStatus, string> = {

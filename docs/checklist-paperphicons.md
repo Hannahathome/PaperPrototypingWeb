@@ -1,10 +1,9 @@
 # Physical checklist: PaperPhicons
 
 Run this before switching PaperPhicons to `available` in `src/data/tools.json`, and after any
-change to `src/tools/paperphicons/core/`. Do the [calibration checklist](checklist-calibration.md)
-first on the same printer and cutter.
+change to `src/tools/paperphicons/core/`.
 
-App: `/apps/paperphicons/`. Print at **Actual size**; cut the `_calib_` file first.
+App: `/apps/paperphicons/`. Print at **Actual size**; calibrate with the `_calib_` file (pen attachment).
 
 ## Blocks
 

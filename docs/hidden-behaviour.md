@@ -12,7 +12,7 @@ The PDF is the printed page; both SVGs are only the 280 × 200 mm cutting area. 
 share the top-left origin, so a point at (x, y) mm is at the same place on print and cut.
 
 - Source: `PaperPolyhedra/Param.pde` (`PRINT_W/H`, `VINYL_W/H`), `PrintNCut.pde`
-- Test: `tests/lib/export.test.ts`, `tests/tools/calibration/sheet.test.ts`
+- Test: `tests/lib/export.test.ts`
 
 ### Processing's PDF page is slightly smaller than A4
 
@@ -55,7 +55,7 @@ Lines of 2.4 mm or less get no dashes at all. Cutter software ignores `stroke-da
 so the web version writes real segments too, on both the SVG and the PDF.
 
 - Source: `tools.pde`, `drawDashedLine()`; `Param.pde`, `FOLD_DASH_SCALE`
-- Test: `tests/lib/drawing.test.ts`, `tests/tools/calibration/sheet.test.ts`
+- Test: `tests/lib/drawing.test.ts`
 
 ### Timestamp padding
 

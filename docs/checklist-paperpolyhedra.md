@@ -1,10 +1,9 @@
 # Physical checklist: PaperPolyhedra
 
 Run this before switching PaperPolyhedra to `available` in `src/data/tools.json`, and after
-any change to `src/tools/paperpolyhedra/core/` or `src/lib/`. Do the
-[calibration checklist](checklist-calibration.md) first on the same printer and cutter.
+any change to `src/tools/paperpolyhedra/core/` or `src/lib/`.
 
-App: `/apps/paperpolyhedra/`. Print at **Actual size**; cut the `_calib_` file first.
+App: `/apps/paperpolyhedra/`. Print at **Actual size**; calibrate with the `_calib_` file (pen attachment).
 
 ## Shapes
 

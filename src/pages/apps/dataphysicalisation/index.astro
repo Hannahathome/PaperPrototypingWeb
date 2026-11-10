@@ -1,9 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { getTool } from '../../../data/tools';
 import { DEFAULT_SETTINGS } from '../../../tools/dataphysicalisation/core/mapping';
 
-const tool = getTool('dataphysicalisation');
 const d = DEFAULT_SETTINGS;
 ---
 
@@ -14,11 +12,7 @@ const d = DEFAULT_SETTINGS;
 		tableOfContents: false,
 	}}
 >
-	<p class="intro">
-		A basic web version of DataPhysicalisation: load a CSV, choose which columns become height, width or diameter,
-		sides and colour, check the result, and send the shapes to PaperPolyhedra to print and cut. Sizes and colours match
-		the <a href={tool.processingUrl}>Processing version</a>. Your data stays in your browser.
-	</p>
+	<p class="intro">Your data stays in your browser.</p>
 
 	<div class="app not-content">
 		<form id="controls" class="controls" onsubmit="return false">
@@ -49,7 +43,7 @@ const d = DEFAULT_SETTINGS;
 				</div>
 				<label>Colour <select id="mapColour"></select></label>
 				<label>Colour thresholds <input id="thresholds" type="text" placeholder="e.g. 10, 50, 100" /></label>
-				<p class="hint">Numbers give a blue-to-red gradient, or bands split at the thresholds; text gives one colour per category.</p>
+				<p class="hint">Numbers: blue-to-red gradient, or bands at the thresholds. Text: one colour per category.</p>
 			</fieldset>
 
 			<fieldset>
@@ -73,7 +67,7 @@ const d = DEFAULT_SETTINGS;
 		</form>
 
 		<div class="views">
-			<p id="empty" class="hint">Load a CSV file, or try the example data, to start.</p>
+			<p id="empty" class="hint">Load a CSV file or try the example data.</p>
 			<div id="workspace" hidden>
 				<div id="notes" class="notes" role="note" hidden></div>
 				<div id="viewTabs" class="tabs" role="radiogroup" aria-label="View">
