@@ -27,3 +27,7 @@ output/
 CLAUDE.md
 CLAUDE.local.md
 .claude/
+
+# Private project notes (kept locally, not in the repo)
+PLAN.md
+docs/
