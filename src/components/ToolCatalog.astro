@@ -11,7 +11,6 @@ import ToolCard from './ToolCard.astro';
 		MAKER_GROUPS.map((group) => (
 			<>
 				<h3 id={`${group}-tools`}>{MAKER_GROUP_LABELS[group].label}</h3>
-				<p class="group-blurb">{MAKER_GROUP_LABELS[group].blurb}</p>
 				<div class="tool-grid not-content">
 					{toolsInGroup(group).map((tool) => (
 						<ToolCard tool={tool} />
@@ -37,10 +36,6 @@ import ToolCard from './ToolCard.astro';
 	}
 	h3 {
 		margin-top: 2rem;
-	}
-	.group-blurb {
-		margin-top: 0.25rem;
-		color: var(--sl-color-gray-3);
 	}
 	.tool-grid {
 		display: grid;

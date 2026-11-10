@@ -26,6 +26,6 @@ const tutorials = (await getCollection('docs', (entry) => entry.id.startsWith(`t
 			))}
 		</ul>
 	) : (
-		<p>No tutorials for {tool.name} yet.</p>
+		<p>None yet.</p>
 	)
 }

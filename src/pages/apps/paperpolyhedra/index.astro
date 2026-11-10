@@ -1,10 +1,8 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { getTool } from '../../../data/tools';
 import PolyhedraApp from '../../../components/PolyhedraApp.astro';
 import { withBase } from '../../../lib/paths';
 
-const tool = getTool('paperpolyhedra');
 ---
 
 <StarlightPage
@@ -14,11 +12,7 @@ const tool = getTool('paperpolyhedra');
 		tableOfContents: false,
 	}}
 >
-	<p class="intro">
-		A basic web version of PaperPolyhedra: prisms and frustums with tabs, lids, a fill colour and images. Its nets
-		match the <a href={tool.processingUrl}>Processing version</a> exactly. First time? Check your printer and cutter
-		with the <a href={withBase('apps/calibration/')}>calibration test sheet</a>.
-	</p>
+	<p class="intro">Print at <strong>actual size</strong>. New printer or cutter? Use the <a href={withBase('apps/calibration/')}>calibration sheet</a>.</p>
 
 	<PolyhedraApp />
 </StarlightPage>

@@ -1,11 +1,9 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import PhiconsApp from '../../../components/PhiconsApp.astro';
-import { getTool } from '../../../data/tools';
 import { withBase } from '../../../lib/paths';
 import { DEFAULT_BLOCK } from '../../../tools/paperphicons/core/block';
 
-const tool = getTool('paperphicons');
 ---
 
 <StarlightPage
@@ -15,14 +13,7 @@ const tool = getTool('paperphicons');
 		tableOfContents: false,
 	}}
 >
-	<p class="intro">
-		A basic web version of PaperPhicons: paper blocks (cuboids) with an ArUco marker, so a camera can track them. Each
-		copy gets the next marker id. Its nets match the <a href={tool.processingUrl}>Processing version</a>. Print at <strong
-			>actual size</strong
-		>: detection depends on the marker being printed exactly. First time? Use the <a
-			href={withBase('apps/calibration/')}>calibration test sheet</a
-		>.
-	</p>
+	<p class="intro">Print at <strong>actual size</strong>. New printer or cutter? Use the <a href={withBase('apps/calibration/')}>calibration sheet</a>.</p>
 
 	<PhiconsApp defaults={DEFAULT_BLOCK} fileName="paperphicons" />
 </StarlightPage>
