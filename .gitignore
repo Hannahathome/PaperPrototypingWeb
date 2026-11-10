@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # Processing exports copied in by hand for comparison (fixtures live in tests/fixtures/)
 output/
+
+# Claude Code files (kept locally, not in the repo)
+CLAUDE.md
+CLAUDE.local.md
+.claude/
