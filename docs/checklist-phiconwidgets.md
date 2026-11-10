@@ -4,7 +4,7 @@ Run this before switching Phicon Widgets to `available` in `src/data/tools.json`
 change to `src/tools/phiconwidgets/core/`. The block net is PaperPhicons'; do the
 [PaperPhicons checklist](checklist-paperphicons.md) first, or at least its first block.
 
-App: `/apps/phiconwidgets/`. Print at **Actual size**; cut the `_calib_` file first.
+App: `/apps/phiconwidgets/`. Print at **Actual size**; calibrate with the `_calib_` file (pen attachment).
 
 ## Blocks
 

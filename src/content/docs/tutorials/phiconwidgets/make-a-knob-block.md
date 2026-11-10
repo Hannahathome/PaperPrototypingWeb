@@ -11,8 +11,7 @@ so a camera can follow the block while someone turns the knob.
 ## What you need
 
 - The [Phicon Widgets web app](../../../apps/phiconwidgets/)
-- A printer, A4 paper (about 160 g/m²) and a vinyl cutter, checked with the
-  [calibration test sheet](../../../apps/calibration/)
+- A printer, A4 paper (about 160 g/m²) and a vinyl cutter
 - The knob (or button or slider) you want to fit, and a ruler or calliper
 
 ## Steps
@@ -32,7 +31,7 @@ so a camera can follow the block while someone turns the knob.
 6. **Check the notes.** An orange note appears when a hole cuts into the marker or its white
    margin, or reaches past the face into the folds. Fix these before printing.
 7. **Download, print and cut** as in [Make trackable blocks](../../paperphicons/make-trackable-blocks/):
-   print at actual size, then cut the `_calib_` file, then the `_fold_` file.
+   print at actual size, calibrate with the `_calib_` file, then cut the `_fold_` file.
 8. **Fold the block** with the holed face on top and fit the knob.
 
 ## Common problems

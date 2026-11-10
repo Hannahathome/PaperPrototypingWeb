@@ -1,8 +1,7 @@
 # Physical checklist: ScaffoldShell
 
 Run this before switching ScaffoldShell to `available` in `src/data/tools.json`, and after any
-change to `src/tools/scaffoldshell/core/`. Do the [calibration checklist](checklist-calibration.md)
-first. The shell net is PaperPolyhedra's, which has passed its own check.
+change to `src/tools/scaffoldshell/core/`. The shell net is PaperPolyhedra's, which has passed its own check.
 
 App: `/apps/scaffoldshell/`.
 

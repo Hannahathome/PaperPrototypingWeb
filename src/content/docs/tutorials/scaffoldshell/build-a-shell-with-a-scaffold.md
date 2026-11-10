@@ -11,8 +11,7 @@ cut in the top lid so the M5Atom's screen shows through.
 ## What you need
 
 - The [ScaffoldShell web app](../../../apps/scaffoldshell/)
-- A printer, paper and a vinyl cutter, checked with the
-  [calibration test sheet](../../../apps/calibration/)
+- A printer, paper and a vinyl cutter
 - [OpenSCAD](https://openscad.org/) and a 3D printer for the scaffold
 - An M5Atom (or your own component and its size)
 

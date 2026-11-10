@@ -2,7 +2,7 @@
 
 Run this before switching DataPhysicalisation to `available` in `src/data/tools.json`, and
 after any change to `src/tools/dataphysicalisation/core/`, PaperPolyhedra's import, or its
-sheet layout. Do the [calibration checklist](checklist-calibration.md) first.
+sheet layout.
 
 ## Same as Processing
 

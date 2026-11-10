@@ -1,7 +1,6 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import PolyhedraApp from '../../../components/PolyhedraApp.astro';
-import { withBase } from '../../../lib/paths';
 import { DEFAULT_FRAME_SETTINGS, NEW_RIG, RIG_CUT_FACE_NAMES, RIG_CUT_SIZE_NAMES } from '../../../tools/scaffoldshell/core/frame';
 
 const f = DEFAULT_FRAME_SETTINGS;
@@ -15,7 +14,7 @@ const r = NEW_RIG;
 		tableOfContents: false,
 	}}
 >
-	<p class="intro">Print at <strong>actual size</strong>. New printer or cutter? Use the <a href={withBase('apps/calibration/')}>calibration sheet</a>.</p>
+	<p class="intro">Print at <strong>actual size</strong>.</p>
 
 	<PolyhedraApp>
 		<fieldset slot="panels" id="scaffoldFields">

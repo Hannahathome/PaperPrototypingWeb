@@ -14,8 +14,7 @@ the values in your spreadsheet.
   with column names in the first row
 - The [DataPhysicalisation web app](../../../apps/dataphysicalisation/) and the
   [PaperPolyhedra web app](../../../apps/paperpolyhedra/)
-- A printer, paper and a vinyl cutter, checked with the
-  [calibration test sheet](../../../apps/calibration/)
+- A printer, paper and a vinyl cutter
 
 ## Steps
 

@@ -1,7 +1,6 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import PhiconsApp from '../../../components/PhiconsApp.astro';
-import { withBase } from '../../../lib/paths';
 import { DEFAULT_BLOCK } from '../../../tools/paperphicons/core/block';
 
 ---
@@ -13,7 +12,7 @@ import { DEFAULT_BLOCK } from '../../../tools/paperphicons/core/block';
 		tableOfContents: false,
 	}}
 >
-	<p class="intro">Print at <strong>actual size</strong>. New printer or cutter? Use the <a href={withBase('apps/calibration/')}>calibration sheet</a>.</p>
+	<p class="intro">Print at <strong>actual size</strong>.</p>
 
 	<PhiconsApp defaults={DEFAULT_BLOCK} fileName="paperphicons" />
 </StarlightPage>

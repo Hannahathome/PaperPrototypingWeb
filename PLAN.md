@@ -8,7 +8,7 @@ Accuracy comes first: output is printed and cut on a vinyl cutter, so every phas
 produces geometry ends with a physical check, not only green tests. The architecture rules
 that apply throughout are in [CLAUDE.md](CLAUDE.md).
 
-**Order.** PaperPolyhedra goes first (decided with Hannah, 2026-09-25), because it is the main
+**Order.** PaperPolyhedra goes first (decided with Hannah, 2026 09 25), because it is the main
 tool and the others build on it. It was originally Phase 5, after FrustumSupport.
 
 ## Phase 0: setup (done)
