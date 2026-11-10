@@ -76,7 +76,6 @@ export default defineConfig({
 					label: 'Tutorials',
 					items: [{ label: 'All tutorials', slug: 'tutorials' }, ...tutorialGroups()],
 				},
-				{ label: 'Contributing', items: [{ autogenerate: { directory: 'contributing' } }] },
 			],
 		}),
 	],
